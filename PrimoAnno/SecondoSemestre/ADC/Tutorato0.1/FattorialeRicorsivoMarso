@@ -1,0 +1,30 @@
+.globl main
+main:
+
+li t0 , 5 //t0=5
+mv t1, t0  //t1=5
+
+jal Fattoriale //chiamo la funzione
+
+j exit //dopo che ritorna Fattoriale , chiamo ecall che è in fondo 
+
+Fattoriale : 
+
+beq t0,x0, esci //se è 0  salto ad esci
+
+addi t1, t1,-1 //decremento t1 di 1
+
+mul t3,
+
+jal Fattoriale chiama se stessa
+
+
+
+jr ra
+
+esci: 
+li t1, 1 //imposto t1 ad 1 
+jr ra //torno al main
+
+exit: //qua ha finito il programma
+ecall

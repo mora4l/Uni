@@ -1,0 +1,38 @@
+.globl main
+.text
+//decrementi un registro da 20 , quando arriva a 10 carichi in un altro registro il valore 40 . quando arriva a 5 carichi in un altro registro il valore 50 . quando arrivi a 2 esci dal programma
+main:
+li t0 ,10 // carico in memoria il valore 10 
+li t5, 1 // t5=1
+li t2 ,5//t2=5
+li t6,2//t6=2
+demarco: //flag demarco
+sub t0,t0,t5// t0 = t0-t5
+
+beq t0,x0,exit// if(t0==x0) go to exit
+
+beq t0, t2 , jull  //if (t0==t2) go to jull
+
+bge t0,t6,secondo //if(t0 >= t6) go to secondo
+
+j demarco // torna da demarcoo a prescindere
+
+
+jull // flag per il salto 
+
+li t1,40 // t1= 40 
+
+j demarco  //salta a prescindere da demarco 
+
+secondo:// flag per il salto secondo 
+
+li t3,5 // t3= 5
+
+j demarco //salta su da demarco subito 
+
+exit: //quando servira va diretto alla ecall 
+ecall // return 0 
+
+
+.data //campo data vuoto 
+

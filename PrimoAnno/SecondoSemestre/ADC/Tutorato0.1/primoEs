@@ -1,0 +1,16 @@
+.globl main
+.text
+
+main:
+
+la t0 , valore  //in t0 metto tutto l'array
+lw t1,0(t0) //in t1 ci carico solo il primo valore (32 bit , 4byte)
+lw t2,4(t0) //in t2 ci metto il secondo
+
+add t3,t2,t1 //t3=t2+t1
+sw t3,8(t0)
+li a7,93
+ecall
+
+.data
+valore: .word 10,20,0

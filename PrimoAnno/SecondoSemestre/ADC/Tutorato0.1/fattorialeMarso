@@ -1,0 +1,21 @@
+.globl main
+main:
+//Fattoriale iterativo. Implementa una funzione iterativa che calcola N! usando un ciclo. Il valore N è caricato all’inizio in un registro
+
+li t0 , 9
+
+li t2, 1
+
+fatt : 
+
+mul t3 , t0 ,t1 //t3= t0*t1
+
+sub t1 , t1 , t2
+
+add t4 , t4,t3
+beq t1,t2 , exit 
+
+j fatt 
+
+exit : 
+ecall 
