@@ -31,7 +31,7 @@ li t6, 1 //variabile che mi serve per capire se saltare ad exit o meno . se cond
 WHILE:
 
 slti t2, s3, 5 // se i >=5 , condizione = 0 (set less than immediate)
-bne t2, t6, exit//se condizione!=1  / brench if is not equal
+bne t2, t6, exit//se condizione!=1  / brench if is not equal 
 
 lw t0, 0(t4) //carica il valore puntato da t4 in t0 / valoreA= vectorA
 lw t1, 0(t5)//carica il valore puntato da t5 in t1 / valoreB= vectorB
