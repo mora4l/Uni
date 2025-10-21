@@ -20,13 +20,18 @@ beq s1, s2, incrementai
 
 slli t0, s0, 2 //t0= i*4
 add t1, t0, s3 //t1= i*4+v
-lw t2, 0(t1) //t4=v[i]
+//i*4+array
+lw t2, 0(t1) //t2=v[i]
 
 slli t3, s1, 2 //t3=j*4
 add t4, t3, s3 //t4=j*4+v
 lw t5, 0(t4) // t5=v[j]
 
-ble t4, t5, swap
+ble t5, t2, noswap
+
+addi t6, t2, 0 //int temp= v[i]
+sw t5, 0(t1) // in v[i] ci devo mettere v[j] , quindi : in t5 io avevo salvato il valore di v[j] , io invece l'indirizzo di v[i] lo ho in 0(t1) . quindi devo dire che in 0(t1) ci va il valore contenuto in t5
+sw t6, 0(t4) //v[j] = v[i]
 
 addi s1, s1, 1
 j forj
@@ -36,7 +41,9 @@ incrementai:
 addi s0, s0, 1
 j fori
 
-swap : 
+noswap:
+add s1, s1, 1
+j forj
 
 addi t6, t5, 0
 mv t5, t4
@@ -49,6 +56,10 @@ fineordinamento:
 lw s0, 0(sp)
 lw s1, 4(sp)
 lw s2, 8(sp)
+lw s3, 12(sp)
+lw ra, 16(sp)
+add sp, sp, 20
+ret
 
 
 exit:
