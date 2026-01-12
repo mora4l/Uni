@@ -1,0 +1,50 @@
+Compito (Codice)
+
+In questa sezione scriveremo alcuni semplici programmi multi-threaded e useremo uno strumento specifico, chiamato helgrind, per trovare problemi in questi programmi. 
+
+Leggi il README nel download del compito per i dettagli su come compilare i programmi ed eseguire helgrind.
+
+Domande
+
+1. Per prima cosa, compila main-race.c. 
+Esamina il codice in modo da poter vedere la (sperabilmente ovvia) data race nel codice. 
+Ora esegui helgrind (digitando valgrind --tool=helgrind main-race) per vedere come riporta la race. 
+Indica le righe di codice corrette? Quali altre informazioni ti fornisce?
+Mi dice che la riga 15 del main è a rischio senza il mutex poichè compete con il thread alla riga 8 
+mi dice anche a che riga è stato creato il thread
+2. Cosa succede quando rimuovi una delle linee di codice incriminate? Ora aggiungi un lock intorno a uno degli aggiornamenti della variabile condivisa, e poi intorno a entrambi. Cosa riporta helgrind in ciascuno di questi casi?
+
+4. Ora guardiamo main-deadlock.c. Esamina il codice. Questo codice presenta un problema noto come deadlock (che discuteremo in modo più approfondito in un capitolo successivo). 
+Riesci a vedere quale problema potrebbe avere?
+direi che il problema si basa sul fatto che i due thread si contendono i mutex
+
+4. Ora esegui helgrind su questo codice. Cosa riporta helgrind?
+i deadlock dovuti ai mutex rubati 
+
+5. Ora esegui helgrind su main-deadlock-global.c. Esamina il codice; 
+ha lo stesso problema di main-deadlock.c? 
+si ma anzi ora abbiamo anche un lock generico a g che pero puo loccare sono uno dei due
+Helgrind dovrebbe segnalare lo stesso errore? 
+forse no perche non ce race in quanto appena lo prende un processo , l'altro lo evita
+Cosa ti dice questo sugli strumenti come helgrind?
+che non sono affidabili?boh
+
+6. Passiamo ora a main-signal.c. 
+Questo codice utilizza una variabile (done) per segnalare che il child ha terminato e che il parent può ora continuare. 
+Perché questo codice è inefficiente? 
+(Cosa finisce per fare il parent nel frattempo, in particolare se il thread figlio impiega molto tempo per completarsi?)
+fa spinning e quindi occupa la cpu . esistono soluzioni a questo come la pthread cond wait
+
+7. Ora esegui helgrind su questo programma. Cosa riporta? Il codice è corretto?
+il codice è ok pero ovviamente riporta segnalazioni sull'assenza di lock intorno a done
+
+8. Ora guarda una versione leggermente modificata del codice, che si trova in main-signal-cv.c. 
+Questa versione usa una condition variable per effettuare la segnalazione (e il lock associato). 
+Perché questo codice è preferito rispetto alla versione precedente? 
+perche usa wait e signal quindi evita lo spinning
+È una questione di correttezza, di prestazioni, o di entrambe?
+correttezza,prestazioni e sicurezza
+9. Ancora una volta, esegui helgrind su main-signal-cv. 
+Riporta qualche errore?
+direi di si ma non capisco perche indica la riga 16 e 9 
+in ogni caso io aggiungerei un while nel main per la wait forse

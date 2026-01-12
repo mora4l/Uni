@@ -1,0 +1,9 @@
+Per compilare:
+
+g++ server.c udp.c -o server
+g++ client.c udp.c -o client
+
+Per eseguire (in due finestre diverse):
+
+./server
+./client
