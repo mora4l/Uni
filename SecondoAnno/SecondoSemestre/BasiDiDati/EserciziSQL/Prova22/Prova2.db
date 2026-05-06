@@ -1,0 +1,218 @@
+/*
+RIVISTA(CodR, NomeR, Editore)
+ARTICOLO(CodA, Titolo, Argomento, CodR)
+PROGRAMMI(Codice, NomeProgramma, Rete, Tipologia)
+ARTISTI(Cprogramma, NomeArt)
+SONDAGGI(CodProg, Auditel)
+Impiegato(CodFisc, Nome, Cognome, Recapito, Dip)
+Lavora_Su(Imp, Prog)
+Progetto(CodP, NomeP, Budget)
+Dipartimento(CodD, NomeD, Indirizzo, Citta)
+*/
+
+--Crea la tabella RIVISTA con tutti i vincoli appropriati.
+
+CREATE TABLE IF NOT EXISTS Rivista(
+CodR INT NOT NULL PRIMARY KEY , 
+NomeR TEXT NOT NULL , 
+Editore TEXT NOT NULL
+) STRICT; 
+
+--Crea la tabella ARTICOLO con tutti i vincoli appropriati, sapendo che Argomento può assumere solo i valori 'sport', 'tempo libero', 'politica' e 'tech', e che esiste una dipendenza con RIVISTA.
+CREATE TABLE IF NOT EXISTS Articolo(
+CodA INT NOT NULL PRIMARY KEY , 
+Titolo TEXT NOT NULL , 
+Argomento TEXT NOT NULL CHECK (
+    Argomento = 'sport'  
+    OR Argomento = 'tempo libero' 
+    OR Argomento = 'politica' 
+    OR Argomento = 'tech'
+),
+CodR INT NOT NULL , 
+FOREIGN KEY (CodR) REFERENCES Rivista (CodR) 
+
+)STRICT; 
+
+CREATE TABLE IF NOT EXISTS Programmi(
+Codice INT NOT NULL PRIMARY KEY , 
+NomeProgramma TEXT NOT NULL , 
+Rete TEXT NOT NULL , 
+Tipologia TEXT NOT NULL 
+)STRICT ; 
+
+--Crea la tabella SONDAGGI sapendo che se un programma viene cancellato, i suoi sondaggi devono essere cancellati di conseguenza.
+CREATE TABLE IF NOT EXISTS Sondaggi(
+CodProg INT NOT NULL PRIMARY KEY , 
+Auditel INT NOT NULL,
+Codice INT NOT NULL ,
+FOREIGN KEY (Codice) REFERENCES Programmi (Codice) ON DELETE CASCADE
+)STRICT;
+
+CREATE TABLE IF NOT EXISTS Artisti(
+Cprogramma INT NOT NULL PRIMARY KEY , 
+NomeArt TEXT NOT NULL , 
+FOREIGN KEY (Cprogramma) REFERENCES Programmi (Codice) 
+);
+
+--Crea la tabella Progetto sapendo che il budget non può mai essere negativo o nullo.
+CREATE TABLE IF NOT EXISTS Progetto(
+CodP TEXT NOT NULL PRIMARY KEY , 
+NomeP TEXT NOT NULL , 
+Budget INT NOT NULL CHECK( 
+    Budget > 0 
+)
+)STRICT; 
+
+CREATE TABLE IF NOT EXISTS Dipartimento(
+CodD TEXT NOT NULL PRIMARY KEY ,
+NomeD TEXT NOT NULL , 
+Indirizzo TEXT NOT NULL , 
+Citta TEXT NOT NULL
+)STRICT; 
+
+CREATE TABLE IF NOT EXISTS Impiegato(
+CodFisc TEXT NOT NULL PRIMARY KEY , 
+Nome TEXT NOT NULL , 
+Cognome TEXT NOT NULL , 
+Recapito INT NOT NULL , 
+Dip TEXT NOT NULL, 
+FOREIGN KEY (Dip) REFERENCES Dipartimento (CodD) 
+)STRICT; 
+
+/*Crea la tabella Lavora_Su sapendo che se un progetto viene cancellato, il riferimento al progetto negli impiegati che ci lavoravano non deve causare errori ma 
+deve semplicemente sparire.
+*/
+CREATE TABLE IF NOT EXISTS Lavora_su(
+CodFisc TEXT NOT NULL , 
+CodP TEXT NOT NULL , 
+PRIMARY KEY (CodFisc,CodP) , 
+FOREIGN KEY (CodFisc) REFERENCES Impiegato (CodFisc) , 
+FOREIGN KEY (CodP) REFERENCES Progetto (CodP) ON DELETE CASCADE
+)STRICT ; 
+/*
+ INSERT INTO Rivista VALUES(1,"mario", "hoepli" ) ;
+ INSERT INTO Rivista VALUES(2, "gianni" , "feltrinelli" ) ; 
+ INSERT INTO Rivista VALUES(3, "marco" , "mondadori" ) ; 
+ INSERT INTO Rivista VALUES(44, "giulia" , "hepli" ) ; 
+DELETE FROM Rivista  WHERE CodR BETWEEN 1 AND 4; 
+*/
+
+--INSERT INTO Impiegato VALUES("MRSFNC05C05D969T", "francesco" , "morasso","3925959905",3 ) ; 
+
+/* ==================== RIVISTA ==================== */
+INSERT INTO Rivista VALUES
+(1, 'La Gazzetta dello Sport', 'RCS'),
+(2, 'National Geographic', 'Mondadori'),
+(3, 'Internazionale', 'Internazionale'),
+(4, 'Wired', 'Conde Nast'),
+(5, 'Focus', 'Mondadori'),
+(6, 'Games', 'Panini'),
+(7, 'Tuttosport', 'Panini');
+
+/* ==================== ARTICOLO ==================== */
+INSERT INTO Articolo VALUES
+(1, 'Serie A: il meglio della stagione', 'sport', 1),
+(2, 'I segreti della foresta amazzonica', 'tempo libero', 2),
+(3, 'Le elezioni in Europa', 'politica', 3),
+(4, 'I migliori processori del 2025', 'tech', 4),
+(5, 'Intelligenza Artificiale e futuro', 'tech', 4),
+(6, 'I nuovi videogiochi del 2025', 'tech', 6),
+(7, 'Champions League: le favorite', 'sport', 1),
+(8, 'La crisi climatica', 'politica', 3),
+(9, 'Trekking sulle Dolomiti', 'tempo libero', 5),
+(10, 'NBA: i migliori giocatori', 'sport', 6);
+
+/* ==================== DIPARTIMENTO ==================== */
+INSERT INTO Dipartimento VALUES
+('D01', 'DIBRIS', 'Via Dodecaneso 35', 'Genova'),
+('D02', 'DIMA', 'Via Dodecaneso 35', 'Genova'),
+('D03', 'Informatica', 'Via Celoria 18', 'Milano'),
+('D12', 'Ingegneria', 'Corso Duca 101', 'Torino');
+
+/* ==================== IMPIEGATO ==================== */
+INSERT INTO Impiegato VALUES
+('RSSMRA80A01H501A', 'Mario', 'Rossi', '010123456', 'D01'),
+('BNCGNN90B02H502B', 'Giovanni', 'Bianchi', '010234567', 'D01'),
+('VRDLGI85C03H503C', 'Luigi', 'Verdi', '010345678', 'D02'),
+('NRIPLA95D04H504D', 'Paola', 'Neri', '010456789', 'D03'),
+('MRcgpp88E05H505E', 'Giuseppe', 'Marchi', '010567890', 'D12'),
+('FRRFNC92F06H506F', 'Francesca', 'Ferrari', '010678901', 'D12'),
+('CSTLRA75G07H507G', 'Laura', 'Costa', '010789012', 'D03');
+
+/* ==================== PROGETTO ==================== */
+INSERT INTO Progetto VALUES
+('P01', 'Sistema Gestione DB', 1500),
+('P02', 'App Mobile UniGe', 800),
+('P03', 'Ricerca AI', 5000),
+('P04', 'Sito Web Dipartimento', 200),
+('P05', 'Analisi Dati Climatici', 3000);
+
+/* ==================== LAVORA_SU ==================== */
+INSERT INTO Lavora_Su VALUES
+('RSSMRA80A01H501A', 'P01'),
+('RSSMRA80A01H501A', 'P03'),
+('BNCGNN90B02H502B', 'P01'),
+('VRDLGI85C03H503C', 'P02'),
+('VRDLGI85C03H503C', 'P04'),
+('NRIPLA95D04H504D', 'P03'),
+('NRIPLA95D04H504D', 'P05'),
+('MRcgpp88E05H505E', 'P02'),
+('FRRFNC92F06H506F', 'P04'),
+('CSTLRA75G07H507G', 'P05');
+
+/* ==================== PROGRAMMI ==================== */
+INSERT INTO Programmi VALUES
+(1, 'Che tempo che fa', 'Rai1', 'Talk Show'),
+(2, 'Grande Fratello', 'Canale5', 'Reality'),
+(3, 'TechToday', 'Rai2', 'Informazione'),
+(4, 'SportTime', 'Rai1', 'Sport'),
+(5, 'CookMaster', 'Canale5', 'Cucina');
+
+/* ==================== ARTISTI ==================== */
+INSERT INTO Artisti VALUES
+(1, 'Fabio Fazio'),
+(2, 'Luciana Littizzetto'),
+(3, 'Alfonso Signorini'),
+(4, 'Marco Montemagno'),
+(5, 'Anna Billò');
+
+/* ==================== SONDAGGI ==================== */
+INSERT INTO Sondaggi VALUES
+(1, 3200000,2),
+(2, 2800000,5),
+(4, 1500000,3);
+
+
+/*
+Esercizio 14. Recupera titolo e argomento di tutti gli articoli pubblicati su riviste edite da 'Mondadori'.
+Esercizio 15. Recupera nome e cognome di tutti gli impiegati che lavorano in un dipartimento con sede a 'Milano'.
+Esercizio 16. Recupera il nome di tutti i progetti a cui partecipa almeno un impiegato del dipartimento 'D12'.
+Esercizio 17. Recupera il nome di ogni artista insieme al nome del programma a cui partecipa.
+Esercizio 18. Recupera tutti i programmi mostrando, dove disponibile, il rispettivo valore Auditel. I programmi privi di sondaggio devono comunque comparire nel risultato.
+Esercizio 19. Per ogni dipartimento, calcola quanti impiegati vi appartengono, mostrando il risultato dal dipartimento più numeroso al meno numeroso.
+Esercizio 20. Per ogni argomento, calcola quanti articoli sono stati pubblicati, mostrando solo quelli che hanno almeno 2 articoli associati.
+*/
+
+--Esercizio 9. Recupera titolo e argomento di tutti gli articoli di sport.
+SELECT Titolo,Argomento 
+FROM Articolo
+WHERE Argomento = "sport" ;
+
+--Esercizio 10. Recupera tutte le informazioni degli articoli il cui titolo inizia con la lettera 'S'.
+SELECT *
+FROM Articolo
+WHERE Titolo LIKE "S%";
+
+--Esercizio 11. Recupera nome e cognome di tutti gli impiegati il cui cognome è 'Rossi' oppure il cui nome è 'Mario', in ordine alfabetico per cognome.
+SELECT Nome, Cognome
+FROM Impiegato 
+WHERE Cognome = "Rossi" OR Nome = "Mario" 
+ORDER BY Cognome ASC;
+
+--Esercizio 12. Recupera il nome di tutti i progetti con budget compreso tra 500 e 2000, estremi inclusi.
+SELECT NomeP
+FROM Progetto
+WHERE Budget BETWEEN 500 AND 2000;
+
+--Esercizio 13. Recupera nome, rete e tipologia di tutti i programmi trasmessi da 'Rai1' o 'Canale5'.
+SELECT Nome, Rete, Tipologia
