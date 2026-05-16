@@ -142,7 +142,7 @@ WHERE DIPARTIMENTO.nome = "D0" AND IMPIEGATO.inizio < "2025-01-01";
 
 --associare ad ogni nome di dipartimento il numero di sedi in cui è diviso 
 /*mi devo chiedere se ho bisogno di raggruppare dei dati prima di calcolarne la somma ( o la media , o altri parametri ) oppure no */
- 
+
 SELECT dipartimento.nome, COUNT (*)  AS "numero sedi" /*praticamente qui sto cercando di contare le righe delle sottotabelle generate dalla group by . quindi la select la considero solo alla fine , dopo la from e dopo la where / group by*/
 FROM DIPARTIMENTO JOIN SEDI_DIP ON dipartimento.id_dipartimento = sedi_dip.id_dipartimento
 GROUP BY dipartimento.id_dipartimento ;
@@ -158,18 +158,15 @@ GROUP BY id_progetto;
 SELECT *
 FROM IMPIEGATO
 GROUP BY  dirige_dipartimento(
-
 )
-
     SELECT *
     FROM IMPIEGATO
     WHERE dirige_dipartimento IS NULL  
 */
+
 SELECT DIR.nome, DIR.cognome
 FROM IMPIEGATO AS DIR JOIN IMPIEGATO AS DIP ON DIP.id_superiore = DIR.id_impiegato 
 WHERE DIR.dirige_dipartimento IS NOT NULL
 GROUP BY DIP.id_superiore /*fino a qui ho collegato tutti i dirigenti con ???*/
 HAVING COUNT(*) >= 5;
     
-
-

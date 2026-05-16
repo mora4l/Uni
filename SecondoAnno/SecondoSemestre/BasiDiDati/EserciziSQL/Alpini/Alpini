@@ -1,0 +1,84 @@
+/*
+Crea la tabella RIVISTA con tutti i vincoli appropriati.
+*/
+
+CREATE TABLE IF NOT EXISTS Rivista(
+CodR INT NOT NULL PRIMARY KEY , 
+NomeR TEXT NOT NULL ,
+Editore TEXT NOT NULL
+)STRICT ; 
+
+/*
+Crea la tabella ARTICOLO con tutti i vincoli appropriati, 
+sapendo che Argomento può assumere solo i valori 'sport', 'tempo libero', 'politica' e 'tech', 
+e che esiste una dipendenza con RIVISTA.
+*/
+CREATE TABLE IF NOT EXISTS Articolo(
+CodA INT NOT NULL PRIMARY KEY ,
+Titolo int not null ,
+Argomento text not null CHECK (
+    Argomento = "sport" OR
+    Argomento = "tempo libero" OR
+    Argomento = "politica" OR
+    Argomento = "tech" 
+) ,  
+CodR int not null ,
+FOREIGN KEY ( CodR) REFERENCES Rivista (CodR) 
+)STRICT;
+
+CREATE TABLE IF NOT EXISTS Programmi(
+CodiceProgramma INT NOT NULL PRIMARY KEY,
+NomeProgramma TEXT NOT NULL, 
+Rete TEXT NOT NULL, 
+Tipologia TEXT NOT NULL
+)STRICT ;
+
+/*
+Crea la tabella SONDAGGI 
+sapendo che se un programma viene cancellato
+, i suoi sondaggi devono essere cancellati di conseguenza.
+*/
+CREATE TABLE IF NOT EXISTS Sondaggi(
+CodProg INT NOT NULL PRIMARY KEY,
+Auditel TEXT NOT NULL , 
+FOREIGN KEY (CodProg) REFERENCES Programmi (CodiceProgramma) ON DELETE CASCADE 
+)STRICT;
+
+--ALTER TABLE Programmi RENAME COLUMN Codice TO CodiceProgramma;--
+
+/*
+Crea la tabella Progetto sapendo che il budget 
+non può mai essere negativo o nullo.
+*/
+
+CREATE TABLE IF NOT EXISTS Progetto(
+CodP INT NOT NULL PRIMARY KEY, 
+NomeP TEXT NOT NULL, 
+Budget INT CHECK(
+    Budget > 0 
+)
+)STRICT;
+
+CREATE TABLE IF NOT EXISTS Dipartimento(
+CodD INT NOT NULL PRIMARY KEY ,
+NomeD TEXT NOT NULL , 
+Indirizzo TEXT NOT NULL , 
+Citta TEXT NOT NULL
+)STRICT; 
+
+CREATE TABLE IF NOT EXISTS Impiegato (
+    CodFisc TEXT NOT NULL PRIMARY KEY, 
+    Nome TEXT NOT NULL, 
+    Cognome TEXT NOT NULL, 
+    Recapito TEXT NOT NULL, -- Cambiato in TEXT per non perdere gli zeri iniziali
+    Dip INTEGER NOT NULL,    -- Usato INTEGER per massima compatibilità STRICT
+    FOREIGN KEY (Dip) REFERENCES Dipartimento (CodD) 
+) STRICT;
+
+CREATE TABLE IF NOT EXISTS Lavora_su(
+Imp TEXT , 
+ Prog INT , 
+ PRIMARY KEY ( Imp, Prog) , 
+ FOREIGN KEY (Imp) REFERENCES Impiegato (CodFisc) , 
+ FOREIGN KEY (Prog) REFERENCES Progetto (CodP) ON DELETE SET NULL
+)strict;

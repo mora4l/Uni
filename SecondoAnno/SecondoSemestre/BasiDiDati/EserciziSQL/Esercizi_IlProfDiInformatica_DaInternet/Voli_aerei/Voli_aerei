@@ -1,0 +1,141 @@
+-- ============================================================
+--  DDL
+-- ============================================================
+
+CREATE TABLE compagnie (
+    id_compagnia          INT          PRIMARY KEY,
+    nome                  VARCHAR(100) NOT NULL,
+    sitoweb               VARCHAR(255),
+    peso_bagaglio_incluso INT
+);
+
+CREATE TABLE aerei (
+    id_aereo       INT          PRIMARY KEY,
+    nome           VARCHAR(100) NOT NULL,
+    tipo           VARCHAR(50),
+    num_passeggeri INT,
+    id_compagnia   INT          NOT NULL,
+    FOREIGN KEY (id_compagnia) REFERENCES compagnie(id_compagnia)
+);
+
+CREATE TABLE aeroporti (
+    id_aeroporto  INT          PRIMARY KEY,
+    nome          VARCHAR(100) NOT NULL,
+    via           VARCHAR(150),
+    citta         VARCHAR(100),
+    nazione       VARCHAR(100),
+    num_terminali INT,
+    num_piste     INT
+);
+
+CREATE TABLE voli (
+    id_volo               INT         PRIMARY KEY,
+    codice_volo           VARCHAR(20) NOT NULL,
+    data                  DATE,
+    ora_partenza          TIME,
+    ora_arrivo            TIME,
+    id_aereo              INT         NOT NULL,
+    id_aeroporto_partenza INT         NOT NULL,
+    id_aeroporto_arrivo   INT         NOT NULL,
+    FOREIGN KEY (id_aereo)              REFERENCES aerei(id_aereo),
+    FOREIGN KEY (id_aeroporto_partenza) REFERENCES aeroporti(id_aeroporto),
+    FOREIGN KEY (id_aeroporto_arrivo)   REFERENCES aeroporti(id_aeroporto)
+);
+
+-- ============================================================
+--  DML
+-- ============================================================
+
+INSERT INTO compagnie VALUES
+(1, 'Alitalia',   'www.alitalia.com',  23),
+(2, 'Ryanair',    'www.ryanair.com',   10),
+(3, 'SkyExpress', NULL,                15);  
+
+INSERT INTO aeroporti VALUES
+(1, 'Roma Fiumicino',  'Via Aeroporto 1',  'Roma',    'Italia',   3, 3),
+(2, 'Milano Malpensa', 'Via Malpensa 1',   'Milano',  'Italia',   2, 2),
+(3, 'Milano Linate',   'Viale Forlanini 1','Milano',  'Italia',   1, 1),
+(4, 'London Heathrow', 'Heathrow Road 1',  'Londra',  'UK',       4, 3),
+(5, 'Berlin Brandenburg', 'Flughafen 1',   'Berlino', 'Germania', 1, 2);
+
+INSERT INTO aerei VALUES
+(1, 'Boeing 737',  'Narrowbody', 180, 1),
+(2, 'Airbus A320', 'Narrowbody', 165, 1),
+(3, 'Boeing 737',  'Narrowbody', 189, 2),
+(4, 'Airbus A319', 'Narrowbody', 140, 3);
+
+INSERT INTO voli VALUES
+(1, 'A357Z', '2024-06-01', '08:00', '10:30', 1, 1, 4),
+(2, 'B100X', '2024-06-02', '09:00', '11:45', 2, 1, 5),
+(3, 'C200Y', '2024-06-03', '07:00', '08:10', 3, 1, 2),
+(4, 'D300Z', '2024-06-04', '10:00', '11:10', 4, 1, 3),
+(5, 'E400W', '2024-06-05', '11:00', '13:30', 2, 4, 5),
+(6, 'F500A', '2024-06-06', '15:00', '16:45', 3, 2, 4),
+(7, 'G600B', '2024-06-07', '06:30', '07:40', 4, 2, 1),
+(8, 'H700C', '2024-06-08', '14:00', '16:30', 1, 2, 5);
+
+/*Le compagnie aeree per cui non è specificato il sito web.*/
+select * 
+from compagnie
+where sitoweb IS NULL  ;
+
+/*La nazione di partenza e la nazione di arrivo del volo con codice volo "A357Z".*/
+select partenza.codice_volo ,partenza.nazione as "nazione di partenza", aeroporti.nazione as "nazione di arrivo"
+from (  select voli.codice_volo,voli.id_aeroporto_arrivo, nazione
+        from voli join aeroporti on voli.id_aeroporto_partenza = aeroporti.id_aeroporto
+        where voli.codice_volo  = "A357Z") as "partenza" 
+        join aeroporti on partenza.id_aeroporto_arrivo=aeroporti.id_aeroporto;
+
+/*Il nome della compagnia dell'aereo usato nel volo con id_volo uguale a 5.*/
+select compagnie.nome
+from (voli join aerei on voli.id_aereo = aerei.id_aereo) join compagnie on aerei.id_compagnia = compagnie.id_compagnia
+where voli.id_volo= 5;
+
+/*Gli aereoporti da cui partono voli internazionali. 
+(Sugg: un volo è considerato internazionale se parte l'aeroporto di arrivo si trova in una nazione diversa dall'aeroporto di partenza).*/
+select distinct (coca.aeroporti_di_partenza) as "aeroporti con voli internazionali"
+from aeroporti join  (select aeroporti.nome as "aeroporti_di_partenza" ,aeroporti.nazione as "nazione_di_partenza" , voli.id_aeroporto_arrivo as "aeroporto_arrivo" 
+from voli join aeroporti on voli.id_aeroporto_partenza = aeroporti.id_aeroporto) as "coca" on aeroporti.id_aeroporto = coca.aeroporto_arrivo
+where aeroporti.nazione <> coca.nazione_di_partenza;
+
+/*Gli aeroporti italiani da cui sono partiti più di 2 voli.*/
+select aeroporti.nome
+from aeroporti join voli on aeroporti.id_aeroporto = voli.id_aeroporto_partenza
+where aeroporti.nazione = "Italia" 
+group by aeroporti.nome
+having count(voli.id_volo) > 2;
+
+/*per ogni compagni indicare il numero di aerei che ha.*/
+select compagnie.nome,count(*) as "aerei posseduti" 
+from compagnie join aerei on compagnie.id_compagnia = aerei.id_compagnia
+group by compagnie.nome;
+
+/*Per ogni città indicare il numero di aeroporti presenti.*/
+select citta,count(id_aeroporto) as "aeroporti presenti"
+from aeroporti
+group by citta;
+
+/*Il nome degli aeroporti che hanno il maggior numero di piste.*/
+select *
+from aeroporti 
+where num_piste= (select max(num_piste)
+                  from aeroporti
+                 );
+       
+/*La media del peso del bagaglio incluso nel prezzo dalle compagnie aeree.*/
+select avg(peso_bagaglio_incluso) as "peso medio del bagaglio incluso" 
+from compagnie;
+
+/*Nomi delle nazioni con più aeroporti.*/
+select lista.nazione
+from (select count(*) as "max", nazione
+       from aeroporti
+       group by nazione) as "lista"
+where max
+       = 
+       (select max(ciao)
+        from (select count(*) as "ciao"
+              from aeroporti
+              group by nazione) as "massimo"
+);
+

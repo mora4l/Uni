@@ -1,0 +1,232 @@
+-- =============================================
+-- CREATE TABLE
+-- =============================================
+
+CREATE TABLE categorie (
+    id_categoria INT PRIMARY KEY,
+    nome         VARCHAR(100) NOT NULL,
+    descrizione  TEXT
+);
+
+CREATE TABLE social_network (
+    id_social_network INT PRIMARY KEY,
+    nome              VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE tutorial (
+    id_tutorial  INT PRIMARY KEY,
+    titolo       VARCHAR(200) NOT NULL,
+    descrizione  TEXT,
+    livello      VARCHAR(50),
+    durata       INT NOT NULL,  -- durata in minuti
+    link         VARCHAR(300),
+    id_categoria INT REFERENCES categorie(id_categoria)
+);
+
+CREATE TABLE tutorial_social_network (
+    id_tutorial       INT REFERENCES tutorial(id_tutorial),
+    id_social_network INT REFERENCES social_network(id_social_network),
+    PRIMARY KEY (id_tutorial, id_social_network)
+);
+
+
+-- =============================================
+-- INSERT categorie
+-- =============================================
+
+INSERT INTO categorie VALUES (1, 'Programmazione', 'Tutorial su linguaggi e sviluppo software');
+INSERT INTO categorie VALUES (2, 'Musica',         'Tutorial su strumenti e teoria musicale');
+INSERT INTO categorie VALUES (3, 'Sport',          'Tutorial su allenamento e tecniche sportive');
+INSERT INTO categorie VALUES (4, 'Business',       'Tutorial su marketing, finanza e management');
+INSERT INTO categorie VALUES (5, 'Design',         'Tutorial su grafica, UI e UX');
+INSERT INTO categorie VALUES (6, 'Cucina',         'Tutorial su ricette e tecniche culinarie');
+
+
+-- =============================================
+-- INSERT social_network
+-- =============================================
+
+INSERT INTO social_network VALUES (1, 'YouTube');
+INSERT INTO social_network VALUES (2, 'Instagram');
+INSERT INTO social_network VALUES (3, 'Facebook');
+INSERT INTO social_network VALUES (4, 'TikTok');
+-- social senza tutorial (per query 10)
+INSERT INTO social_network VALUES (5, 'LinkedIn');
+
+
+-- =============================================
+-- INSERT tutorial
+-- =============================================
+
+-- Programmazione (id_categoria = 1)
+-- titoli con 'I' iniziale e 'Java' nel titolo per query 1 e 11
+INSERT INTO tutorial VALUES (1,  'Introduzione a Python',         'Basi del linguaggio Python',              'Principiante',  10, 'https://example.com/t1',  1);
+INSERT INTO tutorial VALUES (2,  'Java per principianti',         'Corso base di Java',                      'Principiante',  12, 'https://example.com/t2',  1);
+INSERT INTO tutorial VALUES (3,  'Java avanzato',                 'Pattern e strutture dati in Java',        'Avanzato',      20, 'https://example.com/t3',  1);
+INSERT INTO tutorial VALUES (4,  'Impara JavaScript',             'Fondamenti di JS moderno',                'Principiante',   8, 'https://example.com/t4',  1);
+INSERT INTO tutorial VALUES (5,  'Algoritmi e complessità',       'Analisi degli algoritmi',                 'Intermedio',    15, 'https://example.com/t5',  1);
+INSERT INTO tutorial VALUES (6,  'Design pattern in Java',        'I pattern GoF spiegati',                  'Intermedio',    18, 'https://example.com/t6',  1);
+INSERT INTO tutorial VALUES (7,  'Introduzione a SQL',            'Query di base su database relazionali',   'Principiante',   9, 'https://example.com/t7',  1);
+
+-- Musica (id_categoria = 2)
+INSERT INTO tutorial VALUES (8,  'Imparare la chitarra',          'Accordi base per chitarra acustica',      'Principiante',   7, 'https://example.com/t8',  2);
+INSERT INTO tutorial VALUES (9,  'Teoria musicale',               'Scale, accordi e armonia',                'Intermedio',    11, 'https://example.com/t9',  2);
+INSERT INTO tutorial VALUES (10, 'Produzione musicale',           'Come creare una base con DAW',            'Avanzato',      25, 'https://example.com/t10', 2);
+
+-- Sport (id_categoria = 3)
+INSERT INTO tutorial VALUES (11, 'Allenamento funzionale',        'Esercizi a corpo libero per tutti',       'Principiante',   6, 'https://example.com/t11', 3);
+INSERT INTO tutorial VALUES (12, 'Corsa e resistenza',            'Tecniche per migliorare la resistenza',   'Intermedio',    13, 'https://example.com/t12', 3);
+
+-- Business (id_categoria = 4)
+INSERT INTO tutorial VALUES (13, 'Introduzione al marketing',     'Fondamenti del marketing digitale',       'Principiante',   5, 'https://example.com/t13', 4);
+INSERT INTO tutorial VALUES (14, 'Strategie di business',         'Come costruire un business plan',         'Intermedio',    14, 'https://example.com/t14', 4);
+INSERT INTO tutorial VALUES (15, 'Social media marketing',        'Crescere sui social con i contenuti',     'Intermedio',    16, 'https://example.com/t15', 4);
+
+-- Design (id_categoria = 5)
+INSERT INTO tutorial VALUES (16, 'Introduzione a Figma',          'Prototipazione UI con Figma',             'Principiante',   8, 'https://example.com/t16', 5);
+INSERT INTO tutorial VALUES (17, 'UX design avanzato',            'Ricerca utente e test di usabilità',      'Avanzato',      30, 'https://example.com/t17', 5);
+-- durata massima = 30 min (per query 6), stesso valore di t17
+
+-- Cucina (id_categoria = 6)
+INSERT INTO tutorial VALUES (18, 'Pasta fresca fatta in casa',    'Tecniche per la pasta all uovo',          'Principiante',   6, 'https://example.com/t18', 6);
+
+
+-- =============================================
+-- INSERT tutorial_social_network
+-- =============================================
+
+-- YouTube (1)
+INSERT INTO tutorial_social_network VALUES (1,  1);
+INSERT INTO tutorial_social_network VALUES (2,  1);
+INSERT INTO tutorial_social_network VALUES (3,  1);
+INSERT INTO tutorial_social_network VALUES (5,  1);
+INSERT INTO tutorial_social_network VALUES (8,  1);
+INSERT INTO tutorial_social_network VALUES (10, 1);
+INSERT INTO tutorial_social_network VALUES (14, 1);
+
+-- Instagram (2)
+-- almeno 5 tutorial (per query 5), con Programmazione e Business (per query 8 e 14)
+INSERT INTO tutorial_social_network VALUES (1,  2);  -- Programmazione
+INSERT INTO tutorial_social_network VALUES (4,  2);  -- Programmazione
+INSERT INTO tutorial_social_network VALUES (7,  2);  -- Programmazione
+INSERT INTO tutorial_social_network VALUES (13, 2);  -- Business
+INSERT INTO tutorial_social_network VALUES (15, 2);  -- Business
+INSERT INTO tutorial_social_network VALUES (16, 2);  -- Design
+
+-- Facebook (3)
+-- almeno 5 tutorial (per query 5 e 7)
+INSERT INTO tutorial_social_network VALUES (2,  3);
+INSERT INTO tutorial_social_network VALUES (4,  3);
+INSERT INTO tutorial_social_network VALUES (6,  3);
+INSERT INTO tutorial_social_network VALUES (9,  3);
+INSERT INTO tutorial_social_network VALUES (11, 3);
+INSERT INTO tutorial_social_network VALUES (12, 3);
+
+-- TikTok (4)
+INSERT INTO tutorial_social_network VALUES (8,  4);
+INSERT INTO tutorial_social_network VALUES (11, 4);
+INSERT INTO tutorial_social_network VALUES (18, 4);
+
+-- LinkedIn (5): nessun tutorial → per query 10
+
+/*Titolo, descrizione e livello dei tutorial il cui titolo inizia con la lettera 'I'. */
+
+select titolo,descrizione,livello
+from tutorial 
+where titolo like "I%";
+ 
+/*Elenco dei tutorial che appartengono alle seguenti categorie: Programmazione, Musica e Sport.*/
+select tutorial.*
+from tutorial join categorie on tutorial.id_categoria = categorie.id_categoria
+where categorie.nome = "Programmazione " or categorie.nome ="Musica" or categorie.nome ="Sport";
+
+/*Elenco dei tutorial la cui durata è compresa tra 5 minuti e 15 minuti.*/
+select * 
+from tutorial 
+where durata between 5 and 15;
+
+/*Per ogni livello indicare quanti tutorial sono presenti nel database.*/
+select livello,count(*) as "tutorial del livello"
+from tutorial
+group by livello;
+
+/*Nomi dei social network in cui sono stati pubblicati almeno 5 tutorial.*/
+select social_network.nome
+from (tutorial join tutorial_social_network on tutorial.id_tutorial = tutorial_social_network.id_tutorial) /*prima vado a trovare gli id dei social corrispondenti ad ogni tutorial*/
+     join social_network on tutorial_social_network.id_social_network = social_network.id_social_network/*poi ottengo le informazioni di ogni social legate all'id relativo che ho ottenuto prima , che è legato a sua volta dai tutorial che ha */
+group by social_network.nome
+having count(*) >= 5;
+
+/*Elenco dei tutorial che hanno durata pari alla durata massima dei tutorial presenti nel database.*/
+select tutorial.*
+from tutorial
+where durata = ( select max(durata) as "durata_massima_tutorial"/*1. prima mi trovo la durata massima dei tutorial in generale, poi seleziono tutte le tuple che hanno quella durata*/
+                 from tutorial
+               ); 
+               
+/*Indicare quanti tutorial sono stati pubblicati nel social network 'Facebook'.*/
+select social_network.nome,count(*) as "tutorial pubblicati"
+from (tutorial join tutorial_social_network on tutorial.id_tutorial = tutorial_social_network.id_tutorial)/*prima vado a trovare gli id dei social corrispondenti ad ogni tutorial*/
+     join social_network on tutorial_social_network.id_social_network = social_network.id_social_network /*poi ottengo le informazioni di ogni social legate all'id relativo che ho ottenuto prima , che è legato a sua volta dai tutorial che ha */
+where social_network.nome = "Facebook"/*poi filtro le tuple in cui c'è solo facebook*/
+group by social_network.nome; /*raggruppo le tuple per ogni social, cosi posso contare nella select le tuple di ogni gruppo */
+
+/*Elenco dei tutorial di categoria 'Programmazione' presenti nel social network 'Instagram'.*/
+select tutorial.*
+from ((tutorial join tutorial_social_network on tutorial.id_tutorial = tutorial_social_network.id_tutorial )/*prima vado a trovare gli id dei social corrispondenti ad ogni tutorial*/
+     join social_network on tutorial_social_network.id_social_network = social_network.id_social_network)/*poi ottengo le informazioni di ogni social legate all'id relativo che ho ottenuto prima , che è legato a sua volta dai tutorial che ha */
+     join categorie on tutorial.id_categoria = categorie.id_categoria/*poi aggancio anche tutte le informazioni relative alla categorie che ogni tutorial ha*/
+where categorie.nome = "Programmazione" and social_network.nome = "Instagram";
+
+/*Per ogni social network indicare quanti tutorial di categoria 'Business' sono stati pubblicati.*/
+select social_network.nome as "social" ,count(*) as "tutorial di business"
+from ((social_network join tutorial_social_network on social_network.id_social_network = tutorial_social_network.id_social_network)/* "per cambiare un po'" , prima lego le informazioni di ogni social agli id dei tutorial che ha associato*/
+join tutorial on tutorial_social_network.id_tutorial = tutorial.id_tutorial)/*poi ottengo le informazioni di ogni tutorial che ha ogni social*/
+join categorie on tutorial.id_categoria = categorie.id_categoria/*e poi lego anche le informazioni della categoria di ogni tutorial (che ha ogni social)*/
+where categorie.nome = "Business" 
+group by social_network.nome;
+
+/*Elenco dei social dove non sono stati pubblicati alcun tutorial.*/
+select social_network.nome as "social senza tutorial"
+from social_network left join tutorial_social_network on social_network.id_social_network = tutorial_social_network.id_social_network/*lego le informazioni dei social alle corrispondenze tra gli id dei social e dei tutorial che ognuno ha. a prescindere dal match o no , prendo tutte le tuple della prima tabella*/
+where id_tutorial is null;  /*se non ce stato nessun match tra le due tabelle , gli attributi della seconda tabella saranno "NULL" . è proprio quello che voglio*/
+
+/*Elenco dei tutorial il cui titolo contiene la parola 'Java'.*/
+select tutorial.*
+from tutorial 
+where titolo like "%Java%";
+
+/*Il titolo dei tutorial che sono di livello di Intermedio e che hanno una durata più lunga della durata media tra tutti i tutorial di livello Intermedio.*/
+select tutorial.titolo
+from tutorial
+where livello = "Intermedio" and durata > (/*2. poi vado a cercare tutti i tutorial di livello intermedio che hanno la durata sopra quel valore , che è proprio la media dei tutorial "Intermedi" */
+                                                select avg(durata) as "durata_media" /*1. prima trovo la durata media dei tutorial di livello intermedio*/
+                                                from tutorial
+                                                where livello = "Intermedio" 
+                                          );
+
+/*Per ogni categoria si vuole conoscere il numero di tutorial presenti nel social network 'Instagram'.*/
+select categorie.nome as "categorie di tutorial su instagram", count(*) as "tutorial presenti"
+from ((categorie join tutorial on categorie.id_categoria = tutorial.id_categoria )/*scelgo di partire ottenendo le informazioni di ogni categoria legata ad ogni tutorial*/
+join tutorial_social_network on tutorial.id_tutorial = tutorial_social_network.id_tutorial)/*poi associo ad ogni tutorial (con le relative informazioni sulla categoria) l' id del social che ha quel determinato tutorial*/
+join social_network on tutorial_social_network.id_social_network = social_network.id_social_network /*e infine ottento le informazioni di ogni social (legato ad ogni tutorial che ha a sua volta legate tutte le informazioni sulla categoria associata) */
+where social_network.nome = "Instagram"
+group by categorie.nome;
+
+/*Elenco dei tutorial ordinati da quello più breve a quello più lungo e a parità di durata ordinarli in base al titolo in ordine alfabetico.*/
+select * 
+from tutorial 
+order by durata asc , titolo asc;
+
+/*Per ogni tutorial presente nel database indicare: il nome del tutorial, il livello, la durata, il nome della categoria, 
+ed il nome del social network in cui è pubblicato. 
+Se un tutorial è stato pubblicato in più social network, nella tabella risultante si avranno più righe per quel tutorial.*/
+select tutorial.titolo as "titolo tutorial", tutorial.livello as "livello tutorial", tutorial.durata as "durata tutorial", categorie.nome as "categoria" , social_network.nome as "nome social"
+from ((categorie join tutorial on categorie.id_categoria = tutorial.id_categoria)/*solite join : unisco prima le categorie ai tutorial...*/
+left join tutorial_social_network on tutorial.id_tutorial = tutorial_social_network.id_tutorial)/*poi unisco i tutorial agli id dei social associati. metto left cosi prenderò anche i tutorial che non sono in nessun social*/
+left join social_network on tutorial_social_network.id_social_network = social_network.id_social_network;/*e infine unisco le informazioni sui social che hanno quei tutorial che a loro volta hanno la categoria associata. metto left anche qui per mantenere le tuple in cui un tutorial non è in nessun social*/
+
+/*Elenco dei tutorial che hanno un livello "Principiante" o "Intermedio" e sono di categoria "Programmazione" o "Design".*/
+select tutorial.*
+from tutorial join categorie on tutorial.id_categoria=categorie.id_categoria
+where (tutorial.livello = "Principiante " or tutorial.livello = "Intermedio") and (categorie.nome ="Programmazione" or categorie.nome = "Design") ;/*senza le giuste parentesi non funziona perche interpreta un ordine scorretto di and e or */

@@ -1,9 +1,11 @@
--- drop table SEDI_DIP;
--- drop table LAVORA_SU;
--- drop table PROGETTO;
--- drop table IMPIEGATO;
--- drop table DIPARTIMENTO;
-
+/*
+ drop table SEDI_DIP;
+ drop table LAVORA_SU;
+ drop table PROGETTO;
+ drop table IMPIEGATO;
+ drop table DIPARTIMENTO;
+*/
+ 
 create table IF NOT EXISTS DIPARTIMENTO(nome text not null, 
                             id_dipartimento int not null, 
                             primary key(id_dipartimento));
@@ -158,18 +160,61 @@ GROUP BY id_progetto;
 SELECT *
 FROM IMPIEGATO
 GROUP BY  dirige_dipartimento(
-
 )
-
     SELECT *
     FROM IMPIEGATO
     WHERE dirige_dipartimento IS NULL  
 */
+    
 SELECT DIR.nome, DIR.cognome
 FROM IMPIEGATO AS DIR JOIN IMPIEGATO AS DIP ON DIP.id_superiore = DIR.id_impiegato 
 WHERE DIR.dirige_dipartimento IS NOT NULL
 GROUP BY DIP.id_superiore /*fino a qui ho collegato tutti i dirigenti con ???*/
 HAVING COUNT(*) >= 5;
-    
 
+
+--Seleziona nome e cognome di tutti gli impiegati assunti nel 2020.--
+
+SELECT nome,cognome
+FROM IMPIEGATO
+WHERE inizio > "2020-01-01" AND inizio < "2020-12-31" ;
+
+/*2. Seleziona tutti i progetti del dipartimento 'D2' */
+SELECT PROGETTO.nome AS "nome del progetto"
+FROM PROGETTO JOIN DIPARTIMENTO ON PROGETTO.id_dipartimento = DIPARTIMENTO.id_dipartimento 
+WHERE DIPARTIMENTO.nome = "D2" ; 
+
+/*Seleziona nome e cognome di tutti gli impiegati che non hanno un superiore.*/
+SELECT nome,cognome
+from impiegato
+where id_superiore IS NULL;
+
+/*4. Seleziona nome e cognome di tutti gli impiegati che non dirigono nessun dipartimento.*/
+select nome , cognome 
+from impiegato
+where dirige_dipartimento is null;
+
+/*5. Seleziona tutte le sedi del dipartimento 'D0'.*/
+select sedi_dip.nome as "nome della sede" 
+from sedi_dip join dipartimento on sedi_dip.id_dipartimento=dipartimento.id_dipartimento
+where dipartimento.nome = "D0" ; 
+
+
+/*
+9. Seleziona nome e cognome di tutti gli impiegati insieme al nome del loro superiore. Gli impiegati senza superiore devono comunque apparire nel risultato.
+10. Seleziona nome e cognome di tutti gli impiegati che lavorano su progetti del dipartimento 'D1'.
+*/
+
+/*Seleziona nome e cognome di tutti gli impiegati insieme al nome del loro dipartimento.*/
+select impiegato.nome,cognome
+from impiegato join dipartimento on impiegato.id_dipartimento = dipartimento.id_dipartimento ;
+
+/*7. Seleziona nome e cognome di tutti gli impiegati che lavorano su almeno un progetto, senza duplicati.*/
+select distinct(impiegato.nome) as nome , impiegato.cognome  /*??? perchè devo specificarlo ? ???*/
+from lavora_su join impiegato on lavora_su.id_impiegato = impiegato.id_impiegato;
+
+/*8. Seleziona il nome di tutti i progetti su cui lavora 'Mario' 'Rossi'.*/
+select progetto.nome as "nome del progetto" 
+from (lavora_su  join impiegato on lavora_su.id_impiegato = impiegato.id_impiegato) join progetto on lavora_su.id_progetto = progetto.id_progetto /*???????? dopo aver unito impiegato e lavora_su , perche se rinomino la tabella ottenuta in project e cerco di unire la tabella progetto a project mi dice che in project non esiste l'attrivuto id_progetto che in realtà era in lavora_su e che quindi aveva fatto parte dell'unione per la creazione di project ? ????????*/
+where impiegato.nome = "Mario" and impiegato.cognome = " Rossi" ; 
 

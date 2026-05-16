@@ -1,0 +1,67 @@
+create table if not exists Agenzia(
+cod int not null primary key ,
+nome text
+); 
+
+create table if not exists Autore(
+cf text not null primary key,
+nome text , 
+cognome text , 
+stipendio int ,
+cod_ag int,
+foreign key (cod_ag) references Agenzia(cod)
+);
+
+create table if not exists Articolo(
+cod_art int not null primary key,
+nome text
+);
+
+create table if not exists Contribuisce (
+cf_a text not null , 
+cod_art not null, 
+ore int, 
+primary key(cf_a, cod_art) , 
+foreign key (cf_a) references Autore (cf), 
+foreign key (cod_art) references Articolo (cod_art) 
+);
+
+INSERT OR IGNORE INTO Agenzia VALUES (1, 'Agenzia Roma');
+INSERT OR IGNORE INTO Agenzia VALUES (2, 'Agenzia Milano');
+INSERT OR IGNORE INTO Agenzia VALUES (3, 'Agenzia Napoli');
+
+INSERT OR IGNORE INTO Autore VALUES ('RSSMRA80A01H501Z', 'Mario', 'Rossi', 2000, 1);
+INSERT OR IGNORE INTO Autore VALUES ('VRDLGI90B02F205X', 'Luigi', 'Verdi', 2500, 1);
+INSERT OR IGNORE INTO Autore VALUES ('BNCANNA85C03G702Y', 'Anna', 'Bianchi', 3000, 2);
+INSERT OR IGNORE INTO Autore VALUES ('NRIERI95D04L219W', 'Luca', 'Neri', 1800, 3);
+
+INSERT OR IGNORE INTO Articolo VALUES (1, 'Intelligenza Artificiale');
+INSERT OR IGNORE INTO Articolo VALUES (2, 'Machine Learning');
+INSERT OR IGNORE INTO Articolo VALUES (3, 'Database SQL');
+INSERT OR IGNORE INTO Articolo VALUES (4, 'Reti Neurali');
+
+INSERT OR IGNORE INTO Contribuisce VALUES ('RSSMRA80A01H501Z', 1, 10);
+INSERT OR IGNORE INTO Contribuisce VALUES ('RSSMRA80A01H501Z', 2, 5);
+INSERT OR IGNORE INTO Contribuisce VALUES ('VRDLGI90B02F205X', 2, 8);
+INSERT OR IGNORE INTO Contribuisce VALUES ('BNCANNA85C03G702Y', 3, 12);
+INSERT OR IGNORE INTO Contribuisce VALUES ('NRIERI95D04L219W', 3, 6);
+INSERT OR IGNORE INTO Contribuisce VALUES ('NRIERI95D04L219W', 4, 9);
+
+
+
+/*per ogni agenzia trovare il nome e quanti autori sono assunti*/
+select agenzia.nome , count ( autore.nome) 
+from autore join agenzia on autore.cod_ag=agenzia.cod 
+group by agenzia.nome;
+
+/*a partire dall'esercizio precedente , tenere traccia della somma delle ore lavorate ogni agenzia */
+select agenzia.nome, count(autore.nome) as "autori assunti" , sum(contribuisce.ore) as "ore totali lavorate "
+from (autore join agenzia on autore.cod_ag=agenzia.cod ) join contribuisce on autore.cf=contribuisce.cf_a
+group by agenzia.nome;
+
+/*calcolare il nome di articolo col numero più alto di ore spese sopra*/
+select sum(ore) as "TOTore"
+from articolo natural join contribuisce
+group by cod_art
+order by TOTore desc
+limit 1
