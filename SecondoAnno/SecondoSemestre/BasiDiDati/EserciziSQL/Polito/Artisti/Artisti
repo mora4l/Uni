@@ -1,0 +1,74 @@
+-- ========================
+--  CREATE TABLE
+-- ========================
+
+CREATE TABLE Programmi (
+    Codice       TEXT PRIMARY KEY,
+    NomeProgramma TEXT NOT NULL,
+    Rete         TEXT,
+    Tipologia    TEXT
+);
+
+CREATE TABLE Artisti (
+    CProgramma TEXT NOT NULL,
+    NomeArt    TEXT NOT NULL,
+    FOREIGN KEY (CProgramma) REFERENCES Programmi(Codice)
+);
+
+CREATE TABLE Sondaggi (
+    CodProg TEXT NOT NULL,
+    Auditel REAL,
+    FOREIGN KEY (CodProg) REFERENCES Programmi(Codice)
+);
+
+-- ========================
+--  INSERT
+-- ========================
+
+INSERT INTO Programmi (Codice, NomeProgramma, Rete, Tipologia) VALUES
+('P17', 'Viva Rai2!',        'Rai 2',    'Intrattenimento'),  -- query a, b
+('P18', 'Domenica In',       'Rai 1',    'Intrattenimento'),  -- query c (2 artisti)
+('P19', 'Striscia la Notizia','Canale 5','Satira'),           -- query d (1 artista)
+('P20', 'Che Tempo Che Fa',  'Rai 3',    'Talk Show'),        -- query c (2 artisti)
+('P21', 'La Corrida',        'Rai 1',    'Intrattenimento');  -- query d (1 artista)
+
+-- Fiorello è in P17 (query b)
+INSERT INTO Artisti (CProgramma, NomeArt) VALUES
+('P17', 'Fiorello'),
+('P17', 'Fabrizio Biggio'),   -- P17 ha 2 artisti → anche query c
+('P18', 'Mara Venier'),
+('P18', 'Al Bano'),           -- P18 ha 2 artisti → query c
+('P19', 'Ezio Greggio'),      -- P19 ha 1 artista → query d
+('P20', 'Fabio Fazio'),
+('P20', 'Luciana Littizzetto'),-- P20 ha 2 artisti → query c
+('P21', 'Carlo Conti');       -- P21 ha 1 artista → query d
+
+INSERT INTO Sondaggi (CodProg, Auditel) VALUES
+('P17', 4.2),   -- query a e b
+('P18', 3.8),
+('P19', 2.5),
+('P20', 5.1),
+('P21', 3.0);
+
+/*Restituire l’indice Auditel del programma con codice P17*/
+select Auditel
+from sondaggi
+where CodProg = "P17";
+
+/*Restituire l’indice Auditel dei programmi di Fiorello*/
+select sondaggi.Auditel
+from artisti join programmi on artisti.CProgramma = programmi.Codice
+join sondaggi on programmi.Codice = sondaggi.CodProg
+where artisti.NomeArt = "Fiorello";
+
+/*Restuire i nomi dei programmi con almeno due artisti*/
+select * 
+from programmi join artisti on programmi.Codice = artisti.CProgramma
+group by programmi.Codice
+having  count(distinct NomeArt) >= 2;
+
+/*Restituire i nomi dei programmi con un solo artista*/
+select * 
+from programmi join artisti on programmi.Codice = artisti.CProgramma
+group by programmi.Codice
+having count(*) = 1 ; 

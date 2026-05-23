@@ -1,0 +1,163 @@
+-- ========================
+--  CREATE TABLE
+-- ========================
+
+CREATE TABLE discoteche (
+    id_discoteca  INTEGER       PRIMARY KEY,
+    nome          TEXT          NOT NULL,
+    indirizzo     TEXT,
+    citta         TEXT,
+    telefono      TEXT
+);
+
+CREATE TABLE dj (
+    id_dj           INTEGER  PRIMARY KEY,
+    nome            TEXT     NOT NULL,
+    genere_musicale TEXT
+);
+
+CREATE TABLE eventi (
+    id_evento    INTEGER  PRIMARY KEY,
+    nome         TEXT     NOT NULL,
+    data         TEXT     NOT NULL,
+    orario       TEXT,
+    descrizione  TEXT,
+    prezzo       REAL,
+    id_discoteca INTEGER  NOT NULL,
+    FOREIGN KEY (id_discoteca) REFERENCES discoteche(id_discoteca)
+);
+
+CREATE TABLE dj_eventi (
+    id_dj     INTEGER NOT NULL,
+    id_evento INTEGER NOT NULL,
+    PRIMARY KEY (id_dj, id_evento),
+    FOREIGN KEY (id_dj)     REFERENCES dj(id_dj),
+    FOREIGN KEY (id_evento) REFERENCES eventi(id_evento)
+);
+
+-- ========================
+--  INSERT
+-- ========================
+
+INSERT INTO discoteche (id_discoteca, nome, indirizzo, citta, telefono) VALUES
+(1, 'Cocoricò',  'Via Chiese 50',        'Riccione', '0541123456'),
+(2, 'Amnesia',   'Carretera Ibiza s/n',  'Ibiza',    '+34971198041'),
+(3, 'Fabric',    '77a Charterhouse St',  'Londra',   '+442074902444'),
+(4, 'Echoes',    'Via Ronco 43',         'Riccione', '0541987654');
+
+INSERT INTO dj (id_dj, nome, genere_musicale) VALUES
+(1, 'Marco Carola',  'Techno'),
+(2, 'Benny Benassi', 'House'),
+(3, 'Nina Kraviz',   'Techno'),
+(4, 'Carl Cox',      'Techno / House'),
+(5, 'Bob Sinclar',   'French House');
+
+INSERT INTO eventi (id_evento, nome, data, orario, descrizione, prezzo, id_discoteca) VALUES
+(1, 'Techno Night',      '2025-06-14', '23:00', 'Serata dedicata al techno underground', 20.00, 1),
+(2, 'Summer Opening',    '2025-06-21', '22:30', 'Apertura stagione estiva',              15.00, 4),
+(3, 'House Vibes',       '2025-07-05', '23:00', 'Serata house con dj internazionali',    25.00, 2),
+(4, 'Closing Party',     '2025-09-27', '22:00', 'Grande festa di chiusura stagione',     30.00, 1),
+(5, 'London Underground','2025-08-10', '22:00', 'Techno e drum machine',                 18.00, 3);
+
+INSERT INTO dj_eventi (id_dj, id_evento) VALUES
+(1, 1),  -- Marco Carola  @ Techno Night
+(3, 1),  -- Nina Kraviz   @ Techno Night
+(2, 2),  -- Benny Benassi @ Summer Opening
+(5, 3),  -- Bob Sinclar   @ House Vibes
+(4, 4),  -- Carl Cox      @ Closing Party
+(1, 4),  -- Marco Carola  @ Closing Party
+(3, 5);  -- Nina Kraviz   @ London Underground
+
+-- ========================
+--  INSERT AGGIUNTIVI
+-- ========================
+
+-- Nuove discoteche a Roma (query 2, 3, 4, 7, 9)
+INSERT INTO discoteche (id_discoteca, nome, indirizzo, citta, telefono) VALUES
+(5, 'Goa Club',      'Via Libetta 13',     'Roma', '0657284898'),
+(6, 'Piper Club',    'Via Tagliamento 9',  'Roma', '0685351986'),
+(7, 'Qube',          'Via di Portonaccio', 'Roma', '0643519693');
+
+-- Nuovi dj (query 6, 10)
+INSERT INTO dj (id_dj, nome, genere_musicale) VALUES
+(6, 'DJ Ringo',    'House'),
+(7, 'Luca Agnelli', 'Techno');
+
+-- Nuovi eventi (query 1, 5, 7, 8)
+INSERT INTO eventi (id_evento, nome, data, orario, descrizione, prezzo, id_discoteca) VALUES
+(6,  'Festa House',       '2023-04-15', '22:00', 'Serata house classica',         25.00, 5),
+(7,  'Roma Techno',       '2023-05-20', '23:00', 'Techno a Roma',                 30.00, 6),
+(8,  'Deep Night',        '2023-06-10', '22:30', 'Deep house serale',             20.00, 7),
+(9,  'Revival 90s',       '2022-03-05', '21:00', 'Serata anni 90',                15.00, 5),
+(10, 'Silent Party',      '2022-07-18', '23:00', 'Festa con cuffie wireless',     10.00, 6),
+(11, 'Evento Senza DJ',   '2023-08-01', '20:00', 'Serata con musica registrata',  12.00, 5),
+(12, 'Altro Senza DJ',    '2023-09-10', '21:00', 'Playlist automatica',            8.00, 7);
+
+-- Associazioni dj_eventi
+INSERT INTO dj_eventi (id_dj, id_evento) VALUES
+(2, 6),  -- Benny Benassi  @ Festa House
+(6, 6),  -- DJ Ringo       @ Festa House
+(1, 7),  -- Marco Carola   @ Roma Techno
+(7, 7),  -- Luca Agnelli   @ Roma Techno
+(3, 8),  -- Nina Kraviz    @ Deep Night
+(5, 9),  -- Bob Sinclar    @ Revival 90s
+(4, 10); -- Carl Cox       @ Silent Party
+-- eventi 11 e 12 non hanno dj (query 8)
+
+/*Le informazioni delle discoteche che hanno eventi disponibili a partire dal 1 aprile 2023.*/
+select discoteche.*
+from discoteche join eventi on discoteche.id_discoteca = eventi.id_discoteca
+where eventi.data >= "2023-04-01" ;
+
+/*La media dei prezzi degli eventi delle discoteche che si trovano a Roma.*/
+select avg(eventi.prezzo) as "media prezzo "
+from discoteche join eventi on discoteche.id_discoteca = eventi.id_discoteca
+where discoteche.citta = "Roma";
+                
+/*Il numero di discoteche presenti a Roma.*/
+select count(*) as "discoteche romane"
+from discoteche
+where citta = "Roma";
+
+/*Per ogni città indicare quante discoteche sono presenti. */
+select citta, count(*) as "disco presenti"
+from discoteche
+group by citta;
+
+/*Elenco dei dj presenti per l'evento 'Festa House'. 
+Oltre al nome del dj mostrare a schermo anche il suo genere musicale. */
+select *
+from dj join dj_eventi on dj.id_dj = dj_eventi.id_dj
+join eventi on dj_eventi.id_evento = eventi.id_evento
+where eventi.nome = "Festa House" ; 
+
+/*Nomi dei dj che partecipano agli eventi che hanno il prezzo più caro.*/
+select * 
+from dj join dj_eventi on dj.id_dj = dj_eventi.id_dj
+join eventi on dj_eventi.id_evento = eventi.id_evento
+where prezzo = (
+                select max(prezzo) as "prezzo_massimo"
+                from eventi
+               ) ; 
+/*Elenco degli eventi delle discoteche romane a partire dal 01/01/2022 ordinati dal più recente al meno recente.*/
+select eventi.nome
+from discoteche join eventi on discoteche.id_discoteca = eventi.id_discoteca
+where discoteche.citta = "Roma" and eventi.data >= "2022-01-01"
+order by eventi.data asc;
+
+/*Elenco degli eventi per cui non è previsto alcun dj.*/
+select eventi.*
+from eventi left join dj_eventi on eventi.id_evento = dj_eventi.id_evento
+where id_dj is null;
+
+/*Nomi dei dj che hanno partecipato ad eventi presso discoteche di Roma.*/
+select dj.nome
+from dj join dj_eventi on dj.id_dj = dj_eventi.id_dj
+join eventi on dj_eventi.id_evento = eventi.id_evento 
+join discoteche on eventi.id_evento = discoteche.id_discoteca
+where citta = "Roma";
+
+/*Indicare il numero di eventi a cui ha partecipato ogni dj presente nel db.*/
+select dj.nome , count(*)
+from dj left join dj_eventi on dj.id_dj = dj_eventi.id_dj
+group by dj.id_dj

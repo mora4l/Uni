@@ -1,0 +1,217 @@
+CREATE TABLE autori (
+    id_autore   INT          PRIMARY KEY,
+    nome        VARCHAR(100) NOT NULL,
+    cognome     VARCHAR(100) NOT NULL,
+    nazionalita VARCHAR(100)
+);
+
+CREATE TABLE libri (
+    id_libro  INT          PRIMARY KEY,
+    titolo    VARCHAR(200) NOT NULL,
+    anno      INT,
+    genere    VARCHAR(50),
+    id_autore INT          NOT NULL,
+    FOREIGN KEY (id_autore) REFERENCES autori(id_autore)
+);
+
+CREATE TABLE utenti (
+    id_utente       INT          PRIMARY KEY,
+    nome            VARCHAR(100) NOT NULL,
+    cognome         VARCHAR(100) NOT NULL,
+    citta           VARCHAR(100),
+    data_iscrizione DATE
+);
+
+CREATE TABLE prestiti (
+    id_prestito INT  PRIMARY KEY,
+    id_libro    INT  NOT NULL,
+    id_utente   INT  NOT NULL,
+    data_inizio DATE,
+    data_fine   DATE,
+    restituito  BOOLEAN,
+    FOREIGN KEY (id_libro)  REFERENCES libri(id_libro),
+    FOREIGN KEY (id_utente) REFERENCES utenti(id_utente)
+);
+
+INSERT INTO autori VALUES
+(1, 'Italo',     'Calvino',   'Italiana'),
+(2, 'George',    'Orwell',    'Britannica'),
+(3, 'Gabriel',   'Marquez',   'Colombiana'),
+(4, 'Elena',     'Ferrante',  'Italiana'),
+(5, 'Franz',     'Kafka',     'Ceca');
+
+INSERT INTO libri VALUES
+(1,  'Il barone rampante',         1957, 'Narrativa',  1),
+(2,  'Le cosmicomiche',            1965, 'Fantascienza',1),
+(3,  '1984',                       1949, 'Distopico',  2),
+(4,  'La fattoria degli animali',  1945, 'Distopico',  2),
+(5,  'Cent anni di solitudine',    1967, 'Narrativa',  3),
+(6,  'L amore ai tempi del colera',1985, 'Narrativa',  3),
+(7,  'L amica geniale',            2011, 'Narrativa',  4),
+(8,  'Storia di chi fugge',        2012, 'Narrativa',  4),
+(9,  'La metamorfosi',             1915, 'Narrativa',  5),
+(10, 'Il processo',                1925, 'Narrativa',  5);
+
+INSERT INTO utenti VALUES
+(1, 'Marco',    'Rossi',    'Milano',  '2020-01-10'),
+(2, 'Laura',    'Bianchi',  'Roma',    '2019-03-15'),
+(3, 'Davide',   'Verdi',    'Napoli',  '2021-06-01'),
+(4, 'Sofia',    'Neri',     'Milano',  '2022-09-20'),
+(5, 'Giorgio',  'Russo',    'Roma',    '2018-11-05'),
+(6, 'Chiara',   'Esposito', 'Torino',  '2023-02-28');
+
+INSERT INTO prestiti VALUES
+(1,  1,  1, '2024-01-05', '2024-01-20', TRUE),
+(2,  3,  1, '2024-02-01', '2024-02-15', TRUE),
+(3,  5,  2, '2024-01-10', '2024-01-25', TRUE),
+(4,  7,  2, '2024-03-01', NULL,         FALSE),
+(5,  2,  3, '2024-02-10', '2024-02-28', TRUE),
+(6,  4,  3, '2024-03-05', NULL,         FALSE),
+(7,  9,  4, '2024-01-15', '2024-01-30', TRUE),
+(8,  10, 4, '2024-03-10', NULL,         FALSE),
+(9,  6,  5, '2024-02-20', '2024-03-05', TRUE),
+(10, 8,  5, '2024-03-15', NULL,         FALSE),
+(11, 1,  6, '2024-01-20', '2024-02-05', TRUE),
+(12, 3,  6, '2024-03-20', NULL,         FALSE),
+(13, 5,  1, '2024-03-01', NULL,         FALSE),
+(14, 2,  2, '2024-02-05', '2024-02-20', TRUE),
+(15, 7,  3, '2024-03-25', NULL,         FALSE);
+
+/*Mostrare nome e cognome degli utenti che non hanno mai restituito un libro (hanno almeno un prestito con restituito = FALSE).*/
+select utenti.nome ,utenti.cognome
+from utenti left join prestiti on utenti.id_utente = prestiti.id_utente
+where prestiti.restituito = FALSE ; /*ne basta anche solo uno e va bene comunque*/
+
+/*Per ogni genere, indicare il numero di libri presenti.*/
+select genere,count(*) as "libri"
+from libri
+group by genere;
+
+/*Il titolo dei libri che non sono mai stati presi in prestito.*/
+delete from prestiti  /* faccio questo prima di fare la query cosi almeno restituisce una riga, altrimenti non ci sarebbero state tuple*/
+where id_libro = 10 ; 
+
+select libri.titolo
+from libri left join prestiti on libri.id_libro = prestiti.id_libro
+where prestiti.id_prestito is null ; 
+
+/*Il nome e cognome degli autori che hanno scritto più di un libro.*/
+select autori.nome, autori.cognome
+from libri join autori on libri.id_autore = autori.id_autore 
+group by autori.id_autore
+having count(distinct libri.id_libro) > 1; /*con distinct mi assicuro che se un autore ha per caso scritto più versioni di un libro (che ha lo stesso nome) , verrà contato solo una volta*/
+
+/*Gli utenti di Milano che hanno preso in prestito almeno un libro di genere 'Distopico'.*/
+select utenti.*
+from utenti join prestiti on utenti.id_utente = prestiti.id_utente
+join libri on prestiti.id_libro = libri.id_libro
+where utenti.citta = "Milano"
+group by utenti.id_utente
+having count(libri.genere ) >= 1 ;  /*senza distinct perche voglio proprio le ripetizioni , o almeno uno*/
+
+/*Per ogni utente indicare il numero di prestiti ancora aperti (non restituiti).*/
+select utenti.id_utente , count(*) as "libri non restituiti" 
+from utenti join prestiti on utenti.id_utente = prestiti.id_utente
+where prestiti.restituito = 0 
+group by utenti.id_utente; 
+
+/*Il titolo del libro che è stato preso in prestito il maggior numero di volte.*/
+select libri.titolo
+from libri join prestiti on libri.id_libro = prestiti.id_libro
+group by libri.id_libro
+having count(*) =  ( select max(massimoprestito)/*2. poi seleziono il massimo tra tutti*/ /*3. e alla fine raggruppo di nuovo tutti i libri e cerco quello che ha il numero di prestiti (count(righe)) = al massimo di prestiti*/
+                     from (select count(*) as "massimoprestito" /*1. prima mi trovo l'elenco dei valori che rappresentano il numero di prestiti per ogni libro*/
+                           from utenti join prestiti on utenti.id_utente = prestiti.id_utente
+                           group by prestiti.id_libro
+                          )
+                  );
+
+/*Nome e cognome degli autori i cui libri non sono mai stati presi in prestito.*/
+select autori.nome, autori.cognome
+from libri left join prestiti on libri.id_libro = prestiti.id_libro /*prima mi trovo tutti i libri che non sono mai stati presi in prestito usando una left join che mi fa capire le tuple che non hanno un match amche solo con un prestito*/
+join autori on libri.id_autore = autori.id_autore /*poi unisco autori perche voglio il nome e il cognome*/
+where prestiti.id_prestito is null; /*e poi grazie alla prima join trovo questa informazione , ovvero le tuple in cui non c'è stato match*/
+
+/*Per ogni città indicare quanti utenti sono iscritti, mostrando solo le città con più di un utente.*/
+select citta, count(*) as "iscritti"
+from utenti 
+group by citta
+having count(*) > 1;
+
+/*I titoli dei libri presi in prestito da almeno due utenti diversi.*/
+select libri.titolo
+from utenti join prestiti on utenti.id_utente = prestiti.id_utente
+join libri on prestiti.id_libro = libri.id_libro
+group by libri.id_libro
+having count(distinct utenti.id_utente) >= 2; 
+
+/*L'utente che ha effettuato più prestiti in totale (restituiti e non).*/
+select utenti.*
+from utenti join prestiti on utenti.id_utente = prestiti.id_utente
+group by utenti.id_utente
+having count(*) = ( select max(maxprestiti) /*2. poi da quell'elenco seleziono il valore più alto*/ /*3. e infine restituisco tutti gli utenti che hanno il numero di prestiti pari a quest'ultimo*/
+                    from (
+                            select count(*) as "maxprestiti" /*1. prima mi trovo il numero di prestiti effettuati da ogni utente*/
+                            from utenti join prestiti on utenti.id_utente = prestiti.id_utente
+                            group by utenti.id_utente
+                         )
+                   );            
+
+/*Per ogni autore indicare il numero medio di prestiti ricevuti dai suoi libri.*/
+select autori.nome, autori.cognome, autori_media_prestiti.libri_prestati_medi as "libri prestati in media"
+from autori join (
+                    select autore_libro_prestiti.autore, avg(numero_prestiti_libro) as "libri_prestati_medi" /*ora restituisco per ogni autore il numero di prestiti medio che è stato calcolato da tutti i valori dei prestiti che c'erano per ogni libro*/
+                    from (
+                            select libri.id_autore as "autore",libri.id_libro as "libro", count(*) as "numero_prestiti_libro" /*2. a questo punto ho l'autore e affianco il libro che ha scritto e il relativo numero di copie imprestate*/
+                            from libri left join prestiti on libri.id_libro = prestiti.id_libro /*1. prima mi trovo per ogni libro la lista dei prestiti. metto left join cosi prendo anche i libri senza prestiti*/
+                            group by libri.id_libro) as "autore_libro_prestiti"/*mi serve per forza rinominare la tabella e gli attributi nella select per capirci meglio */
+                    group by autore_libro_prestiti.autore/*3. poi da questa tabella del punto 2. mi raggruppo tutte le informazioni in base all'autore*/
+) as "autori_media_prestiti" on autori.id_autore = autori_media_prestiti.autore;
+
+/*I libri presi in prestito da tutti gli utenti di Roma.*/
+select libri.*
+from utenti join prestiti on utenti.id_utente = prestiti.id_utente
+join libri on prestiti.id_libro = libri.id_libro
+where utenti.citta = "Roma"; 
+
+/*Nome e cognome degli utenti che hanno preso in prestito libri di almeno due generi diversi.*/
+select genere_prestiti_utente.nome,genere_prestiti_utente.cognome /*6. quindi ora mi prendo i nomi e i cognomi di quelli che hanno più di 2 nella casella che rappresenta la somma dei generi distinti che ha letto*/
+from (
+        select utenti.id_utente as "utente",utenti.nome as "nome" , utenti.cognome as "cognome",  count (distinct libri.genere) as "numero_generi_utente" /*3. nella tabella risultante mi metto il nome e cognome dell'utente e affianco anche la somma dei generi dei libri che ha letto . uso distinct perche se ha letto solo libri dello stesso genere non vale*/
+        from prestiti join libri on prestiti.id_libro = libri.id_libro/*1. prima mi trovo tutti gli utenti con i relativi libri che hanno preso in prestito*/
+        join utenti on prestiti.id_utente = utenti.id_utente
+        group by utenti.id_utente /*2. e poi mi raggruppo tutti i prestiti in base ad ogni utente*/
+     ) as "genere_prestiti_utente" /*4. la rinomino per chiarezza e la userò per trovare quali utenti hanno più di 2 generi diversi letti in totale*/
+where genere_prestiti_utente.numero_generi_utente >= 2; /*5. ora devo selezionare esclusivamente gli utenti che hanno >= 2 generi letti*/
+
+/*Il titolo dei libri pubblicati prima del 1950 che sono stati presi in prestito almeno una volta.*/
+select libri.titolo
+from libri join prestiti on libri.id_libro = prestiti.id_libro /*se sono stati presi in prestito almeno una volta allora matchano a priori almeno una volta*/
+where anno < 1950; 
+
+/*Per ogni utente mostrare il titolo dell'ultimo libro preso in prestito (data inizio più recente).*/
+/*il problema sta negli ultimi messaggi di questa chat : https://claude.ai/share/77b4ea29-8ee6-4005-9d1d-3ac05a7ef143 */
+/*
+select utenti.nome,utenti.cognome,libri.titolo 
+from utenti join prestiti on utenti.id_utente = prestiti.id_utente /*1. trovo i prestiti degli utenti*/
+/*join libri on prestiti.id_libro = libri.id_libro
+group by utenti.id_utente /*2. poi raggruppo in base agli utenti*/
+/*having max(prestiti.data_inizio); /*3. e prendo le sottorighe solamente con data più recente. se ce ne sono di più poco importa perche hanno tutte la stessa data e a me interessa quella*/
+/*NO PERCHE LA MAX NELLA HAVING VORREBBE RESTITUIRE UN SOLO GRUPPO E NON PUO RESTITUIRE IL MAX DI OGNI GRUPPO
+*/
+
+/*
+select prestitiordinati.nome,prestitiordinati.cognome
+from (
+        select utenti.id_utente as "id" , utenti.nome as "nome" ,utenti.cognome as "cognome" ,libri.titolo as "titolo" 
+        from utenti join prestiti on utenti.id_utente = prestiti.id_utente
+        join libri on prestiti.id_libro = libri.id_libro
+        order by prestiti.data_inizio desc 
+     ) as "prestitiordinati" 
+group by prestitiordinati.id;
+APPROCCIO RISCHIOSO PERCHE LA ORDER BY NON INFLUISCE LA GROUP BY*/
+
+
+
+
+/**/

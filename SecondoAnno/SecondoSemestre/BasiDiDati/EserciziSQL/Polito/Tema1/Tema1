@@ -1,0 +1,91 @@
+CREATE TABLE if not exists CAMPEGGIO (
+    CodCampeggio     VARCHAR(10) PRIMARY KEY,
+    NomeC            VARCHAR(100) NOT NULL,
+    Indirizzo        VARCHAR(150),
+    Comune           VARCHAR(80),
+    Provincia        VARCHAR(50)
+);
+
+CREATE TABLE if not exists PIAZZOLA (
+    NumeroPiazzola   INT,
+    CodCampeggio     VARCHAR(10) REFERENCES CAMPEGGIO(CodCampeggio),
+    Superficie       NUMERIC(6,2),
+    Tipologia        VARCHAR(50),
+    CostoGiornaliero NUMERIC(6,2),
+    PRIMARY KEY (NumeroPiazzola, CodCampeggio)
+);
+
+CREATE TABLE if not exists PRENOTAZIONE (
+    NumeroPiazzola  INT,
+    CodCampeggio    VARCHAR(10),
+    DataInizio      DATE,
+    DataFine        DATE,
+    NomeCliente     VARCHAR(100),
+    PRIMARY KEY (NumeroPiazzola, CodCampeggio, DataInizio),
+    FOREIGN KEY (NumeroPiazzola, CodCampeggio)
+        REFERENCES PIAZZOLA(NumeroPiazzola, CodCampeggio)
+);
+
+INSERT INTO CAMPEGGIO VALUES
+  ('C01', 'Camping Mare Blu', 'Via Roma 1',     'Pozzuoli',  'Napoli'),
+  ('C02', 'Camping Vesuvio',  'Via Vesuvio 10', 'Ercolano',  'Napoli'),
+  ('C03', 'Camping Sole',     'Via Sole 5',     'Salerno',   'Salerno');
+
+INSERT INTO PIAZZOLA VALUES
+  (1, 'C01', 30.0, 'fronte-mare', 25.00),
+  (2, 'C01', 28.0, 'fronte-mare', 22.00),
+  (3, 'C01', 25.0, 'standard',    12.00),
+  (4, 'C01', 27.0, 'fronte-mare', 20.00),
+  (5, 'C01', 32.0, 'deluxe',      18.00),
+  (1, 'C02', 20.0, 'fronte-mare', 24.00),
+  (2, 'C02', 22.0, 'standard',    10.00),
+  (1, 'C03', 20.0, 'standard',    10.00),
+  (2, 'C03', 25.0, 'deluxe',      20.00);
+
+INSERT INTO PRENOTAZIONE VALUES
+  (1, 'C01', '2020-01-01', '2020-01-03', 'Cliente A'),
+  (1, 'C01', '2020-01-04', '2020-01-06', 'Cliente B'),
+  (1, 'C01', '2020-01-07', '2020-01-09', 'Cliente C'),
+  (2, 'C01', '2020-01-01', '2020-01-02', 'Cliente D'),
+  (2, 'C01', '2020-01-04', '2020-01-05', 'Cliente E'),
+  (4, 'C01', '2020-01-01', '2020-01-05', 'Cliente F'),
+  (4, 'C01', '2020-01-06', '2020-01-10', 'Cliente G'),
+  (5, 'C01', '2023-06-01', '2023-06-05', 'Mario Rossi'),
+  (1, 'C02', '2023-07-01', '2023-07-04', 'Luigi Verdi');
+  
+
+  
+/*Per i campeggi della provincia di Napoli che hanno ricevuto più di 1000 prenotazioni diverse
+per le piazzole di tipologia "fronte-mare",
+
+ visualizzare codice del campeggio, indirizzo,
+comune, durata media delle prenotazioni e importo totale
+
+ delle prenotazioni (calcolato come
+il prodotto della durata della prenotazione per il costo giornaliero*/
+select prenocamp.CodCampeggio as "codice del campeggio " , prenocamp.Indirizzo as "Indirizzo" , prenocamp.comune as "comune", avg(julianday(DataFine)-julianday(DataInizio)) as "permanenza media" , sum((julianday(DataFine)-julianday(DataInizio))) * piazzola.CostoGiornaliero as "importo totale" 
+from (select * 
+      from campeggio join prenotazione on campeggio.CodCampeggio = prenotazione.CodCampeggio
+      where campeggio.Provincia = "Napoli" 
+      ) as "prenocamp" join piazzola on prenocamp.NumeroPiazzola = piazzola.NumeroPiazzola and prenocamp.CodCampeggio = piazzola.CodCampeggio /*prendo tutte le prenotazioni dei campeggi di napoli e poi dopo ottengo le piazzole relative ai campeggi in provicia di napoli*/
+/*adesso mi serve filtrare le prenotazioni con piazzola "fronte mare" e poi raggruppare tutte le prenotazioni fronte mare per ogni campeggio , cosi capisco ogni campeggio quante prenotazioni ha fronte mare*/
+where piazzola.Tipologia = "fronte-mare"
+group by prenocamp.CodCampeggio
+having count(*) > 5;
+
+/*visualizzare il codice e il nome dei campeggi in cui tutte le piazzole con costo giornaliero
+superiore a 15 euro sono state prenotate almeno una volta.*/
+select campeggio.*
+from campeggio 
+where campeggio.CodCampeggio NOT IN (/*mi chiedo quali campeggi non siano in quelli che non hanno mai avuto una piazzola costosa prenotata , ovvero cio che ho trovato qua sotto : */
+/*prima mi trovo tutte le piazzole "costose" di tutti i campeggi*/
+select campeggio.CodCampeggio
+from campeggio join piazzola on campeggio.CodCampeggio = piazzola.CodCampeggio
+where piazzola.CostoGiornaliero > 15
+except/*da queste ci levo tutte quelle che hanno almeno una prenotazione effettuata nelle piazzole costose*/
+select campeggio.CodCampeggio
+from (piazzola join prenotazione on piazzola.NumeroPiazzola = prenotazione.NumeroPiazzola)
+join campeggio on prenotazione.CodCampeggio = campeggio.CodCampeggio 
+where piazzola.CostoGiornaliero > 15)
+/*a questo punto ho tutte le piazzole costose e i relativi campeggi associati che non sono mai state prenotate*/
+

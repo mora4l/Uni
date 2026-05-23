@@ -1,0 +1,88 @@
+/*
+Magazzino(cod_mag : INTERO chiave primaria, 
+          nome : TESTO NON NULLO, 
+          indirizzo : TESTO NON NULLO)
+          
+Negozio(cod_neg : INTERO chiave primaria, 
+        nome : TESTO NON NULLo, 
+        cod_mag : chiave esterna su Magazzino, opzionale)
+        
+Prodotto(cod_prod : INTERO chiave primaria, 
+         nome : TESTO NON NULLO, 
+         disponibile_in : chiave esterna su Negozio non opzionale)
+         
+Si scriva una query SQLite che associ ad ogni nome di Negozio il numero di Prodotti offerti, dopodiché si esprima un’altra
+query SQLite per associare quanti Negozi utilizzano un certo Magazzino, di cui si vuole conoscere l’indirizzo.
+*/
+select negozio.nome, count(*) as "numero di prodotti in ogni negozio"  /*e poi restituisco per ogni negozio il numero di prodotti che ha all'interno . uso distinct perche cosi restituisco il numero di prodotti differenti , quindi la vastita di prodotti offeri*/
+from negozio left join prodotto on negozio.cod_neg = prodotto.disponibile_in /*associo ogni prodotto al negozio in cui è */
+group by cod_neg; /*e poi creo un gruppo di prodotti raggruppati per ogni negozio in cui risiedono*/
+/*CORREZIONE : in realta ci possono essere dei negozi senza prodotti , quindi mettiamo anche LEFT nella JOIN così anche le tuple non matchate saranno presenti nel raggruppamento dei negozi*/
+
+/*START REC LEZIONE "SimulazioneBD0520"*/
+
+select count(*) as "negozi con questo magazzino" , magazzino.indirizzo
+from magazzino left join negozio on magazzino.cod_mag = negozio.cod_mag /*adesso ho associato tutti i magazzini di ogni negozio*/
+group by magazzino.cod_mag;/*in questo modo ottengo una lista per ogni magazzino, dove all'interno ho la lista di tutti i negozi che hanno quel magazzino associato*/
+/*CORREZIONE : uso anche qui LEFT JOIN in quanto ci potrebbero essere dei magazzini senza negozi associati*/
+
+/*Dato il seguente schema logico con i seguenti dati, si scrivano le query SQLite per crearlo e popolarlo.
+LIBRO(isbn : TESTO chiave primaria, titolo : TESTO NON NULLO, cf_autore chiave esterna su AUTORE NON
+NULLA, numero_copie : intero maggiore di zero)
+AUTORE(cf_autore TESTO chiave primaria, nome TESTO NON NULLO, cognome TESTO NON NULLO)
+In AUTORE, inserire i dati relativi a J.R. Tolkien, con codice fiscale “JRTKN”, Emily Bronte con codice fiscale
+“MLYBNT”. In LIBRO inserire i dati relativi a “Il Signore degli Anelli” con ISBN 00012 e “Silmarillion” con ISBN
+0345 scritti da Tolkien, “Cime Tempestose” con ISBN 01234 scritto da Bronte. Di tutti i libri, sono presenti un numero
+di copie a piacere (in rispetto del vincolo specificato).*/
+
+create table if not exists Autore(
+cf_autore TEXT not null primary key, 
+nome TEXT not null , 
+cognome TEXT not null
+);
+/*CORREZIONE : ricordati sempre di mettere "not null" perchè in sqlite non è dato := */
+
+create table if not exists Libro (
+isbn text primary key , 
+titolo text not null , 
+cf_autore not null ,
+numero_copie int check(/*CORREZIONE : questo attributo mi sono sciolto di scriverlo*/
+    numero_copie > 0
+),
+foreign key (cf_autore) references Autore(cf_autore)
+);
+
+insert into Autore values ("JRTKN" , "J.R", "Tolkien") ;
+insert into Autore values ("MLYBNT", "Emily", "Bronte");
+
+insert into Libro values (00012, "Il Signore degli Anelli" , "JRTKN",45);
+insert into Libro values (00345 , "Silmarillion" , "JRTKN" ,55) ; /*ho aggiunto uno zero all'isbn per consinstenza del dato rispetto agli altri*/
+ 
+
+/*Dato il seguente schema logico:
+DIPENDENTE(cf : testo e chiave primaria, nome : testo non nullo, cognome testo non nullo, id_dipartimento : chiave
+esterna su DIPARTIMENTO non nullo, stipendio : numero reale non nullo)
+DIPARTIMENTO(id_dipartimento intero e chiave primaria, nome : testo non nullo, indirizzo testo opzionale)
+PROGETTO(id_progetto intero e chiave primaria, nome : testo non nullo, data_inizio : data non nulla, data_fine: data
+opzionale)
+LAVORA(cf_dipendente : chiave esterna su dipendente, id_progetto : chiave esterna su progetto, ore_svolte : intero
+non nullo)
+1. Ad ogni nome di dipartimento, associare il numero di progetti (svolti da dipendenti di quel dipartimento) non
+ancora terminati;
+2. Ad ogni nome di progetto, associare il numero di dipendenti che vi lavorano e la somma complessiva degli
+stipendi delle persone coinvolte.*/
+
+select dipartimento.nome, count(distinct progetto.id_progetto) as "numero di progetti" /*CORREZIONE : in count devo contare gli id dei progetti in maniera distinta , non in maniera macroscopica e completamente inclusiva*/
+from lavora join progetto on lavora.id_progetto = progetto.id_progetto /*prima unisco progetto a lavora , cosi da questo posso unire poi dipendente e attaccarmi poi dipartimento*/
+join dipendente on lavora.cf_dipendente = dipendente.cf /*adesso attacco il tutto a dipartimento , perche mi serve il nome*/
+join dipartimento on dipendente.id_dipartimento = dipartimento.id_dipartimento
+/*adesso ho i dipendenti che lavorano sui progetti . poi ho le informazioni dei dipendenti e infine so in che dipartimenti lavorano quei dipendenti (e su quali progetti)*/
+where progetto.data_fine IS NULL
+group by dipartimento.id_dipartimento;
+/*OSSERVAZIONE : avrei potuto usare LEFT JOIN nella prima join : "lavora left join progetto"*/
+
+select count(*) as "dipendenti associati" , sum(dipendente.stipendio)
+from progetto join lavora on progetto.id_progetto = lavora.id_progetto 
+join dipendente on lavora.cf_dipendente = dipendente.cf
+group by progetto.id_progetto,progetto.nome; /*per non ambiguita utilizzo i due identificatori del progetto che abbiamo , entrambi*/
+/*OSSERVAZIONE : qui la LEFT JOIN sulla prima join è valida, ma non necessaria poichè non specificatamente richiesta*/
