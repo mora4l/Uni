@@ -1,0 +1,174 @@
+-- ============================================================
+--  BIBLIOTECA  –  DDL + DML per SQLiteStudio
+-- ============================================================
+ 
+PRAGMA foreign_keys = ON;
+ 
+-- ------------------------------------------------------------
+--  DROP (ordine inverso per rispettare le FK)
+-- ------------------------------------------------------------
+DROP TABLE IF EXISTS prestiti;
+DROP TABLE IF EXISTS libri;
+DROP TABLE IF EXISTS utenti;
+DROP TABLE IF EXISTS autori;
+ 
+-- ------------------------------------------------------------
+--  CREATE
+-- ------------------------------------------------------------
+ 
+CREATE TABLE autori (
+    id_autore   INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome        TEXT    NOT NULL,
+    cognome     TEXT    NOT NULL,
+    nazionalita TEXT
+);
+ 
+CREATE TABLE libri (
+    id_libro  INTEGER PRIMARY KEY AUTOINCREMENT,
+    titolo    TEXT    NOT NULL,
+    id_autore INTEGER NOT NULL,
+    genere    TEXT,
+    anno      INTEGER,
+    editore   TEXT,
+    FOREIGN KEY (id_autore) REFERENCES autori(id_autore)
+);
+ 
+CREATE TABLE utenti (
+    id_utente       INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome            TEXT NOT NULL,
+    cognome         TEXT NOT NULL,
+    email           TEXT UNIQUE,
+    citta           TEXT,
+    data_iscrizione TEXT   -- SQLite non ha tipo DATE nativo; si usa TEXT ISO 8601
+);
+ 
+CREATE TABLE prestiti (
+    id_prestito INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_utente   INTEGER NOT NULL,
+    id_libro    INTEGER NOT NULL,
+    data_inizio TEXT    NOT NULL,
+    data_fine   TEXT,
+    restituito  INTEGER DEFAULT 0,   -- 0 = FALSE, 1 = TRUE
+    FOREIGN KEY (id_utente) REFERENCES utenti(id_utente),
+    FOREIGN KEY (id_libro)  REFERENCES libri(id_libro)
+);
+ 
+-- ------------------------------------------------------------
+--  INSERT – autori
+-- ------------------------------------------------------------
+ 
+INSERT INTO autori (id_autore, nome, cognome, nazionalita) VALUES
+(1,  'Italo',    'Calvino',        'Italiana'),
+(2,  'Elena',    'Ferrante',       'Italiana'),
+(3,  'Ernest',   'Hemingway',      'Americana'),
+(4,  'Virginia', 'Woolf',          'Britannica'),
+(5,  'Gabriel',  'Garcia Marquez', 'Colombiana'),
+(6,  'Franz',    'Kafka',          'Boema'),
+(7,  'Jane',     'Austen',         'Britannica'),
+(8,  'Leo',      'Tolstoj',        'Russa'),
+(9,  'Umberto',  'Eco',            'Italiana'),
+(10, 'Agatha',   'Christie',       'Britannica');
+ 
+-- ------------------------------------------------------------
+--  INSERT – libri
+-- ------------------------------------------------------------
+ 
+INSERT INTO libri (id_libro, titolo, id_autore, genere, anno, editore) VALUES
+(1,  'Il barone rampante',           1, 'Narrativa',    1957, 'Einaudi'),
+(2,  'Le cosmicomiche',              1, 'Fantascienza',  1965, 'Einaudi'),
+(3,  "L'amica geniale",              2, 'Narrativa',    2011, 'E/O'),
+(4,  'Storia della bambina perduta', 2, 'Narrativa',    2014, 'E/O'),
+(5,  'Il vecchio e il mare',         3, 'Narrativa',    1952, 'Mondadori'),
+(6,  'Addio alle armi',              3, 'Narrativa',    1929, 'Mondadori'),
+(7,  'Gita al faro',                 4, 'Narrativa',    1927, 'Einaudi'),
+(8,  'La signora Dalloway',          4, 'Narrativa',    1925, 'Einaudi'),
+(9,  'Cent anni di solitudine',      5, 'Narrativa',    1967, 'Mondadori'),
+(10, 'La metamorfosi',               6, 'Narrativa',    1915, 'Feltrinelli'),
+(11, 'Orgoglio e pregiudizio',       7, 'Romanzo',      1813, 'Newton'),
+(12, 'Guerra e pace',                8, 'Narrativa',    1869, 'Einaudi'),
+(13, 'Il nome della rosa',           9, 'Giallo',       1980, 'Bompiani'),
+(14, "Assassinio sull'Nilo",        10, 'Giallo',       1937, 'Mondadori'),
+(15, 'Dieci piccoli indiani',       10, 'Giallo',       1939, 'Mondadori');
+ 
+-- ------------------------------------------------------------
+--  INSERT – utenti
+-- ------------------------------------------------------------
+ 
+INSERT INTO utenti (id_utente, nome, cognome, email, citta, data_iscrizione) VALUES
+(1,  'Marco',     'Rossi',    'marco@mail.it',   'Roma',    '2020-03-10'),
+(2,  'Giulia',    'Bianchi',  'giulia@mail.it',  'Milano',  '2019-07-22'),
+(3,  'Luca',      'Verdi',    'luca@mail.it',    'Roma',    '2021-01-05'),
+(4,  'Sara',      'Neri',     'sara@mail.it',    'Napoli',  '2020-11-14'),
+(5,  'Andrea',    'Ferrari',  'andrea@mail.it',  'Milano',  '2022-04-30'),
+(6,  'Chiara',    'Conti',    'chiara@mail.it',  'Roma',    '2018-09-01'),
+(7,  'Matteo',    'Ricci',    'matteo@mail.it',  'Torino',  '2023-02-17'),
+(8,  'Francesca', 'Mancini',  'fra@mail.it',     'Firenze', '2021-06-08'),
+(9,  'Davide',    'Lombardi', 'davide@mail.it',  'Genova',  '2019-12-25'),
+(10, 'Elena',     'Moretti',  'elena@mail.it',   'Roma',    '2022-08-19');
+ 
+-- ------------------------------------------------------------
+--  INSERT – prestiti
+-- ------------------------------------------------------------
+ 
+INSERT INTO prestiti (id_prestito, id_utente, id_libro, data_inizio, data_fine, restituito) VALUES
+(1,  1,  1,  '2024-01-10', '2024-01-25', 1),
+(2,  1,  5,  '2024-02-01', '2024-02-15', 1),
+(3,  1,  9,  '2024-03-05', NULL,         0),
+(4,  2,  3,  '2024-01-15', '2024-02-01', 1),
+(5,  2,  4,  '2024-02-10', '2024-03-01', 1),
+(6,  2,  13, '2024-03-12', NULL,         0),
+(7,  3,  7,  '2024-01-20', '2024-02-05', 1),
+(8,  3,  8,  '2024-02-20', NULL,         0),
+(9,  4,  10, '2023-11-01', '2023-11-20', 1),
+(10, 4,  11, '2024-01-08', '2024-01-30', 1),
+(11, 4,  14, '2024-02-14', NULL,         0),
+(12, 5,  2,  '2024-03-01', NULL,         0),
+(13, 6,  1,  '2023-12-01', '2023-12-20', 1),
+(14, 6,  6,  '2024-01-03', '2024-01-18', 1),
+(15, 6,  12, '2024-02-05', '2024-02-28', 1),
+(16, 7,  13, '2024-03-10', NULL,         0),
+(17, 8,  3,  '2024-01-22', '2024-02-08', 1),
+(18, 8,  15, '2024-02-15', NULL,         0),
+(19, 9,  5,  '2024-01-30', '2024-02-14', 1),
+(20, 10, 9,  '2024-02-20', NULL,         0),
+(21, 10, 1,  '2023-10-10', '2023-10-28', 1),
+(22, 1,  13, '2024-03-20', NULL,         0),
+(23, 2,  11, '2023-09-05', '2023-09-25', 1),
+(24, 6,  9,  '2024-03-01', NULL,         0),
+(25, 3,  14, '2024-02-01', '2024-02-20', 1);
+ 
+-- ============================================================
+--  Fine script
+-- ============================================================
+ 
+/*Elencare tutti gli utenti che non hanno mai effettuato un prestito.*/
+select utenti.*
+from utenti left join prestiti on utenti.id_utente = prestiti.id_utente
+where prestiti.id_prestito is null ;
+
+/*Trovare i libri che non sono mai stati presi in prestito.*/
+select libri.*
+from prestiti right join libri on prestiti.id_libro = libri.id_libro 
+where prestiti.id_prestito is null ;
+
+/*Per ogni città, mostrare il numero di utenti iscritti.*/
+select citta,count(*)
+from utenti
+group by citta;
+
+/*Trovare il libro più prestato in assoluto (con il maggior numero di prestiti totali).*/
+select * 
+from (
+        select libri.id_libro as "id" , count(*) as "volte_prestiti"
+        from prestiti join libri on prestiti.id_libro = libri.id_libro
+        group by libri.id_libro
+) as "secondatab"
+where secondatab.volte_prestiti =   (
+                                    select max(lib.libriprestati)
+                                    from (
+                                            select count(*) as "libriprestati"
+                                            from prestiti join libri on prestiti.id_libro = libri.id_libro
+                                            group by libri.id_libro 
+                                         ) as "lib"
+                                    ); 
+                                    

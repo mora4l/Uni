@@ -1,0 +1,10 @@
+int f(int x) {
+  return x * x;
+}
+
+int main() {
+  int y = -10;
+  int z;
+  float q = .56;
+  z = f(y) - 20;
+}

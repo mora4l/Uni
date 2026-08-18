@@ -1,0 +1,70 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\arman\\OneDrive - unige.it\\Teaching\\2024-2025\\IC_Informatica\\Laboratorio\\Classe\\SoluzioneOO_3\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{3BF57044-3442-4ABF-AB92-79DE4FB6F6B4}|SoluzioneOO_3\\SoluzioneOO_3.vcxproj|C:\\Users\\arman\\OneDrive - unige.it\\Teaching\\2024-2025\\IC_Informatica\\Laboratorio\\Classe\\SoluzioneOO_3\\SoluzioneOO_3\\Stack.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{3BF57044-3442-4ABF-AB92-79DE4FB6F6B4}|SoluzioneOO_3\\SoluzioneOO_3.vcxproj|solutionrelative:SoluzioneOO_3\\Stack.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3BF57044-3442-4ABF-AB92-79DE4FB6F6B4}|SoluzioneOO_3\\SoluzioneOO_3.vcxproj|C:\\Users\\arman\\OneDrive - unige.it\\Teaching\\2024-2025\\IC_Informatica\\Laboratorio\\Classe\\SoluzioneOO_3\\SoluzioneOO_3\\SoluzioneOO_3.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{3BF57044-3442-4ABF-AB92-79DE4FB6F6B4}|SoluzioneOO_3\\SoluzioneOO_3.vcxproj|solutionrelative:SoluzioneOO_3\\SoluzioneOO_3.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3BF57044-3442-4ABF-AB92-79DE4FB6F6B4}|SoluzioneOO_3\\SoluzioneOO_3.vcxproj|C:\\Users\\arman\\OneDrive - unige.it\\Teaching\\2024-2025\\IC_Informatica\\Laboratorio\\Classe\\SoluzioneOO_3\\SoluzioneOO_3\\StackOfInt.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{3BF57044-3442-4ABF-AB92-79DE4FB6F6B4}|SoluzioneOO_3\\SoluzioneOO_3.vcxproj|solutionrelative:SoluzioneOO_3\\StackOfInt.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Stack.h",
+              "DocumentMoniker": "C:\\Users\\arman\\OneDrive - unige.it\\Teaching\\2024-2025\\IC_Informatica\\Laboratorio\\Classe\\SoluzioneOO_3\\SoluzioneOO_3\\Stack.h",
+              "RelativeDocumentMoniker": "SoluzioneOO_3\\Stack.h",
+              "ToolTip": "C:\\Users\\arman\\OneDrive - unige.it\\Teaching\\2024-2025\\IC_Informatica\\Laboratorio\\Classe\\SoluzioneOO_3\\SoluzioneOO_3\\Stack.h",
+              "RelativeToolTip": "SoluzioneOO_3\\Stack.h",
+              "ViewState": "AQIAADcAAAAAAAAAAAAwwEQAAAANAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-04-09T10:22:55.689Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "StackOfInt.h",
+              "DocumentMoniker": "C:\\Users\\arman\\OneDrive - unige.it\\Teaching\\2024-2025\\IC_Informatica\\Laboratorio\\Classe\\SoluzioneOO_3\\SoluzioneOO_3\\StackOfInt.h",
+              "RelativeDocumentMoniker": "SoluzioneOO_3\\StackOfInt.h",
+              "ToolTip": "C:\\Users\\arman\\OneDrive - unige.it\\Teaching\\2024-2025\\IC_Informatica\\Laboratorio\\Classe\\SoluzioneOO_3\\SoluzioneOO_3\\StackOfInt.h",
+              "RelativeToolTip": "SoluzioneOO_3\\StackOfInt.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-04-09T10:20:55.845Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "SoluzioneOO_3.cpp",
+              "DocumentMoniker": "C:\\Users\\arman\\OneDrive - unige.it\\Teaching\\2024-2025\\IC_Informatica\\Laboratorio\\Classe\\SoluzioneOO_3\\SoluzioneOO_3\\SoluzioneOO_3.cpp",
+              "RelativeDocumentMoniker": "SoluzioneOO_3\\SoluzioneOO_3.cpp",
+              "ToolTip": "C:\\Users\\arman\\OneDrive - unige.it\\Teaching\\2024-2025\\IC_Informatica\\Laboratorio\\Classe\\SoluzioneOO_3\\SoluzioneOO_3\\SoluzioneOO_3.cpp",
+              "RelativeToolTip": "SoluzioneOO_3\\SoluzioneOO_3.cpp",
+              "ViewState": "AQIAABQAAAAAAAAAAAAAACAAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-04-09T10:19:36.017Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

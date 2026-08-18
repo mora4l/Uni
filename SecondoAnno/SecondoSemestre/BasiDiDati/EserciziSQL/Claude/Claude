@@ -77,6 +77,7 @@ INSERT INTO prestiti VALUES
 (14, 2,  2, '2024-02-05', '2024-02-20', TRUE),
 (15, 7,  3, '2024-03-25', NULL,         FALSE);
 
+
 /*Mostrare nome e cognome degli utenti che non hanno mai restituito un libro (hanno almeno un prestito con restituito = FALSE).*/
 select utenti.nome ,utenti.cognome
 from utenti left join prestiti on utenti.id_utente = prestiti.id_utente
@@ -175,6 +176,12 @@ join libri on prestiti.id_libro = libri.id_libro
 where utenti.citta = "Roma"; 
 
 /*Nome e cognome degli utenti che hanno preso in prestito libri di almeno due generi diversi.*/
+select libri.titolo as "titolo" ,utenti.nome as "nome" , utenti.cognome as "cognome", count(distinct libri.genere) as "generi"
+from utenti join prestiti on utenti.id_utente = prestiti.id_utente
+join libri on prestiti.id_libro = libri.id_libro
+group by utenti.id_utente
+having count(distinct libri.genere) >= 2 ;
+
 select genere_prestiti_utente.nome,genere_prestiti_utente.cognome /*6. quindi ora mi prendo i nomi e i cognomi di quelli che hanno più di 2 nella casella che rappresenta la somma dei generi distinti che ha letto*/
 from (
         select utenti.id_utente as "utente",utenti.nome as "nome" , utenti.cognome as "cognome",  count (distinct libri.genere) as "numero_generi_utente" /*3. nella tabella risultante mi metto il nome e cognome dell'utente e affianco anche la somma dei generi dei libri che ha letto . uso distinct perche se ha letto solo libri dello stesso genere non vale*/
@@ -185,33 +192,30 @@ from (
 where genere_prestiti_utente.numero_generi_utente >= 2; /*5. ora devo selezionare esclusivamente gli utenti che hanno >= 2 generi letti*/
 
 /*Il titolo dei libri pubblicati prima del 1950 che sono stati presi in prestito almeno una volta.*/
-select libri.titolo
+select *
 from libri join prestiti on libri.id_libro = prestiti.id_libro /*se sono stati presi in prestito almeno una volta allora matchano a priori almeno una volta*/
-where anno < 1950; 
+where anno < 1950
+order by libri.anno asc , prestiti.data_inizio desc;
 
 /*Per ogni utente mostrare il titolo dell'ultimo libro preso in prestito (data inizio più recente).*/
-/*il problema sta negli ultimi messaggi di questa chat : https://claude.ai/share/77b4ea29-8ee6-4005-9d1d-3ac05a7ef143 */
-/*
-select utenti.nome,utenti.cognome,libri.titolo 
-from utenti join prestiti on utenti.id_utente = prestiti.id_utente /*1. trovo i prestiti degli utenti*/
-/*join libri on prestiti.id_libro = libri.id_libro
-group by utenti.id_utente /*2. poi raggruppo in base agli utenti*/
-/*having max(prestiti.data_inizio); /*3. e prendo le sottorighe solamente con data più recente. se ce ne sono di più poco importa perche hanno tutte la stessa data e a me interessa quella*/
-/*NO PERCHE LA MAX NELLA HAVING VORREBBE RESTITUIRE UN SOLO GRUPPO E NON PUO RESTITUIRE IL MAX DI OGNI GRUPPO
-*/
+select utenti.nome,utenti.cognome , libri.titolo
+from utenti join prestiti on utenti.id_utente = prestiti.id_utente
+join libri on prestiti.id_libro = libri.id_libro
+where prestiti.data_inizio = ( 
+                                select max(prestiti.data_inizio)
+                                from utenti join prestiti on utenti.id_utente = prestiti.id_utente
+                                join libri on prestiti.id_libro = libri.id_libro
+                                group by utenti.id_utente
+                              ); 
+                              
+INSERT INTO prestiti VALUES (16, 8, 1, '2024-01-05', NULL, FALSE);/*inserisco un doppione per prova del 9 che funzioni la query seguente*/
 
-/*
-select prestitiordinati.nome,prestitiordinati.cognome
-from (
-        select utenti.id_utente as "id" , utenti.nome as "nome" ,utenti.cognome as "cognome" ,libri.titolo as "titolo" 
-        from utenti join prestiti on utenti.id_utente = prestiti.id_utente
-        join libri on prestiti.id_libro = libri.id_libro
-        order by prestiti.data_inizio desc 
-     ) as "prestitiordinati" 
-group by prestitiordinati.id;
-APPROCCIO RISCHIOSO PERCHE LA ORDER BY NON INFLUISCE LA GROUP BY*/
-
-
-
-
-/**/
+select nome,cognome , data_inizio, titolo
+from  utenti join prestiti on utenti.id_utente = prestiti.id_utente /*4. creo una tabella con le informazioni del libro preso in prestito di ogni utente */
+join libri on prestiti.id_libro = libri.id_libro 
+join ( /*ora trovo tutte le informazioni di ogni libro preso in prestito per ogni utente che ha come data di inizio la più recente*/
+        select utenti.id_utente as "id_utente",max(prestiti.data_inizio) as "data_start" /*3. restituisco l'id dell'utente e la relativa data recente associata*/
+        from utenti join prestiti on utenti.id_utente = prestiti.id_utente /*1. mi servono le date di inizio di ogni prestito di ogni utente*/
+        group by utenti.id_utente /*2. creo i gruppi di prestiti per ogni utente*/
+     ) as "aicardi" on utenti.id_utente = aicardi.id_utente and prestiti.data_inizio = aicardi.data_start
+order by utenti.cognome ;
