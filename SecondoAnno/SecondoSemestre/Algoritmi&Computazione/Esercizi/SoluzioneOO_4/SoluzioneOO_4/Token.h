@@ -44,7 +44,7 @@ struct Token {
 	~Token() = default;
 	Token(Token const&) = default;
 	Token& operator=(Token const&) = default;
-
+		
 	int tag;
 	std::string word;
 };
