@@ -1,11 +1,11 @@
 <mxfile host="app.diagrams.net">
   <diagram name="Page-1" id="mFh1S5E8-nh-nbPrtByS">
-    <mxGraphModel dx="770" dy="454" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="2523" dy="1580" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="6aA-xRvHYhNvCDFRS0mJ-2" parent="1" style="swimlane;childLayout=stackLayout;resizeParent=1;resizeParentMax=0;horizontal=1;startSize=20;horizontalStack=0;html=1;" value="TOKEN" vertex="1">
-          <mxGeometry height="310" width="480" x="790" y="590" as="geometry" />
+          <mxGeometry height="310" width="480" x="1330" y="590" as="geometry" />
         </mxCell>
         <mxCell id="6aA-xRvHYhNvCDFRS0mJ-3" parent="6aA-xRvHYhNvCDFRS0mJ-2" style="swimlane;startSize=20;horizontal=0;html=1;" value="Attributi Pubblici" vertex="1">
           <mxGeometry height="170" width="480" y="20" as="geometry" />
@@ -35,18 +35,27 @@
           <mxGeometry height="120" width="460" x="25" as="geometry" />
         </mxCell>
         <mxCell id="sQNyhnveKFqxNb3D2nsL-14" parent="1" style="swimlane;childLayout=stackLayout;resizeParent=1;resizeParentMax=0;horizontal=1;startSize=20;horizontalStack=0;html=1;" value="LEXICAL ERROR" vertex="1">
-          <mxGeometry height="140" width="480" x="140" y="730" as="geometry" />
+          <mxGeometry height="140" width="480" x="240" y="590" as="geometry" />
         </mxCell>
         <mxCell id="sQNyhnveKFqxNb3D2nsL-15" parent="sQNyhnveKFqxNb3D2nsL-14" style="swimlane;startSize=20;horizontal=0;html=1;" value="Metodi pubblici" vertex="1">
           <mxGeometry height="120" width="480" y="20" as="geometry" />
         </mxCell>
         <mxCell id="sQNyhnveKFqxNb3D2nsL-16" parent="sQNyhnveKFqxNb3D2nsL-15" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="+ LexicalError ( msg : const char* )&amp;nbsp;&lt;br&gt;+ LexicalError ( msg : string )&amp;nbsp;" vertex="1">
-          <mxGeometry height="120" width="460" x="25" y="-10" as="geometry" />
+          <mxGeometry height="120" width="460" x="-20" y="-10" as="geometry" />
         </mxCell>
-        <mxCell id="sQNyhnveKFqxNb3D2nsL-24" edge="1" parent="1" source="sQNyhnveKFqxNb3D2nsL-13" style="endArrow=diamondThin;endFill=0;endSize=24;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.531;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" target="6aA-xRvHYhNvCDFRS0mJ-2" value="">
+        <mxCell id="sQNyhnveKFqxNb3D2nsL-24" edge="1" parent="1" style="endArrow=diamondThin;endFill=0;endSize=24;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0;exitDx=0;exitDy=0;" value="">
           <mxGeometry relative="1" width="160" as="geometry">
-            <mxPoint x="840" y="680" as="sourcePoint" />
-            <mxPoint x="1000" y="680" as="targetPoint" />
+            <mxPoint x="1270" y="370.03" as="sourcePoint" />
+            <mxPoint x="1560" y="586" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sQNyhnveKFqxNb3D2nsL-26" edge="1" parent="1" style="endArrow=diamondThin;endFill=0;endSize=24;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;edgeStyle=orthogonalEdgeStyle;" target="sQNyhnveKFqxNb3D2nsL-14" value="">
+          <mxGeometry relative="1" width="160" as="geometry">
+            <Array as="points">
+              <mxPoint x="480" y="370" />
+            </Array>
+            <mxPoint x="790" y="370" as="sourcePoint" />
+            <mxPoint x="498" y="480.5799999999999" as="targetPoint" />
           </mxGeometry>
         </mxCell>
       </root>
