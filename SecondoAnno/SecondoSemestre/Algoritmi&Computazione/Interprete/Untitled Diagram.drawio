@@ -1,11 +1,11 @@
 <mxfile host="app.diagrams.net">
   <diagram name="Page-1" id="mFh1S5E8-nh-nbPrtByS">
-    <mxGraphModel dx="1498" dy="883" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="770" dy="454" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="6aA-xRvHYhNvCDFRS0mJ-2" parent="1" style="swimlane;childLayout=stackLayout;resizeParent=1;resizeParentMax=0;horizontal=1;startSize=20;horizontalStack=0;html=1;" value="TOKEN" vertex="1">
-          <mxGeometry height="310" width="480" x="190" y="230" as="geometry" />
+          <mxGeometry height="310" width="480" x="790" y="590" as="geometry" />
         </mxCell>
         <mxCell id="6aA-xRvHYhNvCDFRS0mJ-3" parent="6aA-xRvHYhNvCDFRS0mJ-2" style="swimlane;startSize=20;horizontal=0;html=1;" value="Attributi Pubblici" vertex="1">
           <mxGeometry height="170" width="480" y="20" as="geometry" />
@@ -16,8 +16,38 @@
         <mxCell id="6aA-xRvHYhNvCDFRS0mJ-6" parent="6aA-xRvHYhNvCDFRS0mJ-2" style="swimlane;startSize=20;horizontal=0;html=1;" value="Metodi pubblici" vertex="1">
           <mxGeometry height="120" width="480" y="190" as="geometry" />
         </mxCell>
-        <mxCell id="6aA-xRvHYhNvCDFRS0mJ-9" parent="6aA-xRvHYhNvCDFRS0mJ-6" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;div align=&quot;left&quot;&gt;+ Token ( t : int , w : string )&amp;nbsp;&lt;br&gt;+ Token ( t : int , w : const char* )&lt;br&gt;+ ~Token ()&lt;br&gt;+ Token ( Token : const &amp;amp; )&lt;br&gt;+ operator= ( Token : const&amp;amp; ) &amp;lt;Token&amp;gt;&lt;br&gt;+ operator&amp;lt;&amp;lt; (os : ostream&amp;amp; , t : const Token&amp;amp; ) &amp;lt;ostream&amp;amp;&amp;gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="120" width="460" x="-40" as="geometry" />
+        <mxCell id="6aA-xRvHYhNvCDFRS0mJ-9" parent="6aA-xRvHYhNvCDFRS0mJ-6" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div&gt;+ Token ( t : int , w : string )&amp;nbsp;&lt;br&gt;+ Token ( t : int , w : const char* )&lt;br&gt;+ ~Token ()&lt;br&gt;+ Token ( Token : const &amp;amp; )&lt;br&gt;&lt;br&gt;+ operator= ( Token : const&amp;amp; ) &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;Token&amp;amp;&amp;gt;&lt;br&gt;+ operator&amp;lt;&amp;lt; (os : ostream&amp;amp; , t : const Token&amp;amp; ) &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;ostream&amp;amp;&amp;gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="120" width="460" x="25" as="geometry" />
+        </mxCell>
+        <mxCell id="sQNyhnveKFqxNb3D2nsL-1" parent="1" style="swimlane;childLayout=stackLayout;resizeParent=1;resizeParentMax=0;horizontal=1;startSize=20;horizontalStack=0;html=1;" value="TOKENIZER" vertex="1">
+          <mxGeometry height="140" width="480" x="790" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="sQNyhnveKFqxNb3D2nsL-4" parent="sQNyhnveKFqxNb3D2nsL-1" style="swimlane;startSize=20;horizontal=0;html=1;" value="Metodi pubblici" vertex="1">
+          <mxGeometry height="120" width="480" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="sQNyhnveKFqxNb3D2nsL-5" parent="sQNyhnveKFqxNb3D2nsL-4" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div align=&quot;left&quot;&gt;+ Tokenizer ( )&amp;nbsp;&lt;br&gt;+ ~Tokenizer ()&lt;br&gt;+ Tokenizer ( Tokenizer : const &amp;amp; )&lt;br&gt;&lt;br&gt;+ operator= ( Tokenizer : const&amp;amp; ) &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt; Tokenizer&amp;amp; &amp;gt;&lt;br&gt;+ operator() (programmadafile : ifstream&amp;amp; ) &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt; vector&amp;lt;Token&amp;gt; &amp;gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="120" width="460" x="25" y="-10" as="geometry" />
+        </mxCell>
+        <mxCell id="sQNyhnveKFqxNb3D2nsL-12" parent="1" style="swimlane;startSize=20;horizontal=0;html=1;" value="Metodi privati" vertex="1">
+          <mxGeometry height="120" width="480" x="790" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="sQNyhnveKFqxNb3D2nsL-13" parent="sQNyhnveKFqxNb3D2nsL-12" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="- tokenizzaCostanti (programmadafile : ifstream&amp;amp; , temp : stringstream&amp;amp; )&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;lt;string&amp;gt;&lt;br&gt;- tokenizeFileInput (inputFile : ifstream&amp;amp; , inputTokens :&amp;nbsp; vector&amp;lt;Tokens&amp;gt; )&amp;nbsp; &amp;nbsp; &amp;nbsp;&amp;lt;void&amp;gt;" vertex="1">
+          <mxGeometry height="120" width="460" x="25" as="geometry" />
+        </mxCell>
+        <mxCell id="sQNyhnveKFqxNb3D2nsL-14" parent="1" style="swimlane;childLayout=stackLayout;resizeParent=1;resizeParentMax=0;horizontal=1;startSize=20;horizontalStack=0;html=1;" value="LEXICAL ERROR" vertex="1">
+          <mxGeometry height="140" width="480" x="140" y="730" as="geometry" />
+        </mxCell>
+        <mxCell id="sQNyhnveKFqxNb3D2nsL-15" parent="sQNyhnveKFqxNb3D2nsL-14" style="swimlane;startSize=20;horizontal=0;html=1;" value="Metodi pubblici" vertex="1">
+          <mxGeometry height="120" width="480" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="sQNyhnveKFqxNb3D2nsL-16" parent="sQNyhnveKFqxNb3D2nsL-15" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="+ LexicalError ( msg : const char* )&amp;nbsp;&lt;br&gt;+ LexicalError ( msg : string )&amp;nbsp;" vertex="1">
+          <mxGeometry height="120" width="460" x="25" y="-10" as="geometry" />
+        </mxCell>
+        <mxCell id="sQNyhnveKFqxNb3D2nsL-24" edge="1" parent="1" source="sQNyhnveKFqxNb3D2nsL-13" style="endArrow=diamondThin;endFill=0;endSize=24;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.531;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" target="6aA-xRvHYhNvCDFRS0mJ-2" value="">
+          <mxGeometry relative="1" width="160" as="geometry">
+            <mxPoint x="840" y="680" as="sourcePoint" />
+            <mxPoint x="1000" y="680" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
