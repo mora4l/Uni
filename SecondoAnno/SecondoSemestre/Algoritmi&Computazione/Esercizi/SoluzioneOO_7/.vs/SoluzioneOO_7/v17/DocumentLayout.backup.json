@@ -1,0 +1,53 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\arman\\OneDrive - unige.it\\Teaching\\2024-2025\\IC_Informatica\\Laboratorio\\Classe\\SoluzioneOO_7\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{FD2FF5E2-D9C1-4A48-B7D1-67682DA13925}|FindingIntegers\\FindingIntegers.vcxproj|C:\\Users\\arman\\OneDrive - unige.it\\Teaching\\2024-2025\\IC_Informatica\\Laboratorio\\Classe\\SoluzioneOO_7\\FindingIntegers\\FindingIntegers.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{FD2FF5E2-D9C1-4A48-B7D1-67682DA13925}|FindingIntegers\\FindingIntegers.vcxproj|solutionrelative:FindingIntegers\\FindingIntegers.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BEBE407C-76BF-4285-9D8A-994E10E8FE0B}|SoluzioneOO_7\\SoluzioneOO_7.vcxproj|C:\\Users\\arman\\OneDrive - unige.it\\Teaching\\2024-2025\\IC_Informatica\\Laboratorio\\Classe\\SoluzioneOO_7\\SoluzioneOO_7\\SoluzioneOO_7.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{BEBE407C-76BF-4285-9D8A-994E10E8FE0B}|SoluzioneOO_7\\SoluzioneOO_7.vcxproj|solutionrelative:SoluzioneOO_7\\SoluzioneOO_7.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "FindingIntegers.cpp",
+              "DocumentMoniker": "C:\\Users\\arman\\OneDrive - unige.it\\Teaching\\2024-2025\\IC_Informatica\\Laboratorio\\Classe\\SoluzioneOO_7\\FindingIntegers\\FindingIntegers.cpp",
+              "RelativeDocumentMoniker": "FindingIntegers\\FindingIntegers.cpp",
+              "ToolTip": "C:\\Users\\arman\\OneDrive - unige.it\\Teaching\\2024-2025\\IC_Informatica\\Laboratorio\\Classe\\SoluzioneOO_7\\FindingIntegers\\FindingIntegers.cpp",
+              "RelativeToolTip": "FindingIntegers\\FindingIntegers.cpp",
+              "ViewState": "AgIAABUAAAAAAAAAAAAiwCsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-04-29T14:35:52.495Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "SoluzioneOO_7.cpp",
+              "DocumentMoniker": "C:\\Users\\arman\\OneDrive - unige.it\\Teaching\\2024-2025\\IC_Informatica\\Laboratorio\\Classe\\SoluzioneOO_7\\SoluzioneOO_7\\SoluzioneOO_7.cpp",
+              "RelativeDocumentMoniker": "SoluzioneOO_7\\SoluzioneOO_7.cpp",
+              "ToolTip": "C:\\Users\\arman\\OneDrive - unige.it\\Teaching\\2024-2025\\IC_Informatica\\Laboratorio\\Classe\\SoluzioneOO_7\\SoluzioneOO_7\\SoluzioneOO_7.cpp",
+              "RelativeToolTip": "SoluzioneOO_7\\SoluzioneOO_7.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-04-29T14:13:56.344Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

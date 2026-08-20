@@ -1,6 +1,7 @@
 #include <string>
 #include <sstream>
 #include <cstring>
+#include <algorithm>
 
 #include "Tokenizer.h"
 
@@ -51,11 +52,11 @@ void Tokenizer::tokenizeFileInput(std::ifstream &programmadafile, std::vector<To
         else if (ch == '(')
         {
             // dentro al vector inputTokens ci metto un oggetto token che ha tag LP e valore 0 e id l'elemento corrispondente all'indice LP (0) di "idleggibile[]"
-            inputTokens.push_back(Token{Token::LP, Token::idleggibile[Token::LP]});
+            inputTokens.emplace_back(Token::LP, Token::idleggibile[Token::LP]); //emplace_back: costruisce il Token direttamente nello slot del vector, non devo chiamare il costruttore Token
         }
         else if (ch == ')')
         {
-            inputTokens.push_back(Token{Token::RP, Token::idleggibile[Token::RP]});
+            inputTokens.emplace_back(Token::RP, Token::idleggibile[Token::RP]);
         }
         else if (ch == '-')
         { // se c'è un meno , allora per forza dopo ci deve essere un numero . se ce qualcos altro allora c'è un errore
@@ -67,7 +68,14 @@ void Tokenizer::tokenizeFileInput(std::ifstream &programmadafile, std::vector<To
                     std::stringstream temp;
                     temp << ch << ch2;
                     tokenizzaCostanti(programmadafile, temp);
-                    inputTokens.push_back(Token{Token::CONST, temp.str()});
+                    inputTokens.emplace_back(Token::CONST, temp.str());
+                }else{ //se dopo il - non c'è nessun numero , allora io lo assumo come una keyword (se non è -n , ma è solo "-" , allora io di per sè lo assumo come keyword)
+                    std::stringstream temp;
+                    temp<<ch;
+                    std::string word{temp.str()};
+                    int tag = Token::KWORD;
+                    inputTokens.emplace_back(tag,word);
+                    programmadafile.unget(); //mi serve per "far ripartire da zero" la stringa temp
                 }
             
         }
@@ -77,7 +85,7 @@ void Tokenizer::tokenizeFileInput(std::ifstream &programmadafile, std::vector<To
             std::stringstream temp; // metto dentro ad uno stream di stringa il carattere che ho appena letto
             temp << ch;
             tokenizzaCostanti(programmadafile, temp); // così lo passo alla funzione di check della correttezza del numero
-            inputTokens.push_back(Token{Token::CONST, temp.str()});
+            inputTokens.emplace_back(Token::CONST, temp.str());
         }
         else if (std::isalpha(ch) or ch == '_')
         {                           // qua devo capire se ho davanti una parola chiave (KWRD) o una variabile (ID) ("if" , "while", "set" oppure "var" , "variabile" , "temp")
@@ -103,7 +111,7 @@ void Tokenizer::tokenizeFileInput(std::ifstream &programmadafile, std::vector<To
             {
                 tag = Token::KWORD;
             }
-            inputTokens.push_back(Token{tag, word});
+            inputTokens.emplace_back(tag, word);
 
             programmadafile.unget(); // torno indietro al char iniziale che ho letto , levandomi tutti i char "attaccati" all ID o alla parola chiave che ho appena analizzato
         }

@@ -26,6 +26,7 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
 
+    //analisi lessicale
     Tokenizer tokenizza;
 
     std::vector<Token> inputTokens;
@@ -46,10 +47,16 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
 
-    for (Token tok : inputTokens) {
-		std::cout << tok << " ";
-	}
-	std::cout << std::endl;
+    // for (const auto& tok : inputTokens) { //con & non faccio nessuna copia per stampare
+	// 	std::cout << tok << " "<<std::endl;
+	// }
+
+    /*adesso ho in un vector tutti i token , divisi per cosa sono 
+    ora devo fare l'analisi sintattica con il parsing e creare l'albero sintattico 
+    adesso non so ancora se il codice ha senso , "so di aver letto delle cose" , ma non so se abbiano senso
+    */
+
+    
 
     return EXIT_SUCCESS;
 }
