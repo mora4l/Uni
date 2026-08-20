@@ -1,0 +1,25 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1" id="mFh1S5E8-nh-nbPrtByS">
+    <mxGraphModel dx="1498" dy="883" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="6aA-xRvHYhNvCDFRS0mJ-2" parent="1" style="swimlane;childLayout=stackLayout;resizeParent=1;resizeParentMax=0;horizontal=1;startSize=20;horizontalStack=0;html=1;" value="TOKEN" vertex="1">
+          <mxGeometry height="310" width="480" x="190" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="6aA-xRvHYhNvCDFRS0mJ-3" parent="6aA-xRvHYhNvCDFRS0mJ-2" style="swimlane;startSize=20;horizontal=0;html=1;" value="Attributi Pubblici" vertex="1">
+          <mxGeometry height="170" width="480" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="6aA-xRvHYhNvCDFRS0mJ-7" parent="6aA-xRvHYhNvCDFRS0mJ-3" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div align=&quot;left&quot;&gt;+ tag &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;int&amp;gt;&lt;br&gt;+ word &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;string&amp;gt;&lt;br&gt;+ parole_chiave &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static unordered_set&amp;lt;string&amp;gt;&amp;gt;&lt;br&gt;+ idleggibile[] &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static constexpr const char&amp;gt;&lt;br&gt;+ tag2string[] &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static constexpr const char&amp;gt;&lt;br&gt;+ KWORD &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static constexpr int&amp;gt;&lt;br&gt;+ LP &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static constexpr int&amp;gt;&lt;br&gt;+ RP &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static constexpr int&amp;gt;&lt;br&gt;+ CONST &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static constexpr int&amp;gt;&lt;br&gt;+ ID &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static constexpr int&amp;gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="140" width="460" x="30" y="15" as="geometry" />
+        </mxCell>
+        <mxCell id="6aA-xRvHYhNvCDFRS0mJ-6" parent="6aA-xRvHYhNvCDFRS0mJ-2" style="swimlane;startSize=20;horizontal=0;html=1;" value="Metodi pubblici" vertex="1">
+          <mxGeometry height="120" width="480" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="6aA-xRvHYhNvCDFRS0mJ-9" parent="6aA-xRvHYhNvCDFRS0mJ-6" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;div align=&quot;left&quot;&gt;+ Token ( t : int , w : string )&amp;nbsp;&lt;br&gt;+ Token ( t : int , w : const char* )&lt;br&gt;+ ~Token ()&lt;br&gt;+ Token ( Token : const &amp;amp; )&lt;br&gt;+ operator= ( Token : const&amp;amp; ) &amp;lt;Token&amp;gt;&lt;br&gt;+ operator&amp;lt;&amp;lt; (os : ostream&amp;amp; , t : const Token&amp;amp; ) &amp;lt;ostream&amp;amp;&amp;gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="120" width="460" x="-40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
