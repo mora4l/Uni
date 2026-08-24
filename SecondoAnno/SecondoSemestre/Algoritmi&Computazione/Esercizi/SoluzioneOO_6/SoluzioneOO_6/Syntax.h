@@ -11,10 +11,15 @@
 // P ::= B
 // 
 // Program ::= Statement | Statement other_statements
+
 // other_statements ::= epsilon | Statement other_statements
+
 // Statement ::= Definition | Expression
+
 // Definition ::= ID = Expression
+
 // Expression ::= (Expression operator Expression) | ID | CONST
+
 // operator ::= + | - | * | /
 
 // Forward declaration of Visitor class for evaluation

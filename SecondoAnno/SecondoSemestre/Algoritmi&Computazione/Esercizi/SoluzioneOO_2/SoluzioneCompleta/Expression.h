@@ -41,7 +41,7 @@ public:
     std::string const& getIdentifier() const {
         return identifier;
     }
-
+ 
     int interpret(Context const& c) const override {
         return c.getValue(identifier);
     }

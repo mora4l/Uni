@@ -1,5 +1,5 @@
 #if !defined(TOKENIZER_H)
-#define TOKENINZER_H
+#define TOKENIZER_H
 #include <vector>
 #include <fstream>
 
