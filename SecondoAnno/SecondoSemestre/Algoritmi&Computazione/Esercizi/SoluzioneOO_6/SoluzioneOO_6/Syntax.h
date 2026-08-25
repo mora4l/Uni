@@ -24,7 +24,7 @@
 
 // Forward declaration of Visitor class for evaluation
 class Visitor;
-
+ 
 struct Statement {
 	virtual void accept(Visitor& visitor) const = 0;
 };
