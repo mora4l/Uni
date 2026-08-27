@@ -28,7 +28,6 @@ struct Program{
     Statement* root_;
 };
 
-
 struct NumExpr{
 virtual void accept(Visitor& visitor) const = 0 ; 
 virtual ~NumExpr() = default ; 

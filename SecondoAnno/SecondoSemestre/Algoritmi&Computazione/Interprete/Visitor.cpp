@@ -1,8 +1,13 @@
 #include "Visitor.h"
 #include <iostream>
-
+/*
+da finire , intanto faccio parser
+*/
 class InterpreterVisitor : public Visitor{
     public :
+    void visit (Program const& program)override{
+        program.root_->accept(*this);
+    }
 
     void visit(RelOp const& relop) override{
         relop.num1_l->accept(*this) ; 

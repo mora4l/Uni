@@ -4,6 +4,7 @@
 
 #include "Token.h"
 #include "Tokenizer.h"
+#include "Parser.h"
 
 int main(int argc, char *argv[])
 {
@@ -56,6 +57,19 @@ int main(int argc, char *argv[])
     adesso non so ancora se il codice ha senso , "so di aver letto delle cose" , ma non so se abbiano senso
     */
 
+    Parser parse ; 
+    Program* program; 
+
+    try{
+        program = parse(inputTokens); 
+    }catch(SyntaxError& e){
+        std::cerr << e.what() <<std::endl ; 
+        return EXIT_FAILURE ; 
+    }catch (std::exception& e){
+        std::cerr << "Something odd happened during parsing, got: " << std::endl;
+		std::cerr << e.what() << std::endl;
+		return EXIT_FAILURE;
+    }
     
 
     return EXIT_SUCCESS;
