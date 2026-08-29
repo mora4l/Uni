@@ -57,8 +57,8 @@ int main(int argc, char *argv[])
     adesso non so ancora se il codice ha senso , "so di aver letto delle cose" , ma non so se abbiano senso
     */
 
-    Parser parse ; 
-    Program* program; 
+     Parser parse ; 
+     Program* program; 
 
     try{
         program = parse(inputTokens); 

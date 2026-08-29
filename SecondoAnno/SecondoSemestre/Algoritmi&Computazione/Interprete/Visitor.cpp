@@ -2,6 +2,7 @@
 #include <iostream>
 /*
 da finire , intanto faccio parser
+qua ho fatto solo l'identificazione dei simboli degli operatori algebrici/booleani
 */
 class InterpreterVisitor : public Visitor{
     public :

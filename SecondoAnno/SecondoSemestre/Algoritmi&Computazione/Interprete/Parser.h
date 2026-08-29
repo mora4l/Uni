@@ -14,10 +14,8 @@ Program* operator()(std::vector<Token> const& tokenStream){
 
     Program* p = parseProgram(itr) ;
 
-    if(p->root_ == nullptr){
-        throw SyntaxError{"Empty program"};
-    }else if(itr != end_){
-        throw NotEmptyVector{"Lettura non finita"};
+    if(itr != end_){
+        throw EmptyVector{"Lettura non finita"};
     }
 
 
@@ -29,19 +27,20 @@ private :
     std::vector<Token>::const_iterator end_;
     
     Program* parseProgram(std::vector<Token>::const_iterator &itr);
-    Statement *parseStatement(std::vector<Token>::const_iterator &itr);
+    Block *parseStmtBlock(std::vector<Token>::const_iterator &itr);
     Block *parseBlock(std::vector<Token>::const_iterator &itr);
-//    Program *parseProgram(std::vector<Token>::const_iterator &itr);
-
+    Statement *parseStatement(std::vector<Token>::const_iterator &itr);
+    
+    
     NumExpr *parseNumExpr(std::vector<Token>::const_iterator &itr);
     Number *parseNumber(std::vector<Token>::const_iterator &itr);
     Variable *parseVariable(std::vector<Token>::const_iterator &itr);
     // Operator* parseOperator(std::vector<Token>::const_iterator& itr);
 
-    NumExpr *parseNumExpr(std::vector<Token>::const_iterator &itr);
-    BoolConst *parseBoolConst(std::vector<Token>::const_iterator &itr);
-    RelOp *parseRelOp(std::vector<Token>::const_iterator &itr);
-    BoolOp *parseBoolOp(std::vector<Token>::const_iterator &itr);
+    BoolExpr *parseBoolExpr(std::vector<Token>::const_iterator &itr);
+    // BoolConst *parseBoolConst(std::vector<Token>::const_iterator &itr);
+    // RelOp *parseRelOp(std::vector<Token>::const_iterator &itr);
+    // BoolOp *parseBoolOp(std::vector<Token>::const_iterator &itr);
 
     PrintStmt *parsePrintStmt(std::vector<Token>::const_iterator &itr);
     SetStmt *parseSetStmt(std::vector<Token>::const_iterator &itr);
@@ -49,7 +48,7 @@ private :
     WhileStmt *parseWhileStmt(std::vector<Token>::const_iterator &itr);
     IfStmt *parseIfStmt(std::vector<Token>::const_iterator &itr);
 
-    void safe_next(std::vector<Token>::const_iterator &itr)
+    void safe_next(std::vector<Token>::const_iterator &itr) //mi serve per avanzare il puntatore in maniera sicura
     {
         if (itr != end_)
         {

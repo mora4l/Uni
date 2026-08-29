@@ -25,7 +25,7 @@ struct Block : public Statement {
 
 struct Program{
     void accept(Visitor& visitor) const ; 
-    Statement* root_;
+    Block* root_;
 };
 
 struct NumExpr{
@@ -157,6 +157,4 @@ struct IfStmt : public Statement{
     Block* stmt_block1; 
     Block* stmt_block2; 
 };
-
-
 #endif

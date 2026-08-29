@@ -11,8 +11,8 @@ SyntaxError(std::string msg) : std::runtime_error (msg.c_str()){};
 
 };
 
-struct NotEmptyVector : std::runtime_error{
-    NotEmptyVector(const char* msg) : std::runtime_error (msg){};
-    NotEmptyVector(std::string msg) : std::runtime_error (msg.c_str()){};
+struct EmptyVector : std::runtime_error{
+    EmptyVector(const char* msg) : std::runtime_error (msg){};
+    EmptyVector(std::string msg) : std::runtime_error (msg.c_str()){};
 };
 #endif
