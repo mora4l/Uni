@@ -8,11 +8,11 @@
 class Parser
 {
 public:
-Program* operator()(std::vector<Token> const& tokenStream){
+Block* operator()(std::vector<Token> const& tokenStream){
     auto itr = tokenStream.begin() ; //uso auto per iterare perche il tipo della variable è lungo
     end_ =  tokenStream.end();
 
-    Program* p = parseProgram(itr) ;
+    Block* p = parseStmtBlock(itr) ;
 
     if(itr != end_){
         throw EmptyVector{"Lettura non finita"};
@@ -33,7 +33,7 @@ private :
     
     
     NumExpr *parseNumExpr(std::vector<Token>::const_iterator &itr);
-    Number *parseNumber(std::vector<Token>::const_iterator &itr);
+    Number* parseNumber(std::vector<Token>::const_iterator &itr);
     Variable *parseVariable(std::vector<Token>::const_iterator &itr);
     // Operator* parseOperator(std::vector<Token>::const_iterator& itr);
 

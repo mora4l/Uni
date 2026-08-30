@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
     */
 
      Parser parse ; 
-     Program* program; 
+     Block* program; 
 
     try{
         program = parse(inputTokens); 

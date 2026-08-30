@@ -1,5 +1,6 @@
 #if !defined(ECCEZIONI_H)
 #define ECCEZIONI_H
+#include <stdexcept>
 
 struct LexicalError : std::runtime_error{
     LexicalError(const char *msg) : std::runtime_error(msg) {}

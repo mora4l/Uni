@@ -35,7 +35,8 @@ virtual ~NumExpr() = default ;
 
 struct Operator : public NumExpr{
     
-    enum OpCode { PLUS, MINUS, TIMES, DIV };
+    enum OpCode { ADD, SUB, MUL, DIV };
+    static int stringaAcodiceOperatoriAritmetici(const std::string& word);
 
     Operator(int opCode, NumExpr* l, NumExpr* r) : opCode_(opCode) , left_(l),right_(r){}
     ~Operator() = default ; 
@@ -73,7 +74,14 @@ virtual ~BoolExpr() = default ;
 };
 
 struct BoolOp : public BoolExpr{
-enum boolOpCode {AND , OR , NOT};
+enum boolOpCode {AND , OR , NOT};   
+
+static int stringaAcodiceANDOR(const std::string& word); //ho aggiunto questo metodo per ritornare esattamente l'enum corretto da associare ad opcode per poi passare il valore giusto al visitor
+static int stringaAcodiceNOT(const std::string& word); //ho aggiunto questo metodo per ritornare esattamente l'enum corretto da associare ad opcode per poi passare il valore giusto al visitor
+/*
+il problema era che usando gli inline di parser.cpp a righe ~247 non avevo il valore enum corretto da associare ad opcode . 
+questo perche gli operatori booleani e aritmetici sono tutti dei KEYWORD non distinguibili e il valore di tag sarebbe ritornato sballato
+*/
 
 BoolOp(int boolOpCode, BoolExpr* op_1 , BoolExpr* op_2) : boolOpCode_(boolOpCode) , op1(op_1) , op2(op_2){} //serve per AND e OR
 BoolOp(int boolOpCode, BoolExpr* op_1) : boolOpCode_(boolOpCode) , op1(op_1) , op2(nullptr){} //serve per il NOT
@@ -98,6 +106,9 @@ bool boolean ;
 
 struct RelOp : public BoolExpr{
  enum relCode {LT , GT , EQ};
+
+ static int stringaAcodiceLTGTEQ(const std::string& word); //ho aggiunto questo metodo per ritornare esattamente l'enum corretto da associare ad opcode per poi passare il valore giusto al visitor
+
     RelOp(int relCode, NumExpr* num_1, NumExpr* num_2) : relCode_(relCode) , num1_l(num_1) , num2_r(num_2) {}
     ~RelOp() = default ; 
 
