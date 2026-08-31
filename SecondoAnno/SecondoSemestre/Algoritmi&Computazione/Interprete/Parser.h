@@ -14,6 +14,8 @@ Block* operator()(std::vector<Token> const& tokenStream){
 
     Block* p = parseStmtBlock(itr) ;
 
+    
+    
     if(itr != end_){
         throw EmptyVector{"Lettura non finita"};
     }

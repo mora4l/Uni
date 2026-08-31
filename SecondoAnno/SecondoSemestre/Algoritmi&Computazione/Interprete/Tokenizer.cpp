@@ -118,7 +118,7 @@ void Tokenizer::tokenizeFileInput(std::ifstream &programmadafile, std::vector<To
         else
         {
             std::stringstream temp;
-            temp << "Carattere non valido : " << ch
+            temp << "Bad news from tokenizer !! Carattere non valido : " << ch
                  << " in input alla linea " << rowCount;
             throw LexicalError{temp.str()};
         }

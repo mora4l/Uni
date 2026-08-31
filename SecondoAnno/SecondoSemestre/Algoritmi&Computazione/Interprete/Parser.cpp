@@ -44,7 +44,7 @@ Block *Parser::parseStmtBlock(std::vector<Token>::const_iterator &itr)
 }
 
 
-/*** stmt_block -> ***/
+/*** stmt_list -> ***/
 
 Block *Parser::parseBlock(std::vector<Token>::const_iterator &itr)
 {
@@ -53,20 +53,22 @@ Block *Parser::parseBlock(std::vector<Token>::const_iterator &itr)
 
     // statement list → statement statement list | statement
     // ( BLOCK (SET x x )  )
-    std::vector<Statement *> another_statement;
-    while (itr->tag != Token::RP)
+/*
+//faccio un vector di statement : questo perchè ho deciso che se lo statement_list ha un elemento , ritornerò nel vettore un solo elemento ; 
+altrimenti ritornero un vettore con più elementi
+*/
+    std::vector<Statement *> another_statement; 
+    while (itr->tag != Token::RP) //finchè non incontro la ")" del BLOCK da cui ho chiamato questa funzione , dentro ci saranno statement da leggere
     {
 
         if (itr->tag == Token::LP)
         { // dopo BLOCK PER FORZA ci deve essere uno statement , quindi PER FORZA DEVE ESSERCI "(". la ")" la leggero in ParseStatement , come facevo in parseSetStmtBlock
             safe_next(itr);
             another_statement.push_back(parseStatement(itr));
-        }
-        else
-        {
+        }else{
             std::stringstream temp;
             temp << "Unexpected token: " << *itr << std::endl
-                 << "Expected at least one statement after BLOCK declaration";
+                 << "Expected at least one statement after BLOCK declaration with opening parenthesis '(' ";
             throw SyntaxError{temp.str()};
         }
     }
@@ -263,7 +265,7 @@ WhileStmt *Parser::parseWhileStmt(std::vector<Token>::const_iterator &itr)
 }
 
 
-/*** num_expr -> ***/
+/*** bool_expr -> ***/
 
 // questi inline check mi servono per capire se ALMENO il token corrente è uno di questi elencati
 // nel momento in cui sappiamo che il token è uno di questi , andremo a capire di quale si tratta tramite i metodi implementati in Syntax.h nelle classi RelOp e BoolOp
@@ -284,8 +286,7 @@ inline bool isNotOperator(Token const &tok)
 
 BoolExpr *Parser::parseBoolExpr(std::vector<Token>::const_iterator &itr)
 {
-    safe_next(itr); // devo iniziare a leggere (LT x x ), incluse le parentesi iniziali e finali
-
+    //non mi serve mettere un safenext qui , altrimenti andrei avanti di uno inutilmente e creando un effetto domino letale sul parsing. stesso discorso in parseNumExpr
     if (itr->tag == Token::LP) // se inizio con la "(" posso andare avanti , altrimenti già qui mi fermo
     {
         safe_next(itr); // avanzo a leggere cosa ce dopo la parentesi : adesso devo trovare per forza un operatore
@@ -378,7 +379,7 @@ questo a causa del fatto che il not richiede solo un parametro nel costruttore e
 }
 
 
-/*** bool_expr -> ***/
+/*** num_expr -> ***/
 
 Number* Parser::parseNumber(std::vector<Token>::const_iterator &itr){
     std::stringstream temp;
@@ -396,16 +397,15 @@ Variable* Parser::parseVariable(std::vector<Token>::const_iterator& itr) {
 	return v;
 }
 
-inline bool Possible_Operator(Token const &tok) //stesso discorso delle righe ~247
+inline bool Possible_Operator(Token const &tok) //stesso discorso delle righe iniziali di ParseBoolExpr
 {
     return (tok.word == "ADD" or tok.word == "SUB" or tok.word == "MUL" or tok.word == "DIV");
 }
 
 NumExpr *Parser::parseNumExpr(std::vector<Token>::const_iterator &itr)
 {
-    safe_next(itr);
 
-    if (itr->tag == Token::LP)
+    if (itr->tag == Token::LP) //il PRIMO CASO è che num_expr abbia ( OPERATORE num_expr num_expr )
     {                   // intanto la num expression deve iniziare a sua volta con "("
         safe_next(itr); // avanzo a leggere che tipo di operatore abbiamo
 
@@ -416,7 +416,7 @@ NumExpr *Parser::parseNumExpr(std::vector<Token>::const_iterator &itr)
             NumExpr *valore1_NumExpr = parseNumExpr(itr);
             NumExpr *valore_2_NumExpr = parseNumExpr(itr);
 
-            if(itr->tag == Token::RP){
+            if(itr->tag == Token::RP){ //e se non ho altri operatori definiti ricorsivamente controllo che ci sia la ")" finale...
                 safe_next(itr); //mando avanti la lettura e poi ritorno
                 return new Operator(opCode_num_expr,valore1_NumExpr,valore_2_NumExpr);
             }else{ //se dopo aver fatto un espressione aritmetica non c'era la ")" ...
@@ -427,28 +427,34 @@ NumExpr *Parser::parseNumExpr(std::vector<Token>::const_iterator &itr)
              << "Expected closing parenthesis for num expression";
         throw SyntaxError{temp.str()};
             }
-        }else if(itr->tag==Token::CONST){ //caso number
+        }else{
+                            std::stringstream temp;
+        temp << "Unexpected token: " << *itr << std::endl
+             << "Expected a valid aritmethic operator after '(' ";
+        throw SyntaxError{temp.str()};
+        }
+    }else if(itr->tag==Token::ID){//il SECONDO CASO è che num_expr abbia un number semplice che non richiede parentesi inziali e finali
+
+        Variable* variabile_num_expr = parseVariable(itr);
+        
+        return variabile_num_expr; //qua non devo fare new perche ritorno gia un variable* 
+    }else if(itr->tag==Token::CONST){ //caso number
         //ho appena letto che è un number
         Number* numero_num_expr = parseNumber(itr);
         //vado avanti e ritorno senza problemi : dalla cfg vedo che non devo leggere ne parentesi e ne altro
             
             return numero_num_expr;
-    }else if(itr->tag==Token::ID){//caso variable
-        Variable* variabile_num_expr = parseVariable(itr);
-        
-        return variabile_num_expr; //qua non devo fare new perche ritorno gia un variable* 
-    }else{ //se dopo la "(" non c'era un operatore , un numero o una variabile allora ....
+    }else{
+/*
+qui ricadiamo nel caso in cui 
+1. num_expr non è un number
+2. num_expr non è un variable_id
+3. num_expr non ha la "(" richiesta per un operatore aritmetico
+*/
         std::stringstream temp;
         temp << "Unexpected token: " << *itr << std::endl
-             << "Expected a number or a variable or an aritmethic operator after '('";
+             << "Expected a number or a variable or an aritmethic operator"; 
         throw SyntaxError{temp.str()};
     }
-    }
-    else //se invece non c'era neanche la "(" iniziale ...
-    {
-        std::stringstream temp;
-        temp << "Unexpected token: " << *itr << std::endl
-             << "Expected opening parenthesis for num expression";
-        throw SyntaxError{temp.str()};
-    }
+
 }

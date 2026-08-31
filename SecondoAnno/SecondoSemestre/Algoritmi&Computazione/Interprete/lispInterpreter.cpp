@@ -62,6 +62,7 @@ int main(int argc, char *argv[])
 
     try{
         program = parse(inputTokens); 
+
     }catch(SyntaxError& e){
         std::cerr << e.what() <<std::endl ; 
         return EXIT_FAILURE ; 
@@ -71,6 +72,9 @@ int main(int argc, char *argv[])
 		return EXIT_FAILURE;
     }
     
+
+    
+  
 
     return EXIT_SUCCESS;
 }
