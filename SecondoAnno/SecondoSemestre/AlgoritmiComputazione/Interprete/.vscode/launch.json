@@ -6,7 +6,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/lispInterpreter",
-            "args": ["/home/codicivscode/Uni/SecondoAnno/SecondoSemestre/Algoritmi&Computazione/Interprete/file.txt"],
+            "args": ["${workspaceFolder}/file.txt"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "MIMode": "gdb",

@@ -16,4 +16,9 @@ struct EmptyVector : std::runtime_error{
     EmptyVector(const char* msg) : std::runtime_error (msg){};
     EmptyVector(std::string msg) : std::runtime_error (msg.c_str()){};
 };
+
+struct EvaluationError : std::runtime_error{
+    EvaluationError(const char* msg) : std::runtime_error (msg){};
+    EvaluationError(std::string msg) : std::runtime_error (msg.c_str()){};
+};
 #endif

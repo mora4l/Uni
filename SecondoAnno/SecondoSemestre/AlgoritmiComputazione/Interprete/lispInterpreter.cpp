@@ -5,6 +5,8 @@
 #include "Token.h"
 #include "Tokenizer.h"
 #include "Parser.h"
+#include "SymbolTable.h"
+#include "PrintVisitor.h"
 
 int main(int argc, char *argv[])
 {
@@ -27,7 +29,7 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
 
-    //analisi lessicale
+    // analisi lessicale
     Tokenizer tokenizza;
 
     std::vector<Token> inputTokens;
@@ -36,7 +38,7 @@ int main(int argc, char *argv[])
     {
         inputTokens = std::move(tokenizza(programmadafile));
     }
-    catch (LexicalError& e)
+    catch (LexicalError &e)
     {
         std::cerr << e.what() << std::endl;
         return EXIT_FAILURE;
@@ -49,32 +51,43 @@ int main(int argc, char *argv[])
     }
 
     // for (const auto& tok : inputTokens) { //con & non faccio nessuna copia per stampare
-	// 	std::cout << tok << " "<<std::endl;
-	// }
+    // 	std::cout << tok << " "<<std::endl;
+    // }
 
-    /*adesso ho in un vector tutti i token , divisi per cosa sono 
-    ora devo fare l'analisi sintattica con il parsing e creare l'albero sintattico 
+    /*adesso ho in un vector tutti i token , divisi per cosa sono
+    ora devo fare l'analisi sintattica con il parsing e creare l'albero sintattico
     adesso non so ancora se il codice ha senso , "so di aver letto delle cose" , ma non so se abbiano senso
     */
-    
-     Parser parse ; 
-     Block* program; 
 
-    try{
-        program = parse(inputTokens); 
+    Parser parse;
+    Block *program;
 
-    }catch(SyntaxError& e){
-        std::cerr << e.what() <<std::endl ; 
-        return EXIT_FAILURE ; 
-    }catch (std::exception& e){
-        std::cerr << "Something odd happened during parsing, got: " << std::endl;
-		std::cerr << e.what() << std::endl;
-		return EXIT_FAILURE;
+    try
+    {
+        program = parse(inputTokens);
     }
-    
+    catch (SyntaxError &e)
+    {
+        std::cerr << e.what() << std::endl;
+        return EXIT_FAILURE;
+    }
+    catch (std::exception &e)
+    {
+        std::cerr << "Something odd happened during parsing, got: " << std::endl;
+        std::cerr << e.what() << std::endl;
+        return EXIT_FAILURE;
+    }
 
-    
-  
+    // analisi semantica, a questo punto abbiamo l'albero ast
+    // la symbol table mi serve per associare un nome di variabile (string che è un ID) ad un numero (int che è un CONST)
+    SymbolTable symboltable;
+
+    /*
+    QUESTO MI SERVE PER STAMPARE L' AST
+    PrintVisitor printer;
+
+    program->accept(printer);
+    */
 
     return EXIT_SUCCESS;
 }

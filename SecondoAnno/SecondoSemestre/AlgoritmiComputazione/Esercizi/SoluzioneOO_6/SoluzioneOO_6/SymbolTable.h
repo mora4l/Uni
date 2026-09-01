@@ -25,6 +25,7 @@ public:
 		}
 		return (*map.find(key)).second;
 	}
+	
 	void setValue(std::string const& key, int value) {
 		map[key] = value;
 	}
