@@ -1,5 +1,5 @@
 #if !defined(VISITOR_H)
-#define Visitor_H
+#define VISITOR_H
 
 #include "Syntax.h"
 

@@ -4,6 +4,11 @@
 da finire , intanto faccio parser
 qua ho fatto solo l'identificazione dei simboli degli operatori algebrici/booleani
 */
+
+class PrintVisitor : public Visitor{
+    
+};
+
 class InterpreterVisitor : public Visitor{
     public :
     void visit (Program const& program)override{
@@ -92,15 +97,15 @@ class InterpreterVisitor : public Visitor{
         op.right_->accept(*this);
 
         switch(op.opCode_){
-            case Operator::PLUS : 
+            case Operator::ADD : 
             valore_sinistra += temp_l; 
             break ;
 
-            case Operator::MINUS : 
+            case Operator::SUB : 
             valore_sinistra = temp_l - valore_sinistra; 
             break;
 
-            case Operator::TIMES : 
+            case Operator::MUL : 
             valore_sinistra *= temp_l; 
             break; 
 

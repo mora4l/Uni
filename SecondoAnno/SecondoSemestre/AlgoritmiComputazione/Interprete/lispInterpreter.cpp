@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
     ora devo fare l'analisi sintattica con il parsing e creare l'albero sintattico 
     adesso non so ancora se il codice ha senso , "so di aver letto delle cose" , ma non so se abbiano senso
     */
-
+    
      Parser parse ; 
      Block* program; 
 

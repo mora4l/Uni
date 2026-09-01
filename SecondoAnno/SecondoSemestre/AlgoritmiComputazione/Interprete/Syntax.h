@@ -18,6 +18,7 @@ struct Statement{
 
 struct Block : public Statement {
     Block(std::vector<Statement*> stmts) : statements_{std::move(stmts)}{};
+
     void accept(Visitor& visitor) const override ; 
     std::vector<Statement*> statements_;
 

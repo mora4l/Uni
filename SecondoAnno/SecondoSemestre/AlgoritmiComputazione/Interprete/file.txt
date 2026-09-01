@@ -19,6 +19,4 @@
       (PRINT i)
       (PRINT isprime)
       (SET i (ADD i 1)))))
-    
-
-
+  
