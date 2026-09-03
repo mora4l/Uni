@@ -8,11 +8,11 @@
 class Parser
 {
 public:
-Block* operator()(std::vector<Token> const& tokenStream){
+Program* operator()(std::vector<Token> const& tokenStream){
     auto itr = tokenStream.begin() ; //uso auto per iterare perche il tipo della variable è lungo
     end_ =  tokenStream.end();
 
-    Block* p = parseStmtBlock(itr) ;
+    Program* p = parseProgram(itr) ;
 
     
     
@@ -40,7 +40,7 @@ private :
     // Operator* parseOperator(std::vector<Token>::const_iterator& itr);
 
     BoolExpr *parseBoolExpr(std::vector<Token>::const_iterator &itr);
-    // BoolConst *parseBoolConst(std::vector<Token>::const_iterator &itr);
+    BoolConst *parseBoolConst(std::vector<Token>::const_iterator &itr);
     // RelOp *parseRelOp(std::vector<Token>::const_iterator &itr);
     // BoolOp *parseBoolOp(std::vector<Token>::const_iterator &itr);
 

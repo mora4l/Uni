@@ -1,3 +1,10 @@
+/*
+per debuggare
+g++ -g -Wall -Wextra -std=c++20 lispInterpreter.cpp Parser.cpp Syntax.cpp Tokenizer.cpp Token.cpp  -o lispInterpreter
+
+per scovare tutti gli errori 
+g++ -g -Wall -Wextra -Wpedantic -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Woverloaded-virtual -std=c++20 lispInterpreter.cpp Parser.cpp Syntax.cpp Tokenizer.cpp Token.cpp -o lispInterpreter
+*/
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
@@ -7,6 +14,7 @@
 #include "Parser.h"
 #include "SymbolTable.h"
 #include "PrintVisitor.h"
+#include "EvaluationVisitor.h"
 
 int main(int argc, char *argv[])
 {
@@ -60,7 +68,7 @@ int main(int argc, char *argv[])
     */
 
     Parser parse;
-    Block *program;
+    Program *program;
 
     try
     {
@@ -82,12 +90,28 @@ int main(int argc, char *argv[])
     // la symbol table mi serve per associare un nome di variabile (string che è un ID) ad un numero (int che è un CONST)
     SymbolTable symboltable;
 
-    /*
-    QUESTO MI SERVE PER STAMPARE L' AST
-    PrintVisitor printer;
+    EvaluationVisitor evaluator{ symboltable, std::cout }; 
+    //EvaluationVisitor evaluator{std::cout};
+    try {
+		if (program != nullptr) {
+			program->accept(evaluator); //in questo modo mantengo il corretto uso dell'overriding , chiamando la accept su program che va a sua volta a invocare la corretta visit in Evalutation.h (che a sua volta inizierà a esplorare l'albero)
+		}
+	}
+	catch (EvaluationError& e) {
+		std::cerr << e.what() << std::endl;
+		return EXIT_FAILURE;
+	}
+	catch (std::exception& e) {
+		std::cerr << "Something odd happened during parsing, got: " << std::endl;
+		std::cerr << e.what() << std::endl;
+		return EXIT_FAILURE;
+	}
+    
+    //QUESTO MI SERVE PER STAMPARE L' AST
+    // PrintVisitor printer;
 
-    program->accept(printer);
-    */
+    // program->accept(printer);
+    
 
     return EXIT_SUCCESS;
 }

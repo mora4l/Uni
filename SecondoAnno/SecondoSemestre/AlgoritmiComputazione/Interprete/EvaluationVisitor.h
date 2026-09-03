@@ -14,12 +14,14 @@ public:
     ~EvaluationVisitor() = default;
     EvaluationVisitor &operator=(const EvaluationVisitor &other) = delete;
 
+    void visit(Program const& program)override{
+        program.root_->accept(*this); //con la visit di program inizio a esplorare la root dell'albero
+    }
     void visit(Block const &block) override
-    { // da controllare
+    { 
         for (Statement *statement : block.statements_)
         {
             statement->accept(*this);
-            console_ << std::endl;
         }
     }
 
@@ -37,12 +39,21 @@ public:
         symbolTable_.setValue(in.variable_id_->id_, value);
     }
 
-    // void visit(WhileStmt const& whil) override{
-    //     whil.bool_expr_->accept(*this); //ottengo il risultato della bool expr (true o false)
-    //     whil.stmt_block_->accept(*this);
-    // da completare
+    void visit(WhileStmt const& whil) override{
+        bool condizione_while ;
 
-    // }
+        whil.bool_expr_->accept(*this); //ottengo il risultato della bool expr (true o false)
+        
+        condizione_while =  lastBoolValue_ ; //e me lo salvo in una variabile
+
+        while(condizione_while){ //il while verifica "condizione_while" per la prima volta , poi pero devo trovare un modo di fermarmi se "condizione_while" non fosse più vera
+            whil.stmt_block_->accept(*this); //se entro nel while eseguo tutto cio che ho da eseguire
+
+            whil.bool_expr_->accept(*this); // e alla fine di tutto cio che ho eseguito ri-controllo la condizione , eseguendo di nuovo i calcoli necessari
+            condizione_while = lastBoolValue_ ;  //se la condizione_while non dovesse essere più valida , il while finisce
+            
+        }
+    }
 
     void visit(IfStmt const &iff) override
     {
@@ -107,15 +118,63 @@ public:
     }
 
     void visit(Variable const& var)override{
-        lastValue_ = symbolTable_.getValue(var.id_); //?? da capire
+        lastValue_ = symbolTable_.getValue(var.id_);  //mi ritorna il valore associato a quella variabile
     }
 
-    /*da finire bool op , bool const e rel op*/
+    void visit(BoolOp const& boolop) override{
+        boolop.op1->accept(*this);
+        bool boolop_r = lastBoolValue_;
+
+        boolop.op2->accept(*this);
+        bool boolop_l = lastBoolValue_; 
+
+        // 1 AND 0 nell'albero viene creato con 0 a destra e 1 a sinistra , ma poi nella visita guardo prima il destro . quindi devo usarli "al contrario"
+        if(boolop.boolOpCode_ == 0 ){
+            lastBoolValue_ = boolop_l && boolop_r ; 
+        }else if(boolop.boolOpCode_ == 1){
+            lastBoolValue_ = boolop_l || boolop_r ; 
+        }else if(boolop.boolOpCode_ == 2){
+            lastBoolValue_ = !boolop_r ;  //op1 , quello definito nel costruttore fatto apposta per il not in syntax.h , l'ho salvato in boolop_r
+        }
+    }
+
+    void visit(BoolConst const& boolconst) override{
+        lastBoolValue_ = boolconst.boolean ; 
+    }
+
+    void visit(RelOp const& relop) override{
+        relop.num1_l->accept(*this);
+        bool relop_r = lastBoolValue_ ; 
+
+        relop.num2_r->accept(*this) ;
+        bool relop_l = lastBoolValue_ ; 
+
+        if(relop.relCode_ == 0 ){
+            if(relop_l < relop_r){
+                lastBoolValue_ = true ; 
+            }else{
+                lastBoolValue_ = false ; 
+            }
+        }else if(relop.relCode_ == 1){
+            if(relop_l > relop_r){
+                lastBoolValue_ = true ; 
+            }else{
+                lastBoolValue_ = false ; 
+            }
+        }else if(relop.relCode_ == 2){
+            if(relop_l == relop_r){
+                lastBoolValue_ = true ; 
+            }else{
+                lastBoolValue_ = false ; 
+            }
+        }
+    }
 
 private:
     SymbolTable &symbolTable_;
     std::ostream &console_;
     int lastValue_;
+    bool lastBoolValue_ ; 
 };
 
 #endif

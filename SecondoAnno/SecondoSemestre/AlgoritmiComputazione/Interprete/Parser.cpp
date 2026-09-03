@@ -2,7 +2,10 @@
 #include "Parser.h"
 
 /*** program -> ***/
-
+Program* Parser::parseProgram(std::vector<Token>::const_iterator &itr){
+    Block* programma_parsabile = parseStmtBlock(itr);
+    return new Program{programma_parsabile};
+}
 Block *Parser::parseStmtBlock(std::vector<Token>::const_iterator &itr)
 {
     /*
@@ -262,6 +265,14 @@ WhileStmt *Parser::parseWhileStmt(std::vector<Token>::const_iterator &itr)
 
 /*** bool_expr -> ***/
 
+BoolConst* Parser::parseBoolConst(std::vector<Token>::const_iterator &itr){
+    
+    bool variabile_booleana = (itr->word == "TRUE"); //qua non funziona cio che ho fatto in parsenumber , quindi faccio cosi 
+
+    BoolConst* var_booleana = new BoolConst{variabile_booleana};
+    safe_next(itr);
+    return var_booleana ; 
+}
 // questi inline check mi servono per capire se ALMENO il token corrente è uno di questi elencati
 // nel momento in cui sappiamo che il token è uno di questi , andremo a capire di quale si tratta tramite i metodi implementati in Syntax.h nelle classi RelOp e BoolOp
 inline bool isRelOperator(Token const &tok)
@@ -274,9 +285,13 @@ inline bool isBoolOperators(Token const &tok)
     return (tok.word == "AND") or (tok.word == "OR");
 }
 
-inline bool isNotOperator(Token const &tok)
+inline bool isNotOperator(Token const &tok) //il not l'ho messo a parte perche in questo SPECIFICO caso , se stessi leggendo il not, devo comportarmi in maniera leggermente diversa dal caso di AND o OR
 {
     return (tok.word == "NOT");
+}
+
+inline bool isTrueFalse(Token const& tok){//mi serve per capire se cio che sto leggendo ALMENO ricade in uno di questi due casi 
+    return (tok.word == "FALSE") or (tok.word == "TRUE") ; 
 }
 
 BoolExpr *Parser::parseBoolExpr(std::vector<Token>::const_iterator &itr)
@@ -364,15 +379,19 @@ questo a causa del fatto che il not richiede solo un parametro nel costruttore e
             throw SyntaxError{temp.str()};
         }
     }
-    else // se invece non c'era manco "(" ...
+    else if(isTrueFalse(*itr)) // se invece non c'era manco "(" ...
     {
+        BoolConst* variabile_booleana_boolexpr = parseBoolConst(itr);
+
+        return variabile_booleana_boolexpr ;
+    }else{
         std::stringstream temp;
         temp << "Unexpected token: " << *itr << std::endl
-             << "Expected opening parenthesis for bool expression";
+             << "Expected opening parenthesis for bool expression or TRUE / FALSE boolean variable";
         throw SyntaxError{temp.str()};
+
     }
 }
-
 /*** num_expr -> ***/
 
 Number *Parser::parseNumber(std::vector<Token>::const_iterator &itr)

@@ -11,6 +11,12 @@ quando potrebbe presentarsi effettivamente la situazione in cui servono
 
 class Visitor;
 
+/*usiamo un patter visitor : separiamo la struttura della sintassi ( le classi dell' AST ) dal comportamento di ognuna . 
+il comportamento di ogni classe della sintassi lo colleghiamo attraverso un metodo che hanno tutte le classi : accept
+accept è virtuale e a runtime sceglie quale "accept" scegliere , in base al tipo del nodo
+dentro ogni accept verra chiamato il giusto metodo overloadato visit per quel nodo 
+*/
+
 struct Statement
 {
     virtual void accept(Visitor &visitor) const = 0; // ogni classe dell'albero ha un metodo accept che serve per chiamare il metodo visit passando se stessa (*this)
@@ -142,6 +148,8 @@ struct RelOp : public BoolExpr
     NumExpr *num1_l;
     NumExpr *num2_r;
 };
+
+
 
 struct PrintStmt : public Statement
 {

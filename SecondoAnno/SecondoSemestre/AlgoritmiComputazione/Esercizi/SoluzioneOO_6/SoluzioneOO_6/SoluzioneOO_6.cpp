@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
 
 	// Semantical analysis (evaluation)
 	SymbolTable symbolTable;
-	//EvaluationVisitor evaluator{ symbolTable, std::cout };
+	EvaluationVisitor evaluator{ symbolTable, std::cout };
 	PrintVisitor evaluator{ std::cout };
 	try {
 		if (program != nullptr) {

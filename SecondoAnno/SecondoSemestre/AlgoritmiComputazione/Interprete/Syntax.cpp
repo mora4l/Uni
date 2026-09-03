@@ -5,7 +5,7 @@
 #include "Visitor.h"
 #include "Eccezioni.h"
 
-
+//
 void Program::accept(Visitor& visitor) const {
     visitor.visit(*this);
 };
@@ -103,6 +103,7 @@ pero comunque lascio un throw perche potrebbe essere comodo come "difesa" a poss
 void BoolConst::accept(Visitor& visitor) const {
     visitor.visit(*this);
 };
+
 
 void RelOp::accept(Visitor& visitor) const {
     visitor.visit(*this);
