@@ -23,7 +23,7 @@ public:
         if (itr == map.end())
         {
             std::stringstream temp;
-            temp << "Undeclared identifier: " << key;
+            temp << "Not declared variable : " << key;
             throw EvaluationError{temp.str()};
         }
         return (*map.find(key)).second;

@@ -2,7 +2,7 @@
 #include <sstream>
 #include <cstring>
 #include <algorithm>
-
+#include <iostream>
 #include "Tokenizer.h"
 
 
@@ -10,22 +10,22 @@
 //esempio : ho letto 3
 std::string Tokenizer::tokenizzaCostanti(std::ifstream &programmadafile, std::stringstream &temp)
 {
-    bool dotSeen = false ; 
     char ch ; 
 
     do{
         ch = programmadafile.get() ; //continuo a prendere quello che è "attaccato" al primo char passato
+
         if(std::isdigit(ch)){ //se è un numero continuo a leggerlo (33333333)
             temp << ch ; 
         }
-        if(ch == '.'){ //se ho letto "." guardo : 
-            if(not dotSeen){ //se ho 33333333. : ok va bene , non potra più esserci un altro punto per forza
-                dotSeen = true ; 
-                temp << ch ; //continuo a leggere : 33333333.123456 ecc
-            }else{ //qua siamo nel caso in cui ho appena letto 33333333.. : c'è un errore
-                throw LexicalError("Doppio punto decimale") ;
-            }
-        }
+        
+        if(ch=='.'){
+            std::stringstream temp;
+            temp << "Only integer value allowed in file.txt" ;
+        throw LexicalError(temp.str()) ;
+        } //se ho letto "." guardo : 
+
+        
     }while(std::isdigit(ch) || ch == '.'); //finchè non abbiamo un numero oppure un punto vado avanti
 
     programmadafile.unget() ; //l'ultimo carattere letto è proprio quello che ha fatto interrompere il ciclo quindi lo scartiamo
@@ -96,7 +96,7 @@ void Tokenizer::tokenizeFileInput(std::ifstream &programmadafile, std::vector<To
             { // mi leggo tutto ciò che è attaccato al primo carattere
                 ch = programmadafile.get();
 
-                if (std::isalpha(ch) or std::isdigit(ch) or ch == '_')
+                if (std::isalpha(ch) or std::isdigit(ch) or ch == '_') //!!!da controllare questo controllo per _ !!! 
                 {
                     temp << ch;
                 }
