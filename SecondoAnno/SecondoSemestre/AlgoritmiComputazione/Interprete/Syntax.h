@@ -66,12 +66,12 @@ struct Operator : public NumExpr
 
 struct Number : public NumExpr
 {
-    Number(int n) : n_(n) {}
+    Number(int64_t n) : n_(n) {}
     ~Number() = default;
 
     void accept(Visitor &visitor) const override;
 
-    int n_;
+    int64_t n_; ////i valori interi sono , da specifica, a 64 bit quindi devo usare il tipo "int64_t"
 };
 
 struct Variable : public NumExpr
@@ -156,7 +156,6 @@ struct PrintStmt : public Statement
     void accept(Visitor &visitor) const override;
     PrintStmt(NumExpr *num_expr) : num_expr_(num_expr) {};
     ~PrintStmt() = default;
-
     NumExpr *num_expr_;
 };
 

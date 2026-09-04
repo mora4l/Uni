@@ -167,6 +167,7 @@ InputStmt *Parser::parseInputStmt(std::vector<Token>::const_iterator &itr)
 {
     safe_next(itr); // dopo aver letto INPUT avanzo
     
+
     Variable *variabile_input = parseVariable(itr);
 
     if (itr->tag == Token::RP)
@@ -402,7 +403,7 @@ Number *Parser::parseNumber(std::vector<Token>::const_iterator &itr)
 {
     std::stringstream temp;
     temp << itr->word;
-    int num;
+    int64_t num;
     temp >> num;
     Number *c = new Number{num};
     safe_next(itr); // avanzo solo in parsenumber l'iteratore
@@ -413,7 +414,6 @@ Variable *Parser::parseVariable(std::vector<Token>::const_iterator &itr)
 {
     if (itr->tag != Token::KWORD)
     {
-
         Variable *v = new Variable{itr->word};
         safe_next(itr);
         return v;

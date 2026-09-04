@@ -1,4 +1,5 @@
 (BLOCK 
-(SET n 10)
-(WHILE (GT n 0) (BLOCK (PRINT 4) (SET n (SUB n 1))))
+(SET n 3)
+(SET n (ADD n 1))
+(PRINT n)
 )

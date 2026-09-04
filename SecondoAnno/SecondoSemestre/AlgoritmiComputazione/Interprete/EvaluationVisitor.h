@@ -65,8 +65,8 @@ in pratica parte dall inizio della stringa (stringaDaConsole.begin()) e va avant
 */
             if ((start < stringaDaConsole.size()) && std::all_of(stringaDaConsole.begin() + start, stringaDaConsole.end(),[](unsigned char c){ return std::isdigit(c); }))
             {
-                int value = std::stoi(stringaDaConsole); //la stoi invece mi serve per convertire la stringa in
-                symbolTable_.setValue(in.variable_id_->id_, value);
+                int64_t value = std::stoll(stringaDaConsole); //la stoll invece mi serve per convertire la stringa in un int long long (stoi invece mi andrebbe bene per un int normale)
+                symbolTable_.setValue(in.variable_id_->id_, value); //input funziona che : se non ha mai letto la variabile la crea , mentre se esiste già la sovrascrive . set invece ha un controllo in più : prima di sovrascriverla si chiede se esiste già
             }
             else
             {
@@ -83,6 +83,13 @@ in pratica parte dall inizio della stringa (stringaDaConsole.begin()) e va avant
         }
     }
 
+/*
+check correttezza while
+    (BLOCK 
+(SET n 10)
+(WHILE (GT n 0) (BLOCK (PRINT n) (SET n (SUB n 1))))
+)
+    */
     void visit(WhileStmt const &whil) override
     {
         bool condizione_while;
@@ -100,6 +107,13 @@ in pratica parte dall inizio della stringa (stringaDaConsole.begin()) e va avant
         }
     }
 
+    /*
+check correttezza if
+(BLOCK 
+(SET n 10)
+(IF (LT n 100) (PRINT 23) (PRINT 67 ))
+)
+*/
     void visit(IfStmt const &iff) override
     {
         try{//stesso discorso fatto nella visit di print
@@ -124,45 +138,61 @@ in pratica parte dall inizio della stringa (stringaDaConsole.begin()) e va avant
     void visit(SetStmt const &set) override
     {
         // devo estrarre dall'oggetto Variable* la variabile id  . perche set ha un oggetto Variable ma che va estratto a sua volta per prendere l'attributo di quell oggetto
-        set.num_expr_->accept(*this);
-        symbolTable_.setValue(set.variable_id_->id_, lastValue_);
+        try{
+
+            set.num_expr_->accept(*this);
+            symbolTable_.setValue(set.variable_id_->id_, lastValue_);
+        }catch(EvaluationError& e){
+            throw EvaluationError{e.what()};
+        }
     }
 
     void visit(Operator const &op) override
     {
-        op.right_->accept(*this);
-        int ris_op_r = lastValue_;
-
-        op.left_->accept(*this);
-
-        int ris_op_l = lastValue_;
-
-        if (op.opCode_ == 0)
-        {
-            lastValue_ = ris_op_l + ris_op_r;
-        }
-        else if (op.opCode_ == 1)
-        {
-            lastValue_ = ris_op_l - ris_op_r;
-        }
-        else if (op.opCode_ == 2)
-        {
-            lastValue_ = ris_op_l * ris_op_r;
-        }
-        else if (op.opCode_ == 3)
-        {
-
-            if (ris_op_l != 0)
+/*
+metto try cosi se ce un problema più in basso che blocca l'esecuzione posso capire in che parte del codice è . 
+se per esempio dentro ad una ADD ho una variabile non dichiarata , allora la variabile non dichiarata lancerà un errore che verrà a sua volta preso 
+da questo try affinchè si capisca meglio da dove viene l'errore
+*/
+        try{
+            op.right_->accept(*this);
+            int64_t ris_op_r = lastValue_;
+    
+            op.left_->accept(*this);
+    
+            int64_t ris_op_l = lastValue_;
+    
+            if (op.opCode_ == 0)
             {
-
-                lastValue_ = ris_op_l / ris_op_r;
+                lastValue_ = ris_op_l + ris_op_r;
             }
-            else
+            else if (op.opCode_ == 1)
             {
-                std::stringstream temp;
-                temp << "Divisione per zero non ammessa" << std::endl;
-                throw EvaluationError{temp.str()};
+                lastValue_ = ris_op_l - ris_op_r;
             }
+            else if (op.opCode_ == 2)
+            {
+                lastValue_ = ris_op_l * ris_op_r;
+            }
+            else if (op.opCode_ == 3)
+            {
+    
+                if (ris_op_l != 0)
+                {
+    
+                    lastValue_ = ris_op_l / ris_op_r;
+                }
+                else
+                {
+                    std::stringstream temp;
+                    temp << "Divisione per zero non ammessa" << std::endl;
+                    throw EvaluationError{temp.str()};
+                }
+            }
+        }catch(EvaluationError& e){
+                                std::stringstream temp;
+                    temp << "You can't use an operator with this problem : " <<std::endl<<e.what();
+                    throw EvaluationError{temp.str()};
         }
     }
 
@@ -173,29 +203,43 @@ in pratica parte dall inizio della stringa (stringaDaConsole.begin()) e va avant
 
     void visit(Variable const &var) override
     {
-        lastValue_ = symbolTable_.getValue(var.id_); // mi ritorna il valore associato a quella variabile
+
+            lastValue_ = symbolTable_.getValue(var.id_); // mi ritorna il valore associato a quella variabile
+
     }
 
     void visit(BoolOp const &boolop) override
     {
-        boolop.op1->accept(*this);
-        bool boolop_r = lastBoolValue_;
+/*
+metto try cosi se ce un problema più in basso che blocca l'esecuzione posso capire in che parte del codice è . 
+se per esempio dentro ad una AND ho una variabile non dichiarata , allora la variabile non dichiarata lancerà un errore che verrà a sua volta preso 
+da questo try affinchè si capisca meglio da dove viene l'errore
+*/
+        try{
 
-        boolop.op2->accept(*this);
-        bool boolop_l = lastBoolValue_;
-
-        // 1 AND 0 nell'albero viene creato con 0 a destra e 1 a sinistra , ma poi nella visita guardo prima il destro . quindi devo usarli "al contrario"
-        if (boolop.boolOpCode_ == 0)
-        {
-            lastBoolValue_ = boolop_l && boolop_r;
-        }
-        else if (boolop.boolOpCode_ == 1)
-        {
-            lastBoolValue_ = boolop_l || boolop_r;
-        }
-        else if (boolop.boolOpCode_ == 2)
-        {
-            lastBoolValue_ = !boolop_r; // op1 , quello definito nel costruttore fatto apposta per il not in syntax.h , l'ho salvato in boolop_r
+            boolop.op1->accept(*this);
+            bool boolop_r = lastBoolValue_;
+    
+            boolop.op2->accept(*this);
+            bool boolop_l = lastBoolValue_;
+    
+            // 1 AND 0 nell'albero viene creato con 0 a destra e 1 a sinistra , ma poi nella visita guardo prima il destro . quindi devo usarli "al contrario"
+            if (boolop.boolOpCode_ == 0)
+            {
+                lastBoolValue_ = boolop_l && boolop_r;
+            }
+            else if (boolop.boolOpCode_ == 1)
+            {
+                lastBoolValue_ = boolop_l || boolop_r;
+            }
+            else if (boolop.boolOpCode_ == 2)
+            {
+                lastBoolValue_ = !boolop_r; // op1 , quello definito nel costruttore fatto apposta per il not in syntax.h , l'ho salvato in boolop_r
+            }
+        }catch(EvaluationError& e){
+                                std::stringstream temp;
+                    temp << "You can't use an operator with this problem : " <<std::endl<<e.what();
+                    throw EvaluationError{temp.str()};
         }
     }
 
@@ -205,52 +249,67 @@ in pratica parte dall inizio della stringa (stringaDaConsole.begin()) e va avant
     }
 
     void visit(RelOp const &relop) override
-    { //
-        relop.num1_l->accept(*this);
-        int relop_r = lastValue_;
+    { 
+/*
+metto try cosi se ce un problema più in basso che blocca l'esecuzione posso capire in che parte del codice è . 
+se per esempio dentro ad una LT ho una variabile non dichiarata , allora la variabile non dichiarata lancerà un errore che verrà a sua volta preso 
+da questo try affinchè si capisca meglio da dove viene l'errore
+*/
+        try{
 
-        relop.num2_r->accept(*this);
-        int relop_l = lastValue_;
-
-        if (relop.relCode_ == 0)
-        {
-            if (relop_l < relop_r)
+            relop.num1_l->accept(*this);
+            int64_t relop_1 = lastValue_; //questo è il primo valore nell IF 
+    
+    
+            relop.num2_r->accept(*this);
+            int64_t relop_2 = lastValue_; //questo il secondo
+    
+    
+            if (relop.relCode_ == 0)
             {
-                lastBoolValue_ = true;
+                if (relop_1 < relop_2)
+                {
+    
+                    lastBoolValue_ = true;
+                }
+                else
+                {
+                    lastBoolValue_ = false;
+                }
             }
-            else
+            else if (relop.relCode_ == 1)
             {
-                lastBoolValue_ = false;
+                if (relop_1 > relop_2)
+                {
+                    lastBoolValue_ = true;
+                }
+                else
+                {
+                    lastBoolValue_ = false;
+                }
             }
-        }
-        else if (relop.relCode_ == 1)
-        {
-            if (relop_l > relop_r)
+            else if (relop.relCode_ == 2)
             {
-                lastBoolValue_ = true;
+                if (relop_1 == relop_2)
+                {
+                    lastBoolValue_ = true;
+                }
+                else
+                {
+                    lastBoolValue_ = false;
+                }
             }
-            else
-            {
-                lastBoolValue_ = false;
-            }
-        }
-        else if (relop.relCode_ == 2)
-        {
-            if (relop_l == relop_r)
-            {
-                lastBoolValue_ = true;
-            }
-            else
-            {
-                lastBoolValue_ = false;
-            }
+        }catch(EvaluationError& e){
+                                std::stringstream temp;
+                    temp << "You can't use an operator with this problem : " <<std::endl<<e.what();
+                    throw EvaluationError{temp.str()};
         }
     }
 
 private:
     SymbolTable &symbolTable_;
     std::ostream &console_;
-    int lastValue_;
+    int64_t lastValue_;
     bool lastBoolValue_;
 };
 
