@@ -42,7 +42,7 @@ Block *Parser::parseStmtBlock(std::vector<Token>::const_iterator &itr)
     { // ancora peggio se il codice non iniziava manco con una "("
         std::stringstream temp;
         temp << "Unexpected token: " << *itr << std::endl
-             << "Expected left parenthesis to start the program";
+             << "Expected left parenthesis to start a new BLOCK or a new STATEMENT";
         throw SyntaxError{temp.str()};
     }
 }
@@ -213,28 +213,39 @@ PrintStmt *Parser::parsePrintStmt(std::vector<Token>::const_iterator &itr)
 IfStmt *Parser::parseIfStmt(std::vector<Token>::const_iterator &itr)
 {
 
-    safe_next(itr); // dopo aver letto il tipo di statement vado avanti...
+    
 
-    // ci sono 3 cose che devo creare :
-    BoolExpr *condizione_if = parseBoolExpr(itr);
-    Block *blocco_then = parseStmtBlock(itr);
-    Block *blocco_else = parseStmtBlock(itr);
-    // e se è andato tutto bene , sono arrivato qui che ho tutte le espressioni dell'IfStmt lette FINO ALLA ")" GIA LETTA
-    if (itr->tag == Token::RP)
-    {
-        safe_next(itr); // mi porto avanti col prossimo token da leggere
-        return new IfStmt(condizione_if, blocco_then, blocco_else);
-    }
-    else
-    {
-        // delete condizione_if;
-        // delete blocco_else;
-        // delete blocco_then;
-        std::stringstream temp;
-        temp << "Unexpected token: " << *itr << std::endl
-             << "Expected closing parenthesis for IF statement";
-        throw SyntaxError{temp.str()};
-    }
+        safe_next(itr); // dopo aver letto il tipo di statement vado avanti...
+    
+        // ci sono 3 cose che devo creare :
+        BoolExpr *condizione_if = parseBoolExpr(itr);
+        Block *blocco_else = nullptr;
+        Block *blocco_then = parseStmtBlock(itr);
+        try{
+
+            blocco_else = parseStmtBlock(itr);
+        }catch(SyntaxError& e){
+            std::stringstream temp;
+            temp << "Error in ELSE statement"<<std::endl<<"("<<e.what()<<")";
+            throw SyntaxError{temp.str()};
+        }
+        // e se è andato tutto bene , sono arrivato qui che ho tutte le espressioni dell'IfStmt lette FINO ALLA ")" GIA LETTA
+        if (itr->tag == Token::RP)
+        {
+            safe_next(itr); // mi porto avanti col prossimo token da leggere
+            return new IfStmt(condizione_if, blocco_then, blocco_else);
+        }
+        else
+        {
+            // delete condizione_if;
+            // delete blocco_else;
+            // delete blocco_then;
+            std::stringstream temp;
+            temp << "Unexpected token: " << *itr << std::endl
+                 << "Expected closing parenthesis for IF statement";
+            throw SyntaxError{temp.str()};
+        }
+
 }
 
 /*** loop_stmt -> ***/

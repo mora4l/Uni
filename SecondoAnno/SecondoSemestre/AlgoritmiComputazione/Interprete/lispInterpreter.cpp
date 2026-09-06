@@ -108,9 +108,10 @@ int main(int argc, char *argv[])
 	}
     
     //QUESTO MI SERVE PER STAMPARE L' AST
-    // PrintVisitor printer;
+    std::cout<<"\n\n\n ALBERO AST: \n\n";
+    PrintVisitor albero{std::cout,0};
 
-    // program->accept(printer);
+    program->accept(albero);
     
 
     return EXIT_SUCCESS;

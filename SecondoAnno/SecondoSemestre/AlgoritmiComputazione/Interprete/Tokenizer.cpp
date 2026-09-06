@@ -10,7 +10,6 @@
 std::string Tokenizer::tokenizzaCostanti(std::ifstream &programmadafile, std::stringstream &temp)
 {
     char ch;
-
     do
     {
         ch = programmadafile.get(); // continuo a prendere quello che è "attaccato" al primo char passato
@@ -63,8 +62,23 @@ void Tokenizer::tokenizeFileInput(std::ifstream &programmadafile, std::vector<To
             // il + invece non ci puo proprio essere come definizione di numero positivo (:= dalla grammatica) e quindi non mi interessa capire la situazione col + , perchè so a priori che sarà una keyword se lo incontrerò
 
             char ch2 = programmadafile.get(); // mi prendo il carattere dopo al primo già preso
-            if (std::isdigit(ch2))
-            {
+            if(ch2 == '0'){ 
+
+                char ch3 = programmadafile.get(); //devo verificare subito una cosa : 
+
+                if(std::isdigit(ch3)){ //se c'è qualsiasi numero dopo lo 0 ancora attaccato c'è un errore
+                                    std::stringstream temp;
+                temp << "You cant write a number followed by any number after a zero " << ch
+                     << " Error in file.txt at line " << rowCount;
+                throw LexicalError{temp.str()};
+                }else{
+                    programmadafile.unget(); //se non era un numero cio che c'era dopo lo 0 , allora rimetto tutto nello stream
+                    std::stringstream temp ; 
+                    temp<<ch<<ch2; 
+                    inputTokens.emplace_back(Token::CONST,temp.str()); //e salvo come -0 quella costante
+                }
+            }else if (std::isdigit(ch2)) //se non è uno zero (perche se siamo arrivati qui per forza zero non è per esclusione dei casi)
+            {//allora posso andare avanti senza problemi
                 std::stringstream temp;
                 temp << ch << ch2;
                 tokenizzaCostanti(programmadafile, temp);
@@ -73,14 +87,14 @@ void Tokenizer::tokenizeFileInput(std::ifstream &programmadafile, std::vector<To
             else // se dopo "-" non ce altro allora ce un problema, non è accettato "-" e basta
             {
                 std::stringstream temp;
-                temp << "Not valid character: " << ch
+                temp << "Not valid single character: " << ch
                      << " Error in file.txt at line " << rowCount;
                 throw LexicalError{temp.str()};
             }
         }
-        else if (std::isdigit(ch))
+        else if (std::isdigit(ch)) 
         { // se è un numero devo andare a vedere che tipo di numero è (grazie a tokenizzacostanti) e poi lo salvo come costante
-            // non legge in forma esponenziale!!!
+
             std::stringstream temp; // metto dentro ad uno stream di stringa il carattere che ho appena letto
             temp << ch;
 
@@ -89,17 +103,18 @@ void Tokenizer::tokenizeFileInput(std::ifstream &programmadafile, std::vector<To
                 char ch2 = programmadafile.get();
 
                 if (isdigit(ch2)) //se ch2 è un numero allora c'è un errore
-                {
+                { //qui entra se il numero è 0n0
                     std::stringstream temp;
                     temp << "Zero value followed by another value is not allowed " << ch
                          << " Error in file.txt at line " << rowCount;
                     throw LexicalError{temp.str()};
+                }else{
 
+                    //altrimenti qui siamo nel caso 0nABC...
+                    programmadafile.unget(); // se non era un numero allora lo rimetto nello stream e procedo a salvare 0 come CONST
+                    inputTokens.emplace_back(Token::CONST,temp.str()); // e salvo semplicemente ch che era '0'
                 }
-                programmadafile.unget(); // se non era un numero allora lo rimetto nello stream e procedo a salvare 0 come CONST
-
-                inputTokens.emplace_back(Token::CONST, temp.str());//procedo a salvare 0 come CONST
-            }else{
+            }else{//qui invece siamo nel caso in cui abbiamo n che non è zero inizialmente e quindi non ci sono restrizioni strane
                 tokenizzaCostanti(programmadafile, temp); // così lo passo alla funzione di check della correttezza del numero
                 inputTokens.emplace_back(Token::CONST, temp.str());
 

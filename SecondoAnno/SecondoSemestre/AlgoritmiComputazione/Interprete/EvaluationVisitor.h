@@ -21,9 +21,16 @@ public:
 
     void visit(Block const &block) override
     {
-        for (Statement *statement : block.statements_)
-        {
-            statement->accept(*this);
+        try{
+
+            for (Statement *statement : block.statements_)
+            {
+                statement->accept(*this);
+            }
+        }catch(EvaluationError& e){
+                        std::stringstream temp;
+                    temp << "Error in BLOCK statement " <<std::endl<<"("<<e.what()<<")";
+                    throw EvaluationError{temp.str()};
         }
     }
 
@@ -35,7 +42,7 @@ public:
             console_ << lastValue_ << std::endl;
         }catch(EvaluationError &e){ //in questo modo getValue in Symboltable crea un oggetto EvalutationError , che posso ristampare qua attraverso what
             std::stringstream temp;
-            temp << "You must define a variable with INPUT or SET before using it" <<std::endl<<"("<< e.what() <<")"; 
+            temp << "Error in SET statement" <<std::endl<<"("<< e.what() <<")"; 
             throw EvaluationError{temp.str()};
         }
     }
@@ -46,40 +53,47 @@ qua pero lavoriamo con una string e non una stringstream   quindi non posso scor
 */
     void visit(InputStmt const &in) override
     {
-        console_ << "Inserisci il valore di " << in.variable_id_->id_ << " : ";
+        try{
 
-        std::string stringaDaConsole;
-        std::getline(std::cin, stringaDaConsole);
-
-        size_t start = 0; //partiamo dall'indice zero della stringa in cui ho messo il valore
-
-        if (!stringaDaConsole.empty())//se la stringa non è vuota continuo a ispezionarla per capire se è un intero positivo o negativo, altrimenti posso anche fermarmi qui
-        {
-
-            if (stringaDaConsole[0] == '-') //se il primo valore è un "-" 
+            console_ << "Inserisci il valore di " << in.variable_id_->id_ << " : ";
+    
+            std::string stringaDaConsole;
+            std::getline(std::cin, stringaDaConsole);
+    
+            size_t start = 0; //partiamo dall'indice zero della stringa in cui ho messo il valore
+    
+            if (!stringaDaConsole.empty())//se la stringa non è vuota continuo a ispezionarla per capire se è un intero positivo o negativo, altrimenti posso anche fermarmi qui
             {
-                start = 1; //allora parto dal char dopo a capire se si tratta di un intero 
-            }
-/*ora qui uso una funzione senzanome con una funzione di <algorithm> : ritorna vero se scorrendo la stringa attraverso std::all_of (la funzione di <algorithm>) legge solo numeri
-in pratica parte dall inizio della stringa (stringaDaConsole.begin()) e va avanti fino alla fine (stringaDaConsole.end()) attraverso un char c generico
-*/
-            if ((start < stringaDaConsole.size()) && std::all_of(stringaDaConsole.begin() + start, stringaDaConsole.end(),[](unsigned char c){ return std::isdigit(c); }))
-            {
-                int64_t value = std::stoll(stringaDaConsole); //la stoll invece mi serve per convertire la stringa in un int long long (stoi invece mi andrebbe bene per un int normale)
-                symbolTable_.setValue(in.variable_id_->id_, value); //input funziona che : se non ha mai letto la variabile la crea , mentre se esiste già la sovrascrive . set invece ha un controllo in più : prima di sovrascriverla si chiede se esiste già
+    
+                if (stringaDaConsole[0] == '-') //se il primo valore è un "-" 
+                {
+                    start = 1; //allora parto dal char dopo a capire se si tratta di un intero 
+                }
+    /*ora qui uso una funzione senzanome con una funzione di <algorithm> : ritorna vero se scorrendo la stringa attraverso std::all_of (la funzione di <algorithm>) legge solo numeri
+    in pratica parte dall inizio della stringa (stringaDaConsole.begin()) e va avanti fino alla fine (stringaDaConsole.end()) attraverso un char c generico
+    */
+                if ((start < stringaDaConsole.size()) && std::all_of(stringaDaConsole.begin() + start, stringaDaConsole.end(),[](unsigned char c){ return std::isdigit(c); }))
+                {
+                    int64_t value = std::stoll(stringaDaConsole); //la stoll invece mi serve per convertire la stringa in un int long long (stoi invece mi andrebbe bene per un int normale)
+                    symbolTable_.setValue(in.variable_id_->id_, value); //input funziona che : se non ha mai letto la variabile la crea , mentre se esiste già la sovrascrive . set invece ha un controllo in più : prima di sovrascriverla si chiede se esiste già
+                }
+                else
+                {
+                    std::stringstream temp;
+                    temp << "Only positive or negative integer allowed without space between numbers";
+                    throw EvaluationError{temp.str()};
+                }
             }
             else
             {
                 std::stringstream temp;
-                temp << "Only positive or negative integer allowed without space between numbers";
+                temp << in.variable_id_->id_ << " cannot be empty.";
                 throw EvaluationError{temp.str()};
             }
-        }
-        else
-        {
+        }catch(EvaluationError& e){
             std::stringstream temp;
-            temp << in.variable_id_->id_ << " cannot be empty.";
-            throw EvaluationError{temp.str()};
+                temp << "Error in INPUT statement."<<std::endl<<"("<< e.what() <<")";
+                throw EvaluationError{temp.str()};
         }
     }
 
@@ -92,22 +106,29 @@ check correttezza while
     */
     void visit(WhileStmt const &whil) override
     {
-        bool condizione_while;
+        try{
 
-        whil.bool_expr_->accept(*this); // ottengo il risultato della bool expr (true o false)
-
-        condizione_while = lastBoolValue_; // e me lo salvo in una variabile
-
-        while (condizione_while) //l'esecuzione non avviene se bool_expr è falsa in partenza
-        {                                    // il while verifica "condizione_while" per la prima volta , poi pero devo trovare un modo di fermarmi se "condizione_while" non fosse più vera
-            whil.stmt_block_->accept(*this); // se entro nel while eseguo tutto cio che ho da eseguire
-
-            whil.bool_expr_->accept(*this);    // e alla fine di tutto cio che ho eseguito ri-controllo la condizione , eseguendo di nuovo i calcoli necessari
-            condizione_while = lastBoolValue_; // se la condizione_while non dovesse essere più valida , il while finisce
+            bool condizione_while;
+    
+            whil.bool_expr_->accept(*this); // ottengo il risultato della bool expr (true o false)
+    
+            condizione_while = lastBoolValue_; // e me lo salvo in una variabile
+    
+            while (condizione_while) //l'esecuzione non avviene se bool_expr è falsa in partenza
+            {                                    // il while verifica "condizione_while" per la prima volta , poi pero devo trovare un modo di fermarmi se "condizione_while" non fosse più vera
+                whil.stmt_block_->accept(*this); // se entro nel while eseguo tutto cio che ho da eseguire
+    
+                whil.bool_expr_->accept(*this);    // e alla fine di tutto cio che ho eseguito ri-controllo la condizione , eseguendo di nuovo i calcoli necessari
+                condizione_while = lastBoolValue_; // se la condizione_while non dovesse essere più valida , il while finisce
+            }
+        }catch(EvaluationError& e){
+            std::stringstream temp;
+                    temp << "Error in WHILE statement " <<std::endl<<"("<<e.what()<<")";
+                    throw EvaluationError{temp.str()};
         }
     }
 
-    /*
+/*
 check correttezza if
 (BLOCK 
 (SET n 10)
@@ -130,7 +151,7 @@ check correttezza if
             }
         }catch(EvaluationError& e){
             std::stringstream temp;
-            temp << "You must define a variable with INPUT or SET before using it in IF statement" <<std::endl<<"("<< e.what() <<")"; 
+            temp << "Error in IF statement" <<std::endl<<"("<< e.what() <<")"; 
             throw EvaluationError{temp.str()};
         }
     }
@@ -143,7 +164,9 @@ check correttezza if
             set.num_expr_->accept(*this);
             symbolTable_.setValue(set.variable_id_->id_, lastValue_);
         }catch(EvaluationError& e){
-            throw EvaluationError{e.what()};
+            std::stringstream temp;
+                    temp << "Error in SET statement " <<std::endl<<"("<<e.what()<<")";
+                    throw EvaluationError{temp.str()};
         }
     }
 
@@ -191,7 +214,7 @@ da questo try affinchè si capisca meglio da dove viene l'errore
             }
         }catch(EvaluationError& e){
                                 std::stringstream temp;
-                    temp << "You can't use an operator with this problem : " <<std::endl<<e.what();
+                    temp << "Error in OPERATOR statement " <<std::endl<<"("<<e.what()<<")";
                     throw EvaluationError{temp.str()};
         }
     }
