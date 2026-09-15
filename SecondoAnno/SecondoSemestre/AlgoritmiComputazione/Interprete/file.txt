@@ -1,3 +1,0 @@
-(BLOCK
-  (IF(LT 3 1)  (PRINT 3))
-  )

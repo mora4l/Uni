@@ -48,7 +48,8 @@ int main(int argc, char *argv[])
     }
     catch (LexicalError &e)
     {
-        std::cerr << e.what() << std::endl;
+        std::cerr << "(ERROR in tokenizer: " ;
+        std::cerr << e.what() <<")"<< std::endl;
         return EXIT_FAILURE;
     }
     catch (std::exception &e)
@@ -76,7 +77,8 @@ int main(int argc, char *argv[])
     }
     catch (SyntaxError &e)
     {
-        std::cerr << e.what() << std::endl;
+        std::cerr << "(ERROR in parser: " ;
+        std::cerr << e.what() <<")"<< std::endl;
         return EXIT_FAILURE;
     }
     catch (std::exception &e)
@@ -98,11 +100,12 @@ int main(int argc, char *argv[])
 		}
 	}
 	catch (EvaluationError& e) {
-		std::cerr << e.what() << std::endl;
-		return EXIT_FAILURE;
+        std::cerr << "(ERROR in evaluator: " ;
+        std::cerr << e.what() <<")"<< std::endl;
+        return EXIT_FAILURE;
 	}
-	catch (std::exception& e) {
-		std::cerr << "Something odd happened during parsing, got: " << std::endl;
+	catch (std::exception& e) {//è una "rete di sicurezza" finale , cioè che se non è stato lanciata nessuna eccezione particolare , allora sarà un eccezione standard che finisce qua dentro
+		std::cerr << "ERROR in" << std::endl;
 		std::cerr << e.what() << std::endl;
 		return EXIT_FAILURE;
 	}

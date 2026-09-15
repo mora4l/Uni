@@ -27,7 +27,7 @@ public:
     }
 
 private:
-    std::string tokenizzaCostanti(std::ifstream &programmadafile, std::stringstream &temp);
+    std::string tokenizzaCostanti(std::ifstream &programmadafile, std::stringstream &temp,int rowCount);
     void tokenizeFileInput(std::ifstream &inputFile, std::vector<Token> &inputTokens);
 };
 #endif

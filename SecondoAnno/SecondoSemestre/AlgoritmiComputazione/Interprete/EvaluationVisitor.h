@@ -16,35 +16,26 @@ public:
 
     void visit(Program const &program) override
     {
-        program.root_->accept(*this); // con la visit di program inizio a esplorare la root dell'albero
+            program.root_->accept(*this); // con la visit di program inizio a esplorare la root dell'albero
     }
 
     void visit(Block const &block) override
     {
-        try{
+     
 
             for (Statement *statement : block.statements_)
             {
                 statement->accept(*this);
             }
-        }catch(EvaluationError& e){
-                        std::stringstream temp;
-                    temp << "Error in BLOCK statement " <<std::endl<<"("<<e.what()<<")";
-                    throw EvaluationError{temp.str()};
-        }
+
     }
 
     void visit(PrintStmt const &print) override
     {
-        try{ //uso il try catch per poter specificare meglio da dove arrivare l'errore . 
 
             print.num_expr_->accept(*this);
             console_ << lastValue_ << std::endl;
-        }catch(EvaluationError &e){ //in questo modo getValue in Symboltable crea un oggetto EvalutationError , che posso ristampare qua attraverso what
-            std::stringstream temp;
-            temp << "Error in SET statement" <<std::endl<<"("<< e.what() <<")"; 
-            throw EvaluationError{temp.str()};
-        }
+
     }
 
 /*
@@ -53,7 +44,7 @@ qua pero lavoriamo con una string e non una stringstream   quindi non posso scor
 */
     void visit(InputStmt const &in) override
     {
-        try{
+  
 
             console_ << "Inserisci il valore di " << in.variable_id_->id_ << " : ";
     
@@ -90,11 +81,7 @@ qua pero lavoriamo con una string e non una stringstream   quindi non posso scor
                 temp << in.variable_id_->id_ << " cannot be empty.";
                 throw EvaluationError{temp.str()};
             }
-        }catch(EvaluationError& e){
-            std::stringstream temp;
-                temp << "Error in INPUT statement."<<std::endl<<"("<< e.what() <<")";
-                throw EvaluationError{temp.str()};
-        }
+
     }
 
 /*
@@ -106,7 +93,7 @@ check correttezza while
     */
     void visit(WhileStmt const &whil) override
     {
-        try{
+     
 
             bool condizione_while;
     
@@ -121,11 +108,7 @@ check correttezza while
                 whil.bool_expr_->accept(*this);    // e alla fine di tutto cio che ho eseguito ri-controllo la condizione , eseguendo di nuovo i calcoli necessari
                 condizione_while = lastBoolValue_; // se la condizione_while non dovesse essere più valida , il while finisce
             }
-        }catch(EvaluationError& e){
-            std::stringstream temp;
-                    temp << "Error in WHILE statement " <<std::endl<<"("<<e.what()<<")";
-                    throw EvaluationError{temp.str()};
-        }
+        
     }
 
 /*
@@ -137,7 +120,6 @@ check correttezza if
 */
     void visit(IfStmt const &iff) override
     {
-        try{//stesso discorso fatto nella visit di print
 
             iff.bool_expr->accept(*this);
         
@@ -149,25 +131,17 @@ check correttezza if
             {
                 iff.stmt_block2->accept(*this);
             }
-        }catch(EvaluationError& e){
-            std::stringstream temp;
-            temp << "Error in IF statement" <<std::endl<<"("<< e.what() <<")"; 
-            throw EvaluationError{temp.str()};
-        }
+
     }
 
     void visit(SetStmt const &set) override
     {
         // devo estrarre dall'oggetto Variable* la variabile id  . perche set ha un oggetto Variable ma che va estratto a sua volta per prendere l'attributo di quell oggetto
-        try{
+   
 
             set.num_expr_->accept(*this);
             symbolTable_.setValue(set.variable_id_->id_, lastValue_);
-        }catch(EvaluationError& e){
-            std::stringstream temp;
-                    temp << "Error in SET statement " <<std::endl<<"("<<e.what()<<")";
-                    throw EvaluationError{temp.str()};
-        }
+
     }
 
     void visit(Operator const &op) override
@@ -177,7 +151,7 @@ metto try cosi se ce un problema più in basso che blocca l'esecuzione posso cap
 se per esempio dentro ad una ADD ho una variabile non dichiarata , allora la variabile non dichiarata lancerà un errore che verrà a sua volta preso 
 da questo try affinchè si capisca meglio da dove viene l'errore
 */
-        try{
+       
             op.right_->accept(*this);
             int64_t ris_op_r = lastValue_;
     
@@ -212,11 +186,7 @@ da questo try affinchè si capisca meglio da dove viene l'errore
                     throw EvaluationError{temp.str()};
                 }
             }
-        }catch(EvaluationError& e){
-                                std::stringstream temp;
-                    temp << "Error in OPERATOR statement " <<std::endl<<"("<<e.what()<<")";
-                    throw EvaluationError{temp.str()};
-        }
+
     }
 
     void visit(Number const &num) override
@@ -238,7 +208,7 @@ metto try cosi se ce un problema più in basso che blocca l'esecuzione posso cap
 se per esempio dentro ad una AND ho una variabile non dichiarata , allora la variabile non dichiarata lancerà un errore che verrà a sua volta preso 
 da questo try affinchè si capisca meglio da dove viene l'errore
 */
-        try{
+     
 
             boolop.op1->accept(*this);
             bool boolop_r = lastBoolValue_;
@@ -259,11 +229,7 @@ da questo try affinchè si capisca meglio da dove viene l'errore
             {
                 lastBoolValue_ = !boolop_r; // op1 , quello definito nel costruttore fatto apposta per il not in syntax.h , l'ho salvato in boolop_r
             }
-        }catch(EvaluationError& e){
-                                std::stringstream temp;
-                    temp << "You can't use an operator with this problem : " <<std::endl<<e.what();
-                    throw EvaluationError{temp.str()};
-        }
+
     }
 
     void visit(BoolConst const &boolconst) override
@@ -278,7 +244,7 @@ metto try cosi se ce un problema più in basso che blocca l'esecuzione posso cap
 se per esempio dentro ad una LT ho una variabile non dichiarata , allora la variabile non dichiarata lancerà un errore che verrà a sua volta preso 
 da questo try affinchè si capisca meglio da dove viene l'errore
 */
-        try{
+       
 
             relop.num1_l->accept(*this);
             int64_t relop_1 = lastValue_; //questo è il primo valore nell IF 
@@ -322,11 +288,7 @@ da questo try affinchè si capisca meglio da dove viene l'errore
                     lastBoolValue_ = false;
                 }
             }
-        }catch(EvaluationError& e){
-                                std::stringstream temp;
-                    temp << "You can't use an operator with this problem : " <<std::endl<<e.what();
-                    throw EvaluationError{temp.str()};
-        }
+
     }
 
 private:

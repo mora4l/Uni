@@ -7,7 +7,7 @@
 
 // questo metodo mi serve per capire se il numero letto è accettabile o no
 // esempio : ho letto 3
-std::string Tokenizer::tokenizzaCostanti(std::ifstream &programmadafile, std::stringstream &temp)
+std::string Tokenizer::tokenizzaCostanti(std::ifstream &programmadafile, std::stringstream &temp,int rowCount)
 {
     char ch;
     do
@@ -20,9 +20,10 @@ std::string Tokenizer::tokenizzaCostanti(std::ifstream &programmadafile, std::st
         }
         if (ch == '.')
         {
-            std::stringstream temp;
-            temp << "Only integer value allowed in file.txt";
-            throw LexicalError(temp.str());
+                std::stringstream temp;
+                temp << "Stray character " << ch
+                     << " in input at line " << rowCount;
+                throw LexicalError{temp.str()};
         } // se ho letto "." guardo :
 
     } while (std::isdigit(ch) || ch == '.'); // finchè non abbiamo un numero oppure un punto vado avanti
@@ -37,7 +38,10 @@ void Tokenizer::tokenizeFileInput(std::ifstream &programmadafile, std::vector<To
     unsigned int rowCount{1}; // parto dalla riga 1 del file a leggere
 
     ch = programmadafile.get();
-
+    
+    if (programmadafile.peek() == std::ifstream::traits_type::eof()) {
+    // il file è vuoto
+}
     while (!programmadafile.eof())
     {
         // ora dobbiamo lavorare su tutti i casi possibili
@@ -67,9 +71,9 @@ void Tokenizer::tokenizeFileInput(std::ifstream &programmadafile, std::vector<To
                 char ch3 = programmadafile.get(); //devo verificare subito una cosa : 
 
                 if(std::isdigit(ch3)){ //se c'è qualsiasi numero dopo lo 0 ancora attaccato c'è un errore
-                                    std::stringstream temp;
-                temp << "You cant write a number followed by any number after a zero " << ch
-                     << " Error in file.txt at line " << rowCount;
+                std::stringstream temp;
+                temp << "Multiple numbers after zero " << ch
+                     << " in input at line " << rowCount;
                 throw LexicalError{temp.str()};
                 }else{
                     programmadafile.unget(); //se non era un numero cio che c'era dopo lo 0 , allora rimetto tutto nello stream
@@ -81,14 +85,14 @@ void Tokenizer::tokenizeFileInput(std::ifstream &programmadafile, std::vector<To
             {//allora posso andare avanti senza problemi
                 std::stringstream temp;
                 temp << ch << ch2;
-                tokenizzaCostanti(programmadafile, temp);
+                tokenizzaCostanti(programmadafile, temp,rowCount);
                 inputTokens.emplace_back(Token::CONST, temp.str());
             }
             else // se dopo "-" non ce altro allora ce un problema, non è accettato "-" e basta
             {
                 std::stringstream temp;
-                temp << "Not valid single character: " << ch
-                     << " Error in file.txt at line " << rowCount;
+                temp << "Stray character " << ch
+                     << " in input at line " << rowCount;
                 throw LexicalError{temp.str()};
             }
         }
@@ -106,8 +110,9 @@ void Tokenizer::tokenizeFileInput(std::ifstream &programmadafile, std::vector<To
                 { //qui entra se il numero è 0n0
                     std::stringstream temp;
                     temp << "Zero value followed by another value is not allowed " << ch
-                         << " Error in file.txt at line " << rowCount;
+                         << "in input at line " << rowCount;
                     throw LexicalError{temp.str()};
+
                 }else{
 
                     //altrimenti qui siamo nel caso 0nABC...
@@ -115,7 +120,7 @@ void Tokenizer::tokenizeFileInput(std::ifstream &programmadafile, std::vector<To
                     inputTokens.emplace_back(Token::CONST,temp.str()); // e salvo semplicemente ch che era '0'
                 }
             }else{//qui invece siamo nel caso in cui abbiamo n che non è zero inizialmente e quindi non ci sono restrizioni strane
-                tokenizzaCostanti(programmadafile, temp); // così lo passo alla funzione di check della correttezza del numero
+                tokenizzaCostanti(programmadafile, temp,rowCount); // così lo passo alla funzione di check della correttezza del numero
                 inputTokens.emplace_back(Token::CONST, temp.str());
 
             }
@@ -150,10 +155,11 @@ void Tokenizer::tokenizeFileInput(std::ifstream &programmadafile, std::vector<To
             else
             {
                 std::stringstream temp;
-                temp << "Bad news from tokenizer !! Carattere non valido : " << ch
-                     << " Error in file.txt at line " << rowCount;
+                temp << "Stray character " << ch
+                     << " in input at line " << rowCount;
                 throw LexicalError{temp.str()};
             }
             ch = programmadafile.get();
         }
+
     }

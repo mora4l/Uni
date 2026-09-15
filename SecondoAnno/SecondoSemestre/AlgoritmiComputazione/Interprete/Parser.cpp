@@ -4,6 +4,7 @@
 /*** program -> ***/
 Program *Parser::parseProgram(std::vector<Token>::const_iterator &itr)
 {
+
     Block *programma_parsabile = parseStmtBlock(itr);
     return new Program{programma_parsabile};
 }
@@ -33,16 +34,14 @@ Block *Parser::parseStmtBlock(std::vector<Token>::const_iterator &itr)
         else
         { // se non era né un BLOCK e tantomeno una keyword generica , allora ce un problema di fondo di sintassi
             std::stringstream temp;
-            temp << "Unexpected token: " << *itr << std::endl
-                 << "Expected 'BLOCK' or a single statement";
+            temp << "Missing BLOCK statement or another one at token " << *itr;
             throw SyntaxError{temp.str()};
         }
     }
     else
     { // ancora peggio se il codice non iniziava manco con una "("
         std::stringstream temp;
-        temp << "Unexpected token: " << *itr << std::endl
-             << "Expected left parenthesis to start a new BLOCK or a new STATEMENT";
+        temp << "Missing left parenthesis at token " << *itr;
         throw SyntaxError{temp.str()};
     }
 }
@@ -72,16 +71,14 @@ Block *Parser::parseBlock(std::vector<Token>::const_iterator &itr)
         else
         {
             std::stringstream temp;
-            temp << "Unexpected token: " << *itr << std::endl
-                 << "Expected at least one statement after BLOCK declaration with opening parenthesis '(' ";
+            temp << "Expected a statement at token " << *itr;
             throw SyntaxError{temp.str()};
         }
     }
     if (another_statement.empty())
     { // se il vettore è vuoto vuol dire che dopo BLOCK non c'era una "(" e che quindi non è stato in grado nemmeno di costruire uno statement
         std::stringstream temp;
-        temp << "Unexpected token: " << *itr << std::endl
-             << "Expected at least one statement after BLOCK declaration";
+        temp << "Missing left parenthesis at token " << *itr;
         throw SyntaxError{temp.str()};
     }
     else
@@ -121,16 +118,14 @@ Statement *Parser::parseStatement(std::vector<Token>::const_iterator &itr)
         else
         {
             std::stringstream temp;
-            temp << "Unexpected token: " << *itr << std::endl
-                 << "Expected one of the acceptable statement";
+            temp << "Cannot parse Statement at token " << *itr;
             throw SyntaxError{temp.str()};
         }
     }
     else
     {
         std::stringstream temp;
-        temp << "Unexpected token: " << *itr << std::endl
-             << "Expected a statement token";
+        temp << "Missing a statement at token " << *itr;
         throw SyntaxError{temp.str()};
     }
 }
@@ -151,12 +146,9 @@ SetStmt *Parser::parseSetStmt(std::vector<Token>::const_iterator &itr)
     }
     else
     {
-        //!!!!sarebbe da eliminare i blocchi creati prima di capire che era tutto sbagliato !!!!
-        // delete variabile_set; io lo lascio qui scritto , poi è da controllare
-        // delete valore_set;
+        delete valore_set;
         std::stringstream temp;
-        temp << "Unexpected token: " << *itr << std::endl
-             << "Expected closing parenthesis for SET statement";
+        temp << "Missing right parenthesis at token " << *itr;
         throw SyntaxError{temp.str()};
     }
 }
@@ -166,7 +158,6 @@ SetStmt *Parser::parseSetStmt(std::vector<Token>::const_iterator &itr)
 InputStmt *Parser::parseInputStmt(std::vector<Token>::const_iterator &itr)
 {
     safe_next(itr); // dopo aver letto INPUT avanzo
-    
 
     Variable *variabile_input = parseVariable(itr);
 
@@ -177,11 +168,9 @@ InputStmt *Parser::parseInputStmt(std::vector<Token>::const_iterator &itr)
     }
     else
     {
-        //!!!!sarebbe da eliminare i blocchi creati prima di capire che era tutto sbagliato !!!!
-        // delete variabile_input
+        delete variabile_input;
         std::stringstream temp;
-        temp << "Unexpected token: " << *itr << std::endl
-             << "Expected closing parenthesis for INPUT statement";
+        temp << "Missing right parenthesis at token " << *itr;
         throw SyntaxError{temp.str()};
     }
 }
@@ -200,10 +189,9 @@ PrintStmt *Parser::parsePrintStmt(std::vector<Token>::const_iterator &itr)
     else
     {
         //!!!!sarebbe da eliminare i blocchi creati prima di capire che era tutto sbagliato !!!!
-        // delete num_expr_print
+        delete num_expr_print;
         std::stringstream temp;
-        temp << "Unexpected token: " << *itr << std::endl
-             << "Expected closing parenthesis for PRINT statement";
+        temp << "Missing right parenthesis at token " << *itr;
         throw SyntaxError{temp.str()};
     }
 }
@@ -213,39 +201,28 @@ PrintStmt *Parser::parsePrintStmt(std::vector<Token>::const_iterator &itr)
 IfStmt *Parser::parseIfStmt(std::vector<Token>::const_iterator &itr)
 {
 
-    
+    safe_next(itr); // dopo aver letto il tipo di statement vado avanti...
 
-        safe_next(itr); // dopo aver letto il tipo di statement vado avanti...
-    
-        // ci sono 3 cose che devo creare :
-        BoolExpr *condizione_if = parseBoolExpr(itr);
-        Block *blocco_else = nullptr;
-        Block *blocco_then = parseStmtBlock(itr);
-        try{
+    // ci sono 3 cose che devo creare :
+    BoolExpr *condizione_if = parseBoolExpr(itr);
+    Block *blocco_else = parseStmtBlock(itr);
+    Block *blocco_then = parseStmtBlock(itr);
 
-            blocco_else = parseStmtBlock(itr);
-        }catch(SyntaxError& e){
-            std::stringstream temp;
-            temp << "Error in ELSE statement"<<std::endl<<"("<<e.what()<<")";
-            throw SyntaxError{temp.str()};
-        }
-        // e se è andato tutto bene , sono arrivato qui che ho tutte le espressioni dell'IfStmt lette FINO ALLA ")" GIA LETTA
-        if (itr->tag == Token::RP)
-        {
-            safe_next(itr); // mi porto avanti col prossimo token da leggere
-            return new IfStmt(condizione_if, blocco_then, blocco_else);
-        }
-        else
-        {
-            // delete condizione_if;
-            // delete blocco_else;
-            // delete blocco_then;
-            std::stringstream temp;
-            temp << "Unexpected token: " << *itr << std::endl
-                 << "Expected closing parenthesis for IF statement";
-            throw SyntaxError{temp.str()};
-        }
-
+    // e se è andato tutto bene , sono arrivato qui che ho tutte le espressioni dell'IfStmt lette FINO ALLA ")" GIA LETTA
+    if (itr->tag == Token::RP)
+    {
+        safe_next(itr); // mi porto avanti col prossimo token da leggere
+        return new IfStmt(condizione_if, blocco_then, blocco_else);
+    }
+    else
+    {
+        delete condizione_if;
+        delete blocco_else;
+        delete blocco_then;
+        std::stringstream temp;
+        temp << "Missing right parenthesis at token " << *itr;
+        throw SyntaxError{temp.str()};
+    }
 }
 
 /*** loop_stmt -> ***/
@@ -266,12 +243,10 @@ WhileStmt *Parser::parseWhileStmt(std::vector<Token>::const_iterator &itr)
     }
     else
     {
-        //!!!!sarebbe da eliminare i blocchi creati prima di capire che era tutto sbagliato !!!!
-        // delete condizione_while;
-        // delete blocco_while;
+        delete condizione_while;
+        delete blocco_while;
         std::stringstream temp;
-        temp << "Unexpected token: " << *itr << std::endl
-             << "Expected closing parenthesis for WHILE statement";
+        temp << "Missing right parenthesis at token " << *itr;
         throw SyntaxError{temp.str()};
     }
 }
@@ -329,11 +304,10 @@ BoolExpr *Parser::parseBoolExpr(std::vector<Token>::const_iterator &itr)
             }
             else
             { // se alla fine non ce ")" crolla tutta l'istruzione di valutazione bool expression
-                // delete primo_valore_numexpr;
-                // delete secondo_valore_numlexpr;
+                delete primo_valore_numexpr;
+                delete secondo_valore_numlexpr;
                 std::stringstream temp;
-                temp << "Unexpected token: " << *itr << std::endl
-                     << "Expected closing parenthesis for bool expression statement";
+                temp << "Missing right parenthesis at token " << *itr;
                 throw SyntaxError{temp.str()};
             }
         }
@@ -353,11 +327,10 @@ BoolExpr *Parser::parseBoolExpr(std::vector<Token>::const_iterator &itr)
             }
             else
             { // se alla fine non ce ")" crolla tutta l'istruzione di valutazione bool expression
-                // delete primo_valore_boolexpr;
-                // delete secondo_valore_boolexpr;
+                delete primo_valore_boolexpr;
+                delete secondo_valore_boolexpr;
                 std::stringstream temp;
-                temp << "Unexpected token: " << *itr << std::endl
-                     << "Expected closing parenthesis for bool expression statement";
+                temp << "Missing right parenthesis at token " << *itr;
                 throw SyntaxError{temp.str()};
             }
         }
@@ -379,18 +352,16 @@ questo a causa del fatto che il not richiede solo un parametro nel costruttore e
             }
             else
             { // se alla fine non ce ")" crolla tutta l'istruzione di valutazione bool expression
-                // delete primo_valore_boolexpr;
+                delete primo_valore_boolexpr;
                 std::stringstream temp;
-                temp << "Unexpected token: " << *itr << std::endl
-                     << "Expected closing parenthesis for bool expression statement";
+                temp << "Missing right parenthesis at token " << *itr;
                 throw SyntaxError{temp.str()};
             }
         }
         else // se invece non è stato letto neanche and , or not , <,>, = ...
         {
             std::stringstream temp;
-            temp << "Unexpected token: " << *itr << std::endl
-                 << "Expected at least one feasible operator (boolean operator or comparison operator)";
+            temp << "Missing an operator at token " << *itr;
             throw SyntaxError{temp.str()};
         }
     }
@@ -403,8 +374,7 @@ questo a causa del fatto che il not richiede solo un parametro nel costruttore e
     else
     {
         std::stringstream temp;
-        temp << "Unexpected token: " << *itr << std::endl
-             << "Expected opening parenthesis for bool expression or TRUE / FALSE boolean variable";
+        temp << "Missing left parenthesis at token " << *itr;
         throw SyntaxError{temp.str()};
     }
 }
@@ -432,8 +402,7 @@ Variable *Parser::parseVariable(std::vector<Token>::const_iterator &itr)
     else
     {
         std::stringstream temp;
-        temp << "Unexpected token: " << *itr << std::endl
-             << "Is not allowed to use a keyword as a variable name";
+        temp << "Expected a variable, got '" << *itr << "'";
         throw SyntaxError{temp.str()};
     }
 }
@@ -464,19 +433,17 @@ NumExpr *Parser::parseNumExpr(std::vector<Token>::const_iterator &itr)
             }
             else
             { // se dopo aver fatto un espressione aritmetica non c'era la ")" ...
-                // delete valore1_NumExpr;
-                // delete valore_2_NumExpr;
+                delete valore1_NumExpr;
+                delete valore_2_NumExpr;
                 std::stringstream temp;
-                temp << "Unexpected token: " << *itr << std::endl
-                     << "Expected closing parenthesis for num expression";
+                temp << "Missing right parenthesis at token " << *itr;
                 throw SyntaxError{temp.str()};
             }
         }
         else
         {
             std::stringstream temp;
-            temp << "Unexpected token: " << *itr << std::endl
-                 << "Expected a valid aritmethic operator after '(' ";
+            temp << "Stray character at token " << *itr;
             throw SyntaxError{temp.str()};
         }
     }
@@ -502,10 +469,11 @@ NumExpr *Parser::parseNumExpr(std::vector<Token>::const_iterator &itr)
         1. num_expr non è un number
         2. num_expr non è un variable_id
         3. num_expr non ha la "(" richiesta per un operatore aritmetico
+
+        qui proprio non posso più fare niente
         */
-        std::stringstream temp;
-        temp << "Unexpected token: " << *itr << std::endl
-             << "Expected a number or a variable or an aritmethic operator";
-        throw SyntaxError{temp.str()};
+            std::stringstream temp;
+            temp << " Cannot parse Block at token " << *itr;
+            throw SyntaxError{temp.str()};
     }
 }

@@ -23,7 +23,7 @@ public:
         if (itr == map.end()) //map.end è lo stesso concetto del nullptr
         {
             std::stringstream temp;
-            temp << "Not declared variable : " << key;
+            temp << "Undefined variable " << key;
             throw EvaluationError{temp.str()};
         }
         return (*map.find(key)).second;
