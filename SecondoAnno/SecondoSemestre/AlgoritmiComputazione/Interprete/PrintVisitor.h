@@ -103,7 +103,10 @@ public:
         console_<<spazioTree()<<"[BOOLOP] \n";
         spazio_+=2; 
         boolop.op1->accept(*this);
-        boolop.op2->accept(*this);
+        if(boolop.op2 != nullptr){ //se l'operatore non era NOT allora il secondo operatore esiste, lo visito e lo stampo
+
+            boolop.op2->accept(*this);
+        }
         spazio_-=2 ; 
     }
 

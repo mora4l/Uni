@@ -52,6 +52,9 @@ int main(int argc, char *argv[])
         std::cerr << e.what() <<")"<< std::endl;
         return EXIT_FAILURE;
     }
+    catch(EmptyProgram &e){        
+        return EXIT_FAILURE;
+    }
     catch (std::exception &e)
     {
         std::cerr << "Impossibile leggere da " << argv[1] << " per la seguente causa: " << std::endl;
@@ -97,7 +100,9 @@ int main(int argc, char *argv[])
     try {
 		if (program != nullptr) {
 			program->accept(evaluator); //in questo modo mantengo il corretto uso dell'overriding , chiamando la accept su program che va a sua volta a invocare la corretta visit in Evalutation.h (che a sua volta inizierà a esplorare l'albero)
-		}
+		}else{
+            std::cerr << "Empty program ";
+        }
 	}
 	catch (EvaluationError& e) {
         std::cerr << "(ERROR in evaluator: " ;

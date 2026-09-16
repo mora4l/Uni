@@ -17,7 +17,7 @@ Program* operator()(std::vector<Token> const& tokenStream){
     
     
     if(itr != end_){
-        throw EmptyVector{"Lettura non finita"};
+        throw EvaluationError{"Reading file not completely nerminated"};
     }
 
 

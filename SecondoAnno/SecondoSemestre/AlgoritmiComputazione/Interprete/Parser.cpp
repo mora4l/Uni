@@ -71,14 +71,14 @@ Block *Parser::parseBlock(std::vector<Token>::const_iterator &itr)
         else
         {
             std::stringstream temp;
-            temp << "Expected a statement at token " << *itr;
+            temp << "Overflow in token stream. " << *itr;
             throw SyntaxError{temp.str()};
         }
     }
     if (another_statement.empty())
     { // se il vettore è vuoto vuol dire che dopo BLOCK non c'era una "(" e che quindi non è stato in grado nemmeno di costruire uno statement
         std::stringstream temp;
-        temp << "Missing left parenthesis at token " << *itr;
+        temp << "Empty BLOCK statement" << *itr;
         throw SyntaxError{temp.str()};
     }
     else
@@ -149,6 +149,7 @@ SetStmt *Parser::parseSetStmt(std::vector<Token>::const_iterator &itr)
         delete valore_set;
         std::stringstream temp;
         temp << "Missing right parenthesis at token " << *itr;
+
         throw SyntaxError{temp.str()};
     }
 }
@@ -205,8 +206,8 @@ IfStmt *Parser::parseIfStmt(std::vector<Token>::const_iterator &itr)
 
     // ci sono 3 cose che devo creare :
     BoolExpr *condizione_if = parseBoolExpr(itr);
-    Block *blocco_else = parseStmtBlock(itr);
     Block *blocco_then = parseStmtBlock(itr);
+    Block *blocco_else = parseStmtBlock(itr);
 
     // e se è andato tutto bene , sono arrivato qui che ho tutte le espressioni dell'IfStmt lette FINO ALLA ")" GIA LETTA
     if (itr->tag == Token::RP)
@@ -291,7 +292,7 @@ BoolExpr *Parser::parseBoolExpr(std::vector<Token>::const_iterator &itr)
     {
         safe_next(itr); // avanzo a leggere cosa ce dopo la parentesi : adesso devo trovare per forza un operatore
 
-        if (isRelOperator(*itr)) // in caso sia <,>,=  , inline ha ritornato true e posso interessarmi di che segno si tratta
+        if (isRelOperator(*itr)) // in caso sia <,>,=  , la inline qua sopra ha ritornato true e posso interessarmi di che segno si tratta
         {
             int opCode_rel_operator = RelOp::stringaAcodiceLTGTEQ(itr->word); // ritorno esattamente l'operatore che ho letto. gli passo la word che è una string
             safe_next(itr);                                                   // vado avanti : ora devo creare due cose

@@ -5,9 +5,10 @@
 #include "Visitor.h"
 #include "Eccezioni.h"
 
-//
 void Program::accept(Visitor& visitor) const {
-    visitor.visit(*this);
+
+        visitor.visit(*this);
+
 };
 
 void Block::accept(Visitor& visitor) const {
@@ -36,9 +37,11 @@ void SetStmt::accept(Visitor& visitor) const {
 
 
 void Operator::accept(Visitor& visitor) const {
+    
     visitor.visit(*this);
 };
 int Operator::stringaAcodiceOperatoriAritmetici(const std::string& word){
+    
     if(word=="ADD"){
         return ADD ; 
     }else if(word=="SUB"){
@@ -48,9 +51,8 @@ int Operator::stringaAcodiceOperatoriAritmetici(const std::string& word){
     }else if(word=="DIV"){
         return DIV;
     }else{
-                               std::stringstream temp;
-            temp << "Unexpected word: " << word << std::endl
-                 << "Expected an aritmethic operator (ADD,SUB,MUL,DIV)";
+            std::stringstream temp;
+            temp << "Stray operator " << word << std::endl;
             throw SyntaxError{temp.str()};
     }
 }
@@ -76,9 +78,8 @@ int BoolOp::stringaAcodiceNOT(const std::string& word){
 anche se è inutile perche ho già verificato con isRelOperators (inline in parser.cpp) che abbiamo un <,>,=
 pero comunque lascio un throw perche potrebbe essere comodo come "difesa" a possibili modifiche future
 */
-                       std::stringstream temp;
-            temp << "Unexpected word: " << word << std::endl
-                 << "Expected a bool expression (AND,OR,NOT)";
+            std::stringstream temp;
+            temp << "Stray operator " << word << std::endl;
             throw SyntaxError{temp.str()};
     }
 }
@@ -92,9 +93,8 @@ if(word=="AND"){
 anche se è inutile perche ho già verificato con isRelOperators (inline in parser.cpp) che abbiamo un <,>,=
 pero comunque lascio un throw perche potrebbe essere comodo come "difesa" a possibili modifiche future
 */
-                       std::stringstream temp;
-            temp << "Unexpected word: " << word << std::endl
-                 << "Expected a bool expression (AND,OR,NOT) ";
+            std::stringstream temp;
+            temp << "Stray operator " << word << std::endl;
             throw SyntaxError{temp.str()};
     }
 
@@ -121,9 +121,8 @@ anche se è inutile perche ho già verificato con isRelOperators (inline in pars
 pero comunque lascio un throw perche potrebbe essere comodo come "difesa" a possibili modifiche future
 */
 
-                       std::stringstream temp;
-            temp << "Unexpected word: " << word << std::endl
-                 << "Expected a bool expression ";
+            std::stringstream temp;
+            temp << "Stray operator " << word << std::endl;
             throw SyntaxError{temp.str()};
     }
 }
