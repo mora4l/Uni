@@ -362,7 +362,7 @@ questo a causa del fatto che il not richiede solo un parametro nel costruttore e
         else // se invece non è stato letto neanche and , or not , <,>, = ...
         {
             std::stringstream temp;
-            temp << "Missing an operator at token " << *itr;
+            temp << "Unrecognized operator " << *itr;
             throw SyntaxError{temp.str()};
         }
     }

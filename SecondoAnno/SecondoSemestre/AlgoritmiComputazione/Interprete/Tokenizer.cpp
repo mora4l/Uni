@@ -51,7 +51,7 @@ void Tokenizer::tokenizeFileInput(std::ifstream &programmadafile, std::vector<To
     while (!programmadafile.eof())
     {
         // ora dobbiamo lavorare su tutti i casi possibili
-        if (isspace(ch))
+        if (isspace(ch)) // se c'è uno "a capo" va avanti con la riga di lettura
         {
             if (ch == '\n')
             {
@@ -151,6 +151,22 @@ void Tokenizer::tokenizeFileInput(std::ifstream &programmadafile, std::vector<To
                 {
                     temp << ch;
                 }
+                else if (!isalpha(ch) && !isspace(ch) && ch != ')' && ch != '(' && ch != '-')
+                { /*se dopo aver letto una lettera NON ho un'altra lettera o NON ho uno spazio o NON ho una parentesi
+                (che sono tutti i possibili casi che possono esistere. NOTA : la "(" e "-" sono sbagliati a prescindere, ma non è compito nel tokenizer accorgersene ,
+                quindi per ora la lasciamo e poi nel parser se ne avremo bisogno lo segnaleremo ) , allora c'è un errore
+                 := da cfg sappiamo che :
+
+                 variable id → alpha list
+                 alpha list → alpha alpha list | alpha
+                 alpha → a | b | c | . . . | z | A | B | C | . . . | Z
+
+                */
+                    std::stringstream temp;
+                    temp << "Expected a variable , got " << ch;
+                    throw LexicalError{temp.str()};
+                }
+
             } while (std::isalpha(ch));
 
             std::string word{temp.str()};

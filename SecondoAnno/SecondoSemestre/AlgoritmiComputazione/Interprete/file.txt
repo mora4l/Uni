@@ -4,5 +4,3 @@
   (PRINT (DIV 1000 var))
   (SET var (MUL 10 20))
   (PRINT (DIV 1000 var)))
-
-
