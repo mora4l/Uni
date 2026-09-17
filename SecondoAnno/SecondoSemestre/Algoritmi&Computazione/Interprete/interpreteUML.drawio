@@ -1,0 +1,97 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Interprete" id="mFh1S5E8-nh-nbPrtByS">
+    <mxGraphModel dx="2920" dy="1511" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="6aA-xRvHYhNvCDFRS0mJ-2" parent="1" style="swimlane;childLayout=stackLayout;resizeParent=1;resizeParentMax=0;horizontal=1;startSize=20;horizontalStack=0;html=1;" value="TOKEN" vertex="1">
+          <mxGeometry height="310" width="480" x="1330" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="6aA-xRvHYhNvCDFRS0mJ-3" parent="6aA-xRvHYhNvCDFRS0mJ-2" style="swimlane;startSize=20;horizontal=0;html=1;" value="Attributi Pubblici" vertex="1">
+          <mxGeometry height="170" width="480" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="6aA-xRvHYhNvCDFRS0mJ-7" parent="6aA-xRvHYhNvCDFRS0mJ-3" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div align=&quot;left&quot;&gt;+ tag &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;int&amp;gt;&lt;br&gt;+ word &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;string&amp;gt;&lt;br&gt;+ parole_chiave &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static unordered_set&amp;lt;string&amp;gt;&amp;gt;&lt;br&gt;+ idleggibile[] &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static constexpr const char&amp;gt;&lt;br&gt;+ tag2string[] &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static constexpr const char&amp;gt;&lt;br&gt;+ KWORD &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static constexpr int&amp;gt;&lt;br&gt;+ LP &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static constexpr int&amp;gt;&lt;br&gt;+ RP &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static constexpr int&amp;gt;&lt;br&gt;+ CONST &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static constexpr int&amp;gt;&lt;br&gt;+ ID &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static constexpr int&amp;gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="140" width="460" x="30" y="15" as="geometry" />
+        </mxCell>
+        <mxCell id="6aA-xRvHYhNvCDFRS0mJ-6" parent="6aA-xRvHYhNvCDFRS0mJ-2" style="swimlane;startSize=20;horizontal=0;html=1;" value="Metodi pubblici" vertex="1">
+          <mxGeometry height="120" width="480" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="6aA-xRvHYhNvCDFRS0mJ-9" parent="6aA-xRvHYhNvCDFRS0mJ-6" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div&gt;+ Token ( t : int , w : string )&amp;nbsp;&lt;br&gt;+ Token ( t : int , w : const char* )&lt;br&gt;+ ~Token ()&lt;br&gt;+ Token ( Token : const &amp;amp; )&lt;br&gt;&lt;br&gt;+ operator= ( Token : const&amp;amp; ) &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;Token&amp;amp;&amp;gt;&lt;br&gt;+ operator&amp;lt;&amp;lt; (os : ostream&amp;amp; , t : const Token&amp;amp; ) &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;ostream&amp;amp;&amp;gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="120" width="460" x="25" as="geometry" />
+        </mxCell>
+        <mxCell id="sQNyhnveKFqxNb3D2nsL-1" parent="1" style="swimlane;childLayout=stackLayout;resizeParent=1;resizeParentMax=0;horizontal=1;startSize=20;horizontalStack=0;html=1;" value="TOKENIZER" vertex="1">
+          <mxGeometry height="140" width="480" x="790" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="sQNyhnveKFqxNb3D2nsL-4" parent="sQNyhnveKFqxNb3D2nsL-1" style="swimlane;startSize=20;horizontal=0;html=1;" value="Metodi pubblici" vertex="1">
+          <mxGeometry height="120" width="480" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="sQNyhnveKFqxNb3D2nsL-5" parent="sQNyhnveKFqxNb3D2nsL-4" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div align=&quot;left&quot;&gt;+ Tokenizer ( )&amp;nbsp;&lt;br&gt;+ ~Tokenizer ()&lt;br&gt;+ Tokenizer ( Tokenizer : const &amp;amp; )&lt;br&gt;&lt;br&gt;+ operator= ( Tokenizer : const&amp;amp; ) &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt; Tokenizer&amp;amp; &amp;gt;&lt;br&gt;+ operator() (programmadafile : ifstream&amp;amp; ) &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt; vector&amp;lt;Token&amp;gt; &amp;gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="120" width="460" x="25" y="-10" as="geometry" />
+        </mxCell>
+        <mxCell id="sQNyhnveKFqxNb3D2nsL-12" parent="1" style="swimlane;startSize=20;horizontal=0;html=1;" value="Metodi privati" vertex="1">
+          <mxGeometry height="120" width="480" x="790" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="sQNyhnveKFqxNb3D2nsL-13" parent="sQNyhnveKFqxNb3D2nsL-12" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;- tokenizzaCostanti (programmadafile : ifstream&amp;amp; , temp : stringstream&amp;amp; , rowCount : int)&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;lt;string&amp;gt;&lt;br&gt;&lt;/font&gt;&lt;br&gt;- tokenizeFileInput (inputFile : ifstream&amp;amp; , inputTokens :&amp;nbsp; vector&amp;lt;Tokens&amp;gt; )&amp;nbsp; &amp;nbsp; &amp;nbsp;&amp;lt;void&amp;gt;" vertex="1">
+          <mxGeometry height="120" width="460" x="25" as="geometry" />
+        </mxCell>
+        <mxCell id="sQNyhnveKFqxNb3D2nsL-14" parent="1" style="swimlane;childLayout=stackLayout;resizeParent=1;resizeParentMax=0;horizontal=1;startSize=20;horizontalStack=0;html=1;" value="ECCEZIONI" vertex="1">
+          <mxGeometry height="140" width="480" x="240" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="sQNyhnveKFqxNb3D2nsL-15" parent="sQNyhnveKFqxNb3D2nsL-14" style="swimlane;startSize=20;horizontal=0;html=1;" value="Metodi pubblici" vertex="1">
+          <mxGeometry height="120" width="480" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="sQNyhnveKFqxNb3D2nsL-16" parent="sQNyhnveKFqxNb3D2nsL-15" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="+ LexicalError ( msg : const char* )&amp;nbsp;&lt;br&gt;+ LexicalError ( msg : string )&amp;nbsp;" vertex="1">
+          <mxGeometry height="120" width="460" x="20" as="geometry" />
+        </mxCell>
+        <mxCell id="gkdY1cwa4XnQVmlLZsqW-3" edge="1" parent="1" source="sQNyhnveKFqxNb3D2nsL-12" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0;exitY=0;exitDx=0;exitDy=0;" target="sQNyhnveKFqxNb3D2nsL-14" value="Use">
+          <mxGeometry relative="1" width="160" as="geometry">
+            <Array as="points">
+              <mxPoint x="480" y="370" />
+            </Array>
+            <mxPoint x="710" y="410" as="sourcePoint" />
+            <mxPoint x="480" y="470" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gkdY1cwa4XnQVmlLZsqW-4" edge="1" parent="1" source="sQNyhnveKFqxNb3D2nsL-12" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=1;exitY=0;exitDx=0;exitDy=0;" target="6aA-xRvHYhNvCDFRS0mJ-2" value="Use">
+          <mxGeometry relative="1" width="160" as="geometry">
+            <Array as="points">
+              <mxPoint x="1570" y="370" />
+            </Array>
+            <mxPoint x="1900" y="280" as="sourcePoint" />
+            <mxPoint x="1590" y="500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gkdY1cwa4XnQVmlLZsqW-5" parent="1" style="swimlane;childLayout=stackLayout;resizeParent=1;resizeParentMax=0;horizontal=1;startSize=20;horizontalStack=0;html=1;" value="PARSER" vertex="1">
+          <mxGeometry height="570" width="490" x="1070" y="1100" as="geometry" />
+        </mxCell>
+        <mxCell id="gkdY1cwa4XnQVmlLZsqW-6" parent="gkdY1cwa4XnQVmlLZsqW-5" style="swimlane;startSize=20;horizontal=0;html=1;" value="Metodi Pubblici" vertex="1">
+          <mxGeometry height="170" width="490" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="gkdY1cwa4XnQVmlLZsqW-7" parent="gkdY1cwa4XnQVmlLZsqW-6" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="+ operator()(tokenStream) &amp;lt;Program*&amp;gt;" vertex="1">
+          <mxGeometry height="140" width="460" x="30" y="15" as="geometry" />
+        </mxCell>
+        <mxCell id="gkdY1cwa4XnQVmlLZsqW-8" parent="gkdY1cwa4XnQVmlLZsqW-5" style="swimlane;startSize=20;horizontal=0;html=1;" value="Metodi privati" vertex="1">
+          <mxGeometry height="380" width="490" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="gkdY1cwa4XnQVmlLZsqW-9" parent="gkdY1cwa4XnQVmlLZsqW-8" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="- parseProgram (itr : vector&amp;lt;Token&amp;gt;const_iterator&amp;amp;) &amp;lt;Program*&amp;gt;&lt;br&gt;- parseStmtBlock (itr : vector&amp;lt;Token&amp;gt;const_iterator&amp;amp;) &amp;lt;Block*&amp;gt;&lt;br&gt;- parseBlock (itr : vector&amp;lt;Token&amp;gt;const_iterator&amp;amp;) &amp;lt;Block*&amp;gt;&lt;br&gt;- parseStatement (itr : vector&amp;lt;Token&amp;gt;const_iterator&amp;amp;) &amp;lt;Statement*&amp;gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;- parseNumExpr (itr : vector&amp;lt;Token&amp;gt;const_iterator&amp;amp;) &amp;lt;NumExpr*&amp;gt;&lt;br&gt;- parseNumber (itr : vector&amp;lt;Token&amp;gt;const_iterator&amp;amp;) &amp;lt;Number*&amp;gt;&lt;br&gt;- parseVariable (itr : vector&amp;lt;Token&amp;gt;const_iterator&amp;amp;) &amp;lt;Variable*&amp;gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;- parseBoolExpr (itr : vector&amp;lt;Token&amp;gt;const_iterator&amp;amp;) &amp;lt;BoolExpr*&amp;gt;&lt;br&gt;- parseBoolconst (itr : vector&amp;lt;Token&amp;gt;const_iterator&amp;amp;) &amp;lt;BoolConst*&amp;gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;- parsePrintStmt (itr : vector&amp;lt;Token&amp;gt;const_iterator&amp;amp;) &amp;lt;PrintStmt*&amp;gt;&lt;br&gt;- parseSetStmt (itr : vector&amp;lt;Token&amp;gt;const_iterator&amp;amp;) &amp;lt;SetStmt*&amp;gt;&lt;br&gt;- parseInputStmt (itr : vector&amp;lt;Token&amp;gt;const_iterator&amp;amp;) &amp;lt;InputStmt*&amp;gt;&lt;br&gt;- parseWhileStmt (itr : vector&amp;lt;Token&amp;gt;const_iterator&amp;amp;) &amp;lt;WhileStmt*&amp;gt;&lt;br&gt;- parseIfStmt (itr : vector&amp;lt;Token&amp;gt;const_iterator&amp;amp;) &amp;lt;IfStmt*&amp;gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;- safe_next (itr : vector&amp;lt;Token&amp;gt;const_iterator&amp;amp;) &amp;lt;void&amp;gt;" vertex="1">
+          <mxGeometry height="355" width="460" x="30" y="12.5" as="geometry" />
+        </mxCell>
+        <mxCell id="gkdY1cwa4XnQVmlLZsqW-15" parent="1" style="swimlane;childLayout=stackLayout;resizeParent=1;resizeParentMax=0;horizontal=1;startSize=20;horizontalStack=0;html=1;" value="PROGRAM" vertex="1">
+          <mxGeometry height="310" width="480" x="240" y="1180" as="geometry" />
+        </mxCell>
+        <mxCell id="gkdY1cwa4XnQVmlLZsqW-16" parent="gkdY1cwa4XnQVmlLZsqW-15" style="swimlane;startSize=20;horizontal=0;html=1;" value="Attributi Pubblici" vertex="1">
+          <mxGeometry height="170" width="480" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="gkdY1cwa4XnQVmlLZsqW-17" parent="gkdY1cwa4XnQVmlLZsqW-16" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div align=&quot;left&quot;&gt;+ tag &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;int&amp;gt;&lt;br&gt;+ word &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;string&amp;gt;&lt;br&gt;+ parole_chiave &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static unordered_set&amp;lt;string&amp;gt;&amp;gt;&lt;br&gt;+ idleggibile[] &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static constexpr const char&amp;gt;&lt;br&gt;+ tag2string[] &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static constexpr const char&amp;gt;&lt;br&gt;+ KWORD &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static constexpr int&amp;gt;&lt;br&gt;+ LP &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static constexpr int&amp;gt;&lt;br&gt;+ RP &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static constexpr int&amp;gt;&lt;br&gt;+ CONST &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static constexpr int&amp;gt;&lt;br&gt;+ ID &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static constexpr int&amp;gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="140" width="460" x="30" y="15" as="geometry" />
+        </mxCell>
+        <mxCell id="gkdY1cwa4XnQVmlLZsqW-18" parent="gkdY1cwa4XnQVmlLZsqW-15" style="swimlane;startSize=20;horizontal=0;html=1;" value="Metodi pubblici" vertex="1">
+          <mxGeometry height="120" width="480" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="gkdY1cwa4XnQVmlLZsqW-19" parent="gkdY1cwa4XnQVmlLZsqW-18" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div&gt;+ Token ( t : int , w : string )&amp;nbsp;&lt;br&gt;+ Token ( t : int , w : const char* )&lt;br&gt;+ ~Token ()&lt;br&gt;+ Token ( Token : const &amp;amp; )&lt;br&gt;&lt;br&gt;+ operator= ( Token : const&amp;amp; ) &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;Token&amp;amp;&amp;gt;&lt;br&gt;+ operator&amp;lt;&amp;lt; (os : ostream&amp;amp; , t : const Token&amp;amp; ) &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;ostream&amp;amp;&amp;gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="120" width="460" x="25" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
