@@ -37,12 +37,9 @@ private :
     NumExpr *parseNumExpr(std::vector<Token>::const_iterator &itr);
     Number* parseNumber(std::vector<Token>::const_iterator &itr);
     Variable *parseVariable(std::vector<Token>::const_iterator &itr);
-    // Operator* parseOperator(std::vector<Token>::const_iterator& itr);
 
     BoolExpr *parseBoolExpr(std::vector<Token>::const_iterator &itr);
     BoolConst *parseBoolConst(std::vector<Token>::const_iterator &itr);
-    // RelOp *parseRelOp(std::vector<Token>::const_iterator &itr);
-    // BoolOp *parseBoolOp(std::vector<Token>::const_iterator &itr);
 
     PrintStmt *parsePrintStmt(std::vector<Token>::const_iterator &itr);
     SetStmt *parseSetStmt(std::vector<Token>::const_iterator &itr);

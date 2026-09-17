@@ -37,4 +37,6 @@ public:
 private:
     std::unordered_map<std::string, int64_t> map; //i valori interi sono , da specifica, a 64 bit quindi devo usare il tipo "int64_t"
 };
+
+//arrivato qui con uml : controllare symboltable, tutti gli altri collegamenti esistenti (se ci sono altre dipendenze) e fare printvisitor
 #endif

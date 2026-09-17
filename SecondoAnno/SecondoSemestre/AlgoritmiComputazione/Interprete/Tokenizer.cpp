@@ -162,6 +162,7 @@ void Tokenizer::tokenizeFileInput(std::ifstream &programmadafile, std::vector<To
                  alpha → a | b | c | . . . | z | A | B | C | . . . | Z
 
                 */
+               
                     std::stringstream temp;
                     temp << "Expected a variable , got " << ch;
                     throw LexicalError{temp.str()};

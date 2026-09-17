@@ -45,6 +45,7 @@ int main(int argc, char *argv[])
     try
     {
         inputTokens = std::move(tokenizza(programmadafile));
+        
     }
     catch (LexicalError &e)
     {
