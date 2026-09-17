@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net">
   <diagram name="Interprete" id="mFh1S5E8-nh-nbPrtByS">
-    <mxGraphModel dx="2920" dy="1511" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="4938" dy="2116" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -43,7 +43,7 @@
         <mxCell id="sQNyhnveKFqxNb3D2nsL-16" parent="sQNyhnveKFqxNb3D2nsL-15" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="+ LexicalError ( msg : const char* )&amp;nbsp;&lt;br&gt;+ LexicalError ( msg : string )&amp;nbsp;" vertex="1">
           <mxGeometry height="120" width="460" x="20" as="geometry" />
         </mxCell>
-        <mxCell id="gkdY1cwa4XnQVmlLZsqW-3" edge="1" parent="1" source="sQNyhnveKFqxNb3D2nsL-12" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0;exitY=0;exitDx=0;exitDy=0;" target="sQNyhnveKFqxNb3D2nsL-14" value="Use">
+        <mxCell id="gkdY1cwa4XnQVmlLZsqW-3" edge="1" parent="1" source="sQNyhnveKFqxNb3D2nsL-12" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0;exitY=0;exitDx=0;exitDy=0;strokeWidth=2;" target="sQNyhnveKFqxNb3D2nsL-14" value="">
           <mxGeometry relative="1" width="160" as="geometry">
             <Array as="points">
               <mxPoint x="480" y="370" />
@@ -52,7 +52,7 @@
             <mxPoint x="480" y="470" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="gkdY1cwa4XnQVmlLZsqW-4" edge="1" parent="1" source="sQNyhnveKFqxNb3D2nsL-12" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=1;exitY=0;exitDx=0;exitDy=0;" target="6aA-xRvHYhNvCDFRS0mJ-2" value="Use">
+        <mxCell id="gkdY1cwa4XnQVmlLZsqW-4" edge="1" parent="1" source="sQNyhnveKFqxNb3D2nsL-12" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=1;exitY=0;exitDx=0;exitDy=0;strokeWidth=2;" target="6aA-xRvHYhNvCDFRS0mJ-2" value="">
           <mxGeometry relative="1" width="160" as="geometry">
             <Array as="points">
               <mxPoint x="1570" y="370" />
@@ -62,7 +62,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="gkdY1cwa4XnQVmlLZsqW-5" parent="1" style="swimlane;childLayout=stackLayout;resizeParent=1;resizeParentMax=0;horizontal=1;startSize=20;horizontalStack=0;html=1;" value="PARSER" vertex="1">
-          <mxGeometry height="570" width="490" x="1070" y="1100" as="geometry" />
+          <mxGeometry height="570" width="490" x="1720" y="1240" as="geometry" />
         </mxCell>
         <mxCell id="gkdY1cwa4XnQVmlLZsqW-6" parent="gkdY1cwa4XnQVmlLZsqW-5" style="swimlane;startSize=20;horizontal=0;html=1;" value="Metodi Pubblici" vertex="1">
           <mxGeometry height="170" width="490" y="20" as="geometry" />
@@ -77,19 +77,198 @@
           <mxGeometry height="355" width="460" x="30" y="12.5" as="geometry" />
         </mxCell>
         <mxCell id="gkdY1cwa4XnQVmlLZsqW-15" parent="1" style="swimlane;childLayout=stackLayout;resizeParent=1;resizeParentMax=0;horizontal=1;startSize=20;horizontalStack=0;html=1;" value="PROGRAM" vertex="1">
-          <mxGeometry height="310" width="480" x="240" y="1180" as="geometry" />
+          <mxGeometry height="130" width="300" x="550" y="1190" as="geometry" />
         </mxCell>
-        <mxCell id="gkdY1cwa4XnQVmlLZsqW-16" parent="gkdY1cwa4XnQVmlLZsqW-15" style="swimlane;startSize=20;horizontal=0;html=1;" value="Attributi Pubblici" vertex="1">
-          <mxGeometry height="170" width="480" y="20" as="geometry" />
+        <mxCell id="gkdY1cwa4XnQVmlLZsqW-16" parent="gkdY1cwa4XnQVmlLZsqW-15" style="swimlane;startSize=20;horizontal=0;html=1;" value="Metodi Pubblici" vertex="1">
+          <mxGeometry height="110" width="300" y="20" as="geometry" />
         </mxCell>
-        <mxCell id="gkdY1cwa4XnQVmlLZsqW-17" parent="gkdY1cwa4XnQVmlLZsqW-16" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div align=&quot;left&quot;&gt;+ tag &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;int&amp;gt;&lt;br&gt;+ word &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;string&amp;gt;&lt;br&gt;+ parole_chiave &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static unordered_set&amp;lt;string&amp;gt;&amp;gt;&lt;br&gt;+ idleggibile[] &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static constexpr const char&amp;gt;&lt;br&gt;+ tag2string[] &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static constexpr const char&amp;gt;&lt;br&gt;+ KWORD &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static constexpr int&amp;gt;&lt;br&gt;+ LP &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static constexpr int&amp;gt;&lt;br&gt;+ RP &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static constexpr int&amp;gt;&lt;br&gt;+ CONST &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static constexpr int&amp;gt;&lt;br&gt;+ ID &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;static constexpr int&amp;gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="140" width="460" x="30" y="15" as="geometry" />
+        <mxCell id="5G03H7-19kCupybbE2Zr-1" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div align=&quot;left&quot;&gt;+ accept(visitor : Visitor &amp;amp;) &amp;lt;void&amp;gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;+ ~Statement()&amp;nbsp;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="90" width="190" x="580" y="1220" as="geometry" />
         </mxCell>
-        <mxCell id="gkdY1cwa4XnQVmlLZsqW-18" parent="gkdY1cwa4XnQVmlLZsqW-15" style="swimlane;startSize=20;horizontal=0;html=1;" value="Metodi pubblici" vertex="1">
-          <mxGeometry height="120" width="480" y="190" as="geometry" />
+        <mxCell id="5G03H7-19kCupybbE2Zr-2" parent="1" style="swimlane;childLayout=stackLayout;resizeParent=1;resizeParentMax=0;horizontal=1;startSize=20;horizontalStack=0;html=1;" value="STATEMENT" vertex="1">
+          <mxGeometry height="130" width="300" x="550" y="1950" as="geometry" />
         </mxCell>
-        <mxCell id="gkdY1cwa4XnQVmlLZsqW-19" parent="gkdY1cwa4XnQVmlLZsqW-18" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div&gt;+ Token ( t : int , w : string )&amp;nbsp;&lt;br&gt;+ Token ( t : int , w : const char* )&lt;br&gt;+ ~Token ()&lt;br&gt;+ Token ( Token : const &amp;amp; )&lt;br&gt;&lt;br&gt;+ operator= ( Token : const&amp;amp; ) &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;Token&amp;amp;&amp;gt;&lt;br&gt;+ operator&amp;lt;&amp;lt; (os : ostream&amp;amp; , t : const Token&amp;amp; ) &lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt;ostream&amp;amp;&amp;gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="120" width="460" x="25" as="geometry" />
+        <mxCell id="5G03H7-19kCupybbE2Zr-3" parent="5G03H7-19kCupybbE2Zr-2" style="swimlane;startSize=20;horizontal=0;html=1;" value="Metodi Pubblici" vertex="1">
+          <mxGeometry height="110" width="300" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-4" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div align=&quot;left&quot;&gt;+ accept(visitor : Visitor &amp;amp;) &amp;lt;void&amp;gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;+ ~Statement()&amp;nbsp;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="90" width="190" x="580" y="1980" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-6" parent="1" style="swimlane;childLayout=stackLayout;resizeParent=1;resizeParentMax=0;horizontal=1;startSize=20;horizontalStack=0;html=1;" value="BLOCK" vertex="1">
+          <mxGeometry height="165" width="300" x="550" y="1474.29" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-7" parent="5G03H7-19kCupybbE2Zr-6" style="swimlane;startSize=20;horizontal=0;html=1;" value="Metodi Pubblici" vertex="1">
+          <mxGeometry height="145" width="300" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-8" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div align=&quot;left&quot;&gt;+ accept(visitor : Visitor &amp;amp;) &amp;lt;void&amp;gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;+ ~Statement()&amp;nbsp;&lt;br&gt;&lt;br&gt;+ Block(stmts : vector&amp;lt;Statement*&amp;gt;)&amp;nbsp;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="110" width="245" x="580" y="1519.29" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-9" parent="1" style="swimlane;startSize=20;horizontal=0;html=1;" value="Attributi Pubblici" vertex="1">
+          <mxGeometry height="130" width="300" x="550" y="1639.29" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-10" parent="5G03H7-19kCupybbE2Zr-9" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="+ statements_&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&amp;lt; vector&amp;lt;Statement*&amp;gt; &amp;gt;&lt;/span&gt;&lt;/span&gt;" vertex="1">
+          <mxGeometry height="90" width="260" x="30" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-16" edge="1" parent="1" source="gkdY1cwa4XnQVmlLZsqW-16" style="endArrow=open;html=1;endSize=12;startArrow=diamondThin;startSize=14;startFill=0;edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;" target="5G03H7-19kCupybbE2Zr-6" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="700" y="1390" />
+              <mxPoint x="700" y="1390" />
+            </Array>
+            <mxPoint x="630" y="1377" as="sourcePoint" />
+            <mxPoint x="790" y="1377" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-17" connectable="0" parent="5G03H7-19kCupybbE2Zr-16" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-1" as="geometry">
+            <mxPoint x="-20" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-18" connectable="0" parent="5G03H7-19kCupybbE2Zr-16" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=top;" value="1" vertex="1">
+          <mxGeometry relative="1" x="1" as="geometry">
+            <mxPoint x="-10" y="-25" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-23" edge="1" parent="1" source="5G03H7-19kCupybbE2Zr-9" style="endArrow=open;html=1;endSize=12;startArrow=diamondThin;startSize=14;startFill=0;edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;" target="5G03H7-19kCupybbE2Zr-2" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="700" y="1880" />
+              <mxPoint x="700" y="1880" />
+            </Array>
+            <mxPoint x="699.6600000000001" y="1778" as="sourcePoint" />
+            <mxPoint x="699.6600000000001" y="1932" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-24" connectable="0" parent="5G03H7-19kCupybbE2Zr-23" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-1" as="geometry">
+            <mxPoint x="-20" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-25" connectable="0" parent="5G03H7-19kCupybbE2Zr-23" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=top;" value="n" vertex="1">
+          <mxGeometry relative="1" x="1" as="geometry">
+            <mxPoint x="-10" y="-25" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-26" parent="1" style="swimlane;childLayout=stackLayout;resizeParent=1;resizeParentMax=0;horizontal=1;startSize=20;horizontalStack=0;html=1;" value="PRINTstmt" vertex="1">
+          <mxGeometry height="165" width="300" x="-410" y="2200" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-27" parent="5G03H7-19kCupybbE2Zr-26" style="swimlane;startSize=20;horizontal=0;html=1;" value="Metodi Pubblici" vertex="1">
+          <mxGeometry height="145" width="300" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-28" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div align=&quot;left&quot;&gt;+ accept(visitor : Visitor &amp;amp;) &amp;lt;void&amp;gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;+ PrintStmt(num_expr : NumExpr*)&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;+ ~PrintStmt()&amp;nbsp;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="110" width="245" x="-380" y="2245" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-34" parent="1" style="swimlane;startSize=20;horizontal=0;html=1;" value="Attributi Pubblici" vertex="1">
+          <mxGeometry height="130" width="300" x="-410" y="2365" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-35" parent="5G03H7-19kCupybbE2Zr-34" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="+ num_expr&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&amp;lt; NumExpr* &amp;gt;&lt;/span&gt;&lt;/span&gt;" vertex="1">
+          <mxGeometry height="90" width="260" x="30" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-37" parent="1" style="swimlane;childLayout=stackLayout;resizeParent=1;resizeParentMax=0;horizontal=1;startSize=20;horizontalStack=0;html=1;" value="SETstmt" vertex="1">
+          <mxGeometry height="165" width="350" x="25" y="2200" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-38" parent="5G03H7-19kCupybbE2Zr-37" style="swimlane;startSize=20;horizontal=0;html=1;" value="Metodi Pubblici" vertex="1">
+          <mxGeometry height="145" width="350" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-39" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div align=&quot;left&quot;&gt;+ accept(visitor : Visitor &amp;amp;) &amp;lt;void&amp;gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;+ SetStmt(variable_id : Variable* , num_expr : NumExpr*)&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;+ ~SetStmt()&amp;nbsp;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="110" width="335" x="55" y="2245" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-40" parent="1" style="swimlane;startSize=20;horizontal=0;html=1;" value="Attributi Pubblici" vertex="1">
+          <mxGeometry height="130" width="350" x="25" y="2365" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-41" parent="5G03H7-19kCupybbE2Zr-40" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div&gt;+ variable_id&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&amp;lt; Variable* &amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;+ num_expr&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt; NumExpr* &amp;gt;&amp;nbsp;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="90" width="260" x="30" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-43" parent="1" style="swimlane;childLayout=stackLayout;resizeParent=1;resizeParentMax=0;horizontal=1;startSize=20;horizontalStack=0;html=1;" value="INPUTstmt" vertex="1">
+          <mxGeometry height="165" width="300" x="550" y="2200" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-44" parent="5G03H7-19kCupybbE2Zr-43" style="swimlane;startSize=20;horizontal=0;html=1;" value="Metodi Pubblici" vertex="1">
+          <mxGeometry height="145" width="300" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-45" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div align=&quot;left&quot;&gt;+ accept(visitor : Visitor &amp;amp;) &amp;lt;void&amp;gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;+ InputStmt(variable_id : Variable*)&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;+ ~InputStmt()&amp;nbsp;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="110" width="245" x="580" y="2245" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-46" parent="1" style="swimlane;startSize=20;horizontal=0;html=1;" value="Attributi Pubblici" vertex="1">
+          <mxGeometry height="130" width="300" x="550" y="2365" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-47" parent="5G03H7-19kCupybbE2Zr-46" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="+ variable_id&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&amp;lt; Variable* &amp;gt;&lt;/span&gt;&lt;/span&gt;" vertex="1">
+          <mxGeometry height="100" width="260" x="30" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-48" parent="1" style="swimlane;childLayout=stackLayout;resizeParent=1;resizeParentMax=0;horizontal=1;startSize=20;horizontalStack=0;html=1;" value="WHILEstmt" vertex="1">
+          <mxGeometry height="165" width="380" x="1020" y="2200" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-49" parent="5G03H7-19kCupybbE2Zr-48" style="swimlane;startSize=20;horizontal=0;html=1;" value="Metodi Pubblici" vertex="1">
+          <mxGeometry height="145" width="380" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-50" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div align=&quot;left&quot;&gt;+ accept(visitor : Visitor &amp;amp;) &amp;lt;void&amp;gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;+ WhileStmt(bool_expr : BoolExpr* , stmt_block_ : Block* )&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;+ ~InputStmt()&amp;nbsp;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="110" width="335" x="1050" y="2245" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-51" parent="1" style="swimlane;startSize=20;horizontal=0;html=1;" value="Attributi Pubblici" vertex="1">
+          <mxGeometry height="130" width="380" x="1020" y="2365" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-52" parent="5G03H7-19kCupybbE2Zr-51" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div&gt;+ bool_expr&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt; BoolExpr* &amp;gt;&lt;/div&gt;&lt;div&gt;+ stmt_block_&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt; Block* &amp;gt;&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="90" width="260" x="40" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-53" parent="1" style="swimlane;childLayout=stackLayout;resizeParent=1;resizeParentMax=0;horizontal=1;startSize=20;horizontalStack=0;html=1;" value="IFstmt" vertex="1">
+          <mxGeometry height="165" width="380" x="1565" y="2200" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-54" parent="5G03H7-19kCupybbE2Zr-53" style="swimlane;startSize=20;horizontal=0;html=1;" value="Metodi Pubblici" vertex="1">
+          <mxGeometry height="145" width="380" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-55" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div align=&quot;left&quot;&gt;+ accept(visitor : Visitor &amp;amp;) &amp;lt;void&amp;gt;&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;+ IfStmt(boolexpr : BoolExpr* , stat_1 Block* , stat_2 Block* )&lt;/div&gt;&lt;div align=&quot;left&quot;&gt;+ ~IfStmt()&amp;nbsp;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="110" width="335" x="1595" y="2245" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-56" parent="1" style="swimlane;startSize=20;horizontal=0;html=1;" value="Attributi Pubblici" vertex="1">
+          <mxGeometry height="130" width="380" x="1565" y="2365" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-57" parent="5G03H7-19kCupybbE2Zr-56" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div&gt;+ bool_expr&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt; BoolExpr* &amp;gt;&lt;/div&gt;&lt;div&gt;+ stmt_block1&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt; Block* &amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;+ stmt_block2&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;lt; Block* &amp;gt;&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="90" width="260" x="40" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-59" edge="1" parent="1" source="5G03H7-19kCupybbE2Zr-43" style="endArrow=block;endSize=16;endFill=0;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeWidth=3;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" target="5G03H7-19kCupybbE2Zr-2" value="">
+          <mxGeometry relative="1" width="160" as="geometry">
+            <mxPoint x="700" y="2160" as="sourcePoint" />
+            <mxPoint x="950" y="2160" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-67" edge="1" parent="1" source="5G03H7-19kCupybbE2Zr-37" style="endArrow=block;endSize=16;endFill=0;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeWidth=3;" target="5G03H7-19kCupybbE2Zr-2" value="">
+          <mxGeometry relative="1" width="160" as="geometry">
+            <Array as="points">
+              <mxPoint x="200" y="2160" />
+              <mxPoint x="700" y="2160" />
+            </Array>
+            <mxPoint x="180" y="2190" as="sourcePoint" />
+            <mxPoint x="375" y="2130" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-68" edge="1" parent="1" source="5G03H7-19kCupybbE2Zr-26" style="endArrow=block;endSize=16;endFill=0;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeWidth=3;" value="">
+          <mxGeometry relative="1" width="160" as="geometry">
+            <Array as="points">
+              <mxPoint x="-260" y="2160" />
+              <mxPoint x="700" y="2160" />
+            </Array>
+            <mxPoint x="200" y="2200" as="sourcePoint" />
+            <mxPoint x="700" y="2080" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-69" edge="1" parent="1" source="5G03H7-19kCupybbE2Zr-48" style="endArrow=block;endSize=16;endFill=0;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.75;exitY=0;exitDx=0;exitDy=0;strokeWidth=3;" target="5G03H7-19kCupybbE2Zr-2" value="">
+          <mxGeometry relative="1" width="160" as="geometry">
+            <Array as="points">
+              <mxPoint x="1305" y="2160" />
+              <mxPoint x="700" y="2160" />
+            </Array>
+            <mxPoint x="1240" y="2150" as="sourcePoint" />
+            <mxPoint x="1275" y="2090" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5G03H7-19kCupybbE2Zr-70" edge="1" parent="1" source="5G03H7-19kCupybbE2Zr-53" style="endArrow=block;endSize=16;endFill=0;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;strokeWidth=3;" value="">
+          <mxGeometry relative="1" width="160" as="geometry">
+            <Array as="points">
+              <mxPoint x="1755" y="2160" />
+              <mxPoint x="700" y="2160" />
+            </Array>
+            <mxPoint x="1305" y="2200" as="sourcePoint" />
+            <mxPoint x="700" y="2080" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
