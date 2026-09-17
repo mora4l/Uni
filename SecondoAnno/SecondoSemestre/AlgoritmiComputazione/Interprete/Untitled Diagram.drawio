@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net">
   <diagram name="Page-1" id="mFh1S5E8-nh-nbPrtByS">
-    <mxGraphModel dx="1725" dy="882" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1703" dy="882" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -62,7 +62,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="gkdY1cwa4XnQVmlLZsqW-5" parent="1" style="swimlane;childLayout=stackLayout;resizeParent=1;resizeParentMax=0;horizontal=1;startSize=20;horizontalStack=0;html=1;" value="PARSER" vertex="1">
-          <mxGeometry height="570" width="490" x="850" y="1100" as="geometry" />
+          <mxGeometry height="570" width="490" x="1070" y="1100" as="geometry" />
         </mxCell>
         <mxCell id="gkdY1cwa4XnQVmlLZsqW-6" parent="gkdY1cwa4XnQVmlLZsqW-5" style="swimlane;startSize=20;horizontal=0;html=1;" value="Metodi Pubblici" vertex="1">
           <mxGeometry height="170" width="490" y="20" as="geometry" />
