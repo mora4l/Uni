@@ -10,8 +10,8 @@
 class PrintVisitor : public Visitor
 {
 public:
-    PrintVisitor(std::ostream &con, int spazio) : console_(con), spazio_(0) {}
-
+    PrintVisitor(std::ostream &con, int spazio) : console_(con), spazio_(spazio) {}
+    virtual ~PrintVisitor() = default ; 
     // ora sviluppo per ogni elemento dell'AST il metodo che stampa a schermo quella parte di albero .
 
     void visit(Program const &p) override

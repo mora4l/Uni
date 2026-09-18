@@ -20,10 +20,10 @@ std::string Tokenizer::tokenizzaCostanti(std::ifstream &programmadafile, std::st
         }
         if (ch == '.')
         {
-            std::stringstream temp;
-            temp << "Stray character " << ch
+            std::stringstream temptokenizzacost;
+            temptokenizzacost << "Stray character " << ch
                  << " in input at line " << rowCount;
-            throw LexicalError{temp.str()};
+            throw LexicalError{temptokenizzacost.str()};
         } // se ho letto "." guardo :
 
     } while (std::isdigit(ch) || ch == '.'); // finchè non abbiamo un numero oppure un punto vado avanti
@@ -119,10 +119,10 @@ void Tokenizer::tokenizeFileInput(std::ifstream &programmadafile, std::vector<To
 
                 if (isdigit(ch2)) // se ch2 è un numero allora c'è un errore
                 {                 // qui entra se il numero è 0n0
-                    std::stringstream temp;
-                    temp << "Zero value followed by another value is not allowed " << ch
+                    std::stringstream tempDigitTknzTile;
+                    tempDigitTknzTile << "Zero value followed by another value is not allowed " << ch
                          << "in input at line " << rowCount;
-                    throw LexicalError{temp.str()};
+                    throw LexicalError{tempDigitTknzTile.str()};
                 }
                 else
                 {
@@ -163,9 +163,9 @@ void Tokenizer::tokenizeFileInput(std::ifstream &programmadafile, std::vector<To
 
                 */
                
-                    std::stringstream temp;
-                    temp << "Expected a variable , got " << ch;
-                    throw LexicalError{temp.str()};
+                    std::stringstream tempNotAlphaTknzFile;
+                    tempNotAlphaTknzFile << "Expected a variable , got " << ch;
+                    throw LexicalError{tempNotAlphaTknzFile.str()};
                 }
 
             } while (std::isalpha(ch));

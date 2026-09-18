@@ -183,7 +183,7 @@ struct WhileStmt : public Statement
 {
     void accept(Visitor &visitor) const override;
 
-    WhileStmt(BoolExpr *bool_expr, Block *stmt_block_) : bool_expr_(bool_expr), stmt_block_(stmt_block_) {};
+    WhileStmt(BoolExpr *bool_expr, Block *stmt_block) : bool_expr_(bool_expr), stmt_block_(stmt_block) {};
     ~WhileStmt() = default;
 
     BoolExpr *bool_expr_;

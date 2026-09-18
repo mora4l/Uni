@@ -22,5 +22,7 @@ public:
     virtual void visit(BoolOp const &boolop) = 0;
     virtual void visit(BoolConst const &boolconst) = 0;
     virtual void visit(RelOp const &relop) = 0;
+
+    virtual ~Visitor() = default  ; //se una classe ha delle funzioni virtuali allora devo metterci anche il distruttore virtuale associato
 };
 #endif

@@ -11,7 +11,7 @@ class EvaluationVisitor : public Visitor
 public:
     EvaluationVisitor();
     EvaluationVisitor(SymbolTable &st, std::ostream &con) : symbolTable_{st}, console_{con} {}
-    ~EvaluationVisitor() = default;
+    virtual ~EvaluationVisitor() = default;
     EvaluationVisitor &operator=(const EvaluationVisitor &other) = delete;
 
     void visit(Program const &program) override
