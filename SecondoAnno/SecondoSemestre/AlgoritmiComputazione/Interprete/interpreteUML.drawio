@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" scale="1" border="0">
   <diagram name="Interprete" id="mFh1S5E8-nh-nbPrtByS">
-    <mxGraphModel dx="6865" dy="2423" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="6783" dy="2423" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -1269,6 +1269,16 @@
         </mxCell>
         <mxCell id="yZZN68s-thv1dNusqMQ8-59" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="NUMEXPR&lt;br&gt;NUMBER&lt;br&gt;VARIABLE&lt;br&gt;&lt;br&gt;BOOLEXPR&lt;br&gt;BOOLCONST&lt;br&gt;&lt;br&gt;RELOP&lt;br&gt;BOOLOP" vertex="1">
           <mxGeometry height="155" width="100" x="1260" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="yZZN68s-thv1dNusqMQ8-60" parent="0" value="Tokenizer" />
+        <mxCell id="yZZN68s-thv1dNusqMQ8-64" parent="yZZN68s-thv1dNusqMQ8-60" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="EvaluationVisitor e PrintVisitor sono proprio i &quot;ConcreteVisitor&quot; delle slide dei pattern (Visitor)&amp;nbsp;" vertex="1">
+          <mxGeometry height="150" width="160" x="-2390" y="1140" as="geometry" />
+        </mxCell>
+        <mxCell id="yZZN68s-thv1dNusqMQ8-66" parent="yZZN68s-thv1dNusqMQ8-60" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Ogni struttura in Syntax.h (tutte queste qua sotto) sono le classi Element / Concrete Element del pattern visitor delle slide" vertex="1">
+          <mxGeometry height="110" width="110" x="1200" y="1150" as="geometry" />
+        </mxCell>
+        <mxCell id="yZZN68s-thv1dNusqMQ8-67" parent="yZZN68s-thv1dNusqMQ8-60" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="per le operazioni ho usato pattern visitor (le operazioni stanno fuori dalla definizione originale (accept lavora in visitor)&lt;br&gt;&lt;br&gt;per implementare la struttura ad albero delle classi , parallelamente, ho usato il composite pattern" vertex="1">
+          <mxGeometry height="150" width="200" x="1320" y="1130" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
