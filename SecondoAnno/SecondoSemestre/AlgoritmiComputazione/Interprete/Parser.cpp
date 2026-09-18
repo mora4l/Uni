@@ -1,11 +1,13 @@
 #include <sstream>
 #include "Parser.h"
 
+// partiamo ad effettuare il parsing di tutto il programma che abbiamo "letto" durante la tokenizzazione
+
 /*** program -> ***/
 Program *Parser::parseProgram(std::vector<Token>::const_iterator &itr)
 {
 
-    Block *programma_parsabile = parseStmtBlock(itr);
+    Block *programma_parsabile = parseStmtBlock(itr); // iniziamo creando un programma che viene definito come block . poi da qui potrà essere una serie di statement block oppure solo uno
     return new Program{programma_parsabile};
 }
 Block *Parser::parseStmtBlock(std::vector<Token>::const_iterator &itr)
@@ -13,21 +15,21 @@ Block *Parser::parseStmtBlock(std::vector<Token>::const_iterator &itr)
     /*
     stmt block → statement | ( BLOCK statement list )
 
-    1a cosa da sapere : il codice in input è uno statement solo oppure è una lista di statement ?
+    prima cosa da chiedersi : il codice in input è uno statement solo oppure è una lista di statement ?
     */
     if (itr->tag == Token::LP)
     {                   // intanto sicuramente il codice deve contenere "(" per iniziare
         safe_next(itr); // leggo il carattere dopo...
         if (itr->tag == Token::KWORD && itr->word == "BLOCK")
-        { // qua ci sono due casi : se ce scritto BLOCK allora ci sarà un block da leggere
+        { // qua ci sono due casi : se ce scritto BLOCK allora ci sarà un solo block da leggere...
             return parseBlock(itr);
         }
         else if (itr->tag == Token::KWORD)
         { // se invece non ce scritto block ,ma un altra keyword , allora potrebbe essere uno statement (potrebbe, perche devo ancora capire di che altra keyword si tratta)
 
-            // se è uno statement , ho già letto una "(" che FARA GIA PARTE DELLO STATEMENT , quindi dovro controllare a fine parseStatement (che devo ancora fare) se ce la ")" finale
+            // se è uno statement , ho già letto una "(" che FARA GIA PARTE DELLO STATEMENT , quindi dovro controllare a fine parseStatement (che devo ancora dichiarare e sviluppare) se ce la ")" finale
 
-            std::vector<Statement *> temp;       // il problema è che se faccio return parseStatement mi ritorna un Statement* , cosa che non posso perche questa funzione ritorna un Block*, quindi devo creare un vettore ausiliario uguale al tipo supportato da Block
+            std::vector<Statement *> temp;       // qua ho un problema : se faccio return parseStatement mi ritorna un Statement* , cosa che non posso permettermi perche questa funzione ritorna un Block*, quindi devo creare un vettore ausiliario uguale al tipo supportato da Block
             temp.push_back(parseStatement(itr)); // ci metto dentro l'unico elemento analizzato (uno statement solo , che vado a leggere)
             return new Block(std::move(temp));   // e poi ritorno un nuovo Block creato con un vettore che ha un solo elemento (un solo statement)
         }
@@ -60,7 +62,8 @@ Block *Parser::parseBlock(std::vector<Token>::const_iterator &itr)
     altrimenti ritornero un vettore con più elementi
     */
     std::vector<Statement *> another_statement;
-    while (itr->tag != Token::RP) // finchè non incontro la ")" del BLOCK da cui ho chiamato questa funzione , dentro ci saranno statement da leggere
+
+    while (itr->tag != Token::RP) // finchè non incontro la ")" del BLOCK da cui ho chiamato questa funzione , dentro ci saranno statement da leggere (se tutto va bene)
     {
 
         if (itr->tag == Token::LP)
@@ -93,7 +96,7 @@ Block *Parser::parseBlock(std::vector<Token>::const_iterator &itr)
 Statement *Parser::parseStatement(std::vector<Token>::const_iterator &itr)
 {
 
-    if (itr->tag == Token::KWORD)
+    if (itr->tag == Token::KWORD) // gestisco tutti i casi di statement che possiamo avere ...
     {
         if (itr->word == "SET")
         {
@@ -115,14 +118,14 @@ Statement *Parser::parseStatement(std::vector<Token>::const_iterator &itr)
         {
             return parseWhileStmt(itr);
         }
-        else
+        else // se non è nessuno dei precedenti allora c'è un problema di fondo
         {
             std::stringstream temp;
             temp << "Cannot parse Statement at token " << *itr;
             throw SyntaxError{temp.str()};
         }
     }
-    else
+    else // se non c'era nemmeno un token di tipo keyword , ancora peggio
     {
         std::stringstream temp;
         temp << "Missing a statement at token " << *itr;
@@ -136,10 +139,14 @@ SetStmt *Parser::parseSetStmt(std::vector<Token>::const_iterator &itr)
 {
     safe_next(itr); // dopo aver letto SET avanzo
 
-    Variable *variabile_set = parseVariable(itr);
+    /*AVVISO
+    in qualche commit vecchio avevo messo , per ogni componente di ogni statement da creare , un trycatch per definire meglio la provenienza dell'errore .
+    ma visto che non viene richiesto l'ho levato
+    */
+    Variable *variabile_set = parseVariable(itr); // creo ciò che serve a set per esistere . se ci saranno degli errori interni li segnalerò durante la creazione stessa
     NumExpr *valore_set = parseNumExpr(itr);
 
-    if (itr->tag == Token::RP)
+    if (itr->tag == Token::RP) // solito controllo finale da definizione di cfg
     {
         safe_next(itr);
         return new SetStmt(variabile_set, valore_set);
@@ -158,9 +165,12 @@ SetStmt *Parser::parseSetStmt(std::vector<Token>::const_iterator &itr)
 
 InputStmt *Parser::parseInputStmt(std::vector<Token>::const_iterator &itr)
 {
-    safe_next(itr); // dopo aver letto INPUT avanzo
-
-    Variable *variabile_input = parseVariable(itr);
+    safe_next(itr);                                 // dopo aver letto INPUT avanzo
+                                                    /*AVVISO
+                                                    in qualche commit vecchio avevo messo , per ogni componente di ogni statement da creare , un trycatch per definire meglio la provenienza dell'errore .
+                                                    ma visto che non viene richiesto l'ho levato
+                                                    */
+    Variable *variabile_input = parseVariable(itr); // creo ciò che serve allo statement input
 
     if (itr->tag == Token::RP)
     {
@@ -180,6 +190,10 @@ PrintStmt *Parser::parsePrintStmt(std::vector<Token>::const_iterator &itr)
 {
     safe_next(itr); // dopo aver letto PRINT avanzo
 
+    /*AVVISO
+    in qualche commit vecchio avevo messo , per ogni componente di ogni statement da creare , un trycatch per definire meglio la provenienza dell'errore .
+    ma visto che non viene richiesto l'ho levato
+    */
     NumExpr *num_expr_print = parseNumExpr(itr);
 
     if (itr->tag == Token::RP)
@@ -204,6 +218,10 @@ IfStmt *Parser::parseIfStmt(std::vector<Token>::const_iterator &itr)
 
     safe_next(itr); // dopo aver letto il tipo di statement vado avanti...
 
+    /*AVVISO
+    in qualche commit vecchio avevo messo , per ogni componente di ogni statement da creare , un trycatch per definire meglio la provenienza dell'errore .
+    ma visto che non viene richiesto l'ho levato
+    */
     // ci sono 3 cose che devo creare :
     BoolExpr *condizione_if = parseBoolExpr(itr);
     Block *blocco_then = parseStmtBlock(itr);
@@ -232,6 +250,10 @@ WhileStmt *Parser::parseWhileStmt(std::vector<Token>::const_iterator &itr)
 {
     safe_next(itr); // dopo aver letto WHILE avanzo
 
+    /*AVVISO
+    in qualche commit vecchio avevo messo , per ogni componente di ogni statement da creare , un trycatch per definire meglio la provenienza dell'errore .
+    ma visto che non viene richiesto l'ho levato
+    */
     BoolExpr *condizione_while = parseBoolExpr(itr);
     Block *blocco_while = parseStmtBlock(itr);
 
@@ -259,12 +281,17 @@ BoolConst *Parser::parseBoolConst(std::vector<Token>::const_iterator &itr)
 
     bool variabile_booleana = (itr->word == "TRUE"); // qua non funziona cio che ho fatto in parsenumber , quindi faccio cosi
 
+    /*AVVISO
+    in qualche commit vecchio avevo messo , per ogni componente di ogni statement da creare , un trycatch per definire meglio la provenienza dell'errore .
+    ma visto che non viene richiesto l'ho levato
+    */
     BoolConst *var_booleana = new BoolConst{variabile_booleana};
     safe_next(itr);
     return var_booleana;
 }
-// questi inline check mi servono per capire se ALMENO il token corrente è uno di questi elencati
-// nel momento in cui sappiamo che il token è uno di questi , andremo a capire di quale si tratta tramite i metodi implementati in Syntax.h nelle classi RelOp e BoolOp
+
+// i successivi 4 "inline check "mi servono per capire se ALMENO il token corrente è uno di questi elencati
+// nel momento in cui sappiamo che il token è uno di questi , andremo a capire (in Syntax.cpp) di quale si tratta tramite i metodi implementati in Syntax.h nelle classi RelOp e BoolOp
 inline bool isRelOperator(Token const &tok)
 {
     return (tok.word == "LT") or (tok.word == "GT") or (tok.word == "EQ");
@@ -287,17 +314,25 @@ inline bool isTrueFalse(Token const &tok)
 
 BoolExpr *Parser::parseBoolExpr(std::vector<Token>::const_iterator &itr)
 {
-    // non mi serve mettere un safenext qui , altrimenti andrei avanti di uno inutilmente e creando un effetto domino letale sul parsing. stesso discorso in parseNumExpr
+    /*AVVISO
+    in qualche commit vecchio avevo messo , per ogni componente di ogni statement da creare , un trycatch per definire meglio la provenienza dell'errore .
+    ma visto che non viene richiesto l'ho levato
+    */
+    // non mi serve mettere un safenext qui , altrimenti andrei avanti di uno inutilmente creando un effetto domino letale sul parsing. stesso discorso in parseNumExpr
+
     if (itr->tag == Token::LP) // se inizio con la "(" posso andare avanti , altrimenti già qui mi fermo
     {
         safe_next(itr); // avanzo a leggere cosa ce dopo la parentesi : adesso devo trovare per forza un operatore
 
-        if (isRelOperator(*itr)) // in caso sia <,>,=  , la inline qua sopra ha ritornato true e posso interessarmi di che segno si tratta
+        if (isRelOperator(*itr)) // in caso sia <,>,=  , la inline qua sopra ha ritornato true e posso interessarmi di che segno specifico si tratti
         {
             int opCode_rel_operator = RelOp::stringaAcodiceLTGTEQ(itr->word); // ritorno esattamente l'operatore che ho letto. gli passo la word che è una string
-            safe_next(itr);                                                   // vado avanti : ora devo creare due cose
+
+            safe_next(itr); // vado avanti : ora devo creare due cose
+
             NumExpr *primo_valore_numexpr = parseNumExpr(itr);
             NumExpr *secondo_valore_numlexpr = parseNumExpr(itr);
+
             if (itr->tag == Token::RP)
             { // se ce ")" ho finito , altrimenti do errore
                 safe_next(itr);
@@ -312,9 +347,10 @@ BoolExpr *Parser::parseBoolExpr(std::vector<Token>::const_iterator &itr)
                 throw SyntaxError{temp.str()};
             }
         }
-        else if (isBoolOperators(*itr))                                         // se dopo "(" non c'era <,>,= allora ho ancora due casi in cui posso salvarmi
-        {                                                                       // in caso sia AND o OR  ...
-            int opCode_bool_operators = BoolOp::stringaAcodiceANDOR(itr->word); // chiamo il metodo che ho fatto in Syntax per capire che operatore ho appena letto
+        else if (isBoolOperators(*itr)) // se dopo "(" non c'era <,>,= allora ho ancora due casi in cui posso salvarmi
+        {                               // ora ci troviamo nel caso AND o OR  ...
+
+            int opCode_bool_operators = BoolOp::stringaAcodiceANDOR(itr->word); // chiamo il metodo che ho fatto in Syntax per capire quale operatore ho appena letto
 
             safe_next(itr);
             BoolExpr *primo_valore_boolexpr = parseBoolExpr(itr);
@@ -336,10 +372,10 @@ BoolExpr *Parser::parseBoolExpr(std::vector<Token>::const_iterator &itr)
             }
         }
         else if (isNotOperator(*itr)) /*questo ormai è l'ultima spiaggia : il NOT .L'ho messo a parte perche devo sapere separatamente di essere qui .
-questo a causa del fatto che il not richiede solo un parametro nel costruttore e non 2 come in AND e OR (i suoi due colleghi)
- */
+                                        questo a causa del fatto che il not richiede solo un parametro nel costruttore e non 2 come in AND e OR (i suoi due colleghi)
+                                      */
         {
-            int opCode_bool_operator = BoolOp::stringaAcodiceNOT(itr->word); // è un po inutile stare a controllare questo perche so benissimo che è NOT (grazie a isnotoperator)
+            int opCode_bool_operator = BoolOp::stringaAcodiceNOT(itr->word); // è un po ridondante stare a controllare questo perche so benissimo che è NOT (grazie a isnotoperator)
 
             safe_next(itr);
 
@@ -349,7 +385,7 @@ questo a causa del fatto che il not richiede solo un parametro nel costruttore e
             {
                 safe_next(itr);
 
-                return new BoolOp(opCode_bool_operator, primo_valore_boolexpr); // ho creato il costruttore apposta per questo caso (riga 79 Syntax.h)
+                return new BoolOp(opCode_bool_operator, primo_valore_boolexpr); // ho creato il costruttore apposta per questo caso (in Syntax.h)
             }
             else
             { // se alla fine non ce ")" crolla tutta l'istruzione di valutazione bool expression
@@ -383,6 +419,10 @@ questo a causa del fatto che il not richiede solo un parametro nel costruttore e
 
 Number *Parser::parseNumber(std::vector<Token>::const_iterator &itr)
 {
+    /*AVVISO
+    in qualche commit vecchio avevo messo , per ogni componente di ogni statement da creare , un trycatch per definire meglio la provenienza dell'errore .
+    ma visto che non viene richiesto l'ho levato
+    */
     std::stringstream temp;
     temp << itr->word;
     int64_t num;
@@ -394,6 +434,10 @@ Number *Parser::parseNumber(std::vector<Token>::const_iterator &itr)
 
 Variable *Parser::parseVariable(std::vector<Token>::const_iterator &itr)
 {
+    /*AVVISO
+    in qualche commit vecchio avevo messo , per ogni componente di ogni statement da creare , un trycatch per definire meglio la provenienza dell'errore .
+    ma visto che non viene richiesto l'ho levato
+    */
     if (itr->tag != Token::KWORD)
     {
         Variable *v = new Variable{itr->word};
@@ -415,15 +459,21 @@ inline bool Possible_Operator(Token const &tok) // stesso discorso delle righe i
 
 NumExpr *Parser::parseNumExpr(std::vector<Token>::const_iterator &itr)
 {
-
-    if (itr->tag == Token::LP) // il PRIMO CASO è che num_expr abbia ( OPERATORE num_expr num_expr )
+    /*AVVISO
+    in qualche commit vecchio avevo messo , per ogni componente di ogni statement da creare , un trycatch per definire meglio la provenienza dell'errore .
+    ma visto che non viene richiesto l'ho levato
+    */
+    if (itr->tag == Token::LP) // il PRIMO CASO è che num_expr abbia la forma : ( OPERATORE num_expr num_expr )
     {                          // intanto la num expression deve iniziare a sua volta con "("
         safe_next(itr);        // avanzo a leggere che tipo di operatore abbiamo
 
         if (Possible_Operator(*itr))
-        { // ora so che ho appena letto o ADD o SUB o MUL o DIV per forza , non so ancora quale sia precisamente pero
+        { // ora so che ho appena letto o ADD o SUB o MUL o DIV per forza , non so ancora quale sia precisamente però
+
             int opCode_num_expr = Operator::stringaAcodiceOperatoriAritmetici(itr->word);
+
             safe_next(itr); // avanzo e creo due num expression ( := della cfg , a prescindere da quale sia l'operatore )
+
             NumExpr *valore1_NumExpr = parseNumExpr(itr);
             NumExpr *valore_2_NumExpr = parseNumExpr(itr);
 
@@ -441,7 +491,7 @@ NumExpr *Parser::parseNumExpr(std::vector<Token>::const_iterator &itr)
                 throw SyntaxError{temp.str()};
             }
         }
-        else
+        else // qua ci cadiamo se l'operatore non era uno di quelli che noi ci aspettavamo
         {
             std::stringstream temp;
             temp << "Stray character at token " << *itr;
@@ -473,8 +523,8 @@ NumExpr *Parser::parseNumExpr(std::vector<Token>::const_iterator &itr)
 
         qui proprio non posso più fare niente
         */
-            std::stringstream temp;
-            temp << " Cannot parse Block at token " << *itr;
-            throw SyntaxError{temp.str()};
+        std::stringstream temp;
+        temp << " Cannot parse Block at token " << *itr;
+        throw SyntaxError{temp.str()};
     }
 }

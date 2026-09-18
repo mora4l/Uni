@@ -6,6 +6,8 @@
 class Visitor
 {
 public:
+    // dichiariamo tutti i metodi visit virtuali
+
     virtual void visit(Program const &program) = 0;
     virtual void visit(Block const &block) = 0;
 
@@ -23,6 +25,6 @@ public:
     virtual void visit(BoolConst const &boolconst) = 0;
     virtual void visit(RelOp const &relop) = 0;
 
-    virtual ~Visitor() = default  ; //se una classe ha delle funzioni virtuali allora devo metterci anche il distruttore virtuale associato
+    virtual ~Visitor() = default; // se una classe ha delle funzioni virtuali allora devo metterci anche il distruttore virtuale associato
 };
 #endif

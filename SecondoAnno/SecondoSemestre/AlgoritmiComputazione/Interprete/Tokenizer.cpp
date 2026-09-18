@@ -5,8 +5,9 @@
 #include <iostream>
 #include "Tokenizer.h"
 
+// entriamo negli ingranaggi del tokenizzatore
+
 // questo metodo mi serve per capire se il numero letto è accettabile o no
-// esempio : ho letto 3
 std::string Tokenizer::tokenizzaCostanti(std::ifstream &programmadafile, std::stringstream &temp, int rowCount)
 {
     char ch;
@@ -18,23 +19,24 @@ std::string Tokenizer::tokenizzaCostanti(std::ifstream &programmadafile, std::st
         { // se è un numero continuo a leggerlo (33333333)
             temp << ch;
         }
-        if (ch == '.')
+        if (ch == '.') // se leggiamo un punto c'è sicuro un errore : non accettiamo numeri non interi
         {
             std::stringstream temptokenizzacost;
             temptokenizzacost << "Stray character " << ch
-                 << " in input at line " << rowCount;
+                              << " in input at line " << rowCount;
             throw LexicalError{temptokenizzacost.str()};
-        } // se ho letto "." guardo :
+        }
 
     } while (std::isdigit(ch) || ch == '.'); // finchè non abbiamo un numero oppure un punto vado avanti
 
-    programmadafile.unget(); // l'ultimo carattere letto è proprio quello che ha fatto interrompere il ciclo quindi lo scartiamo
+    programmadafile.unget(); // l'ultimo carattere letto è proprio quello che ha fatto interrompere il ciclo quindi lo scartiamo e riprenderemo da quello
     return temp.str();
 }
 
 void Tokenizer::tokenizeFileInput(std::ifstream &programmadafile, std::vector<Token> &inputTokens)
 {
-    char ch{};                // creo un char che mi servirà per leggere dal file
+    char ch{}; // creo un char che mi servirà per leggere dal file
+
     unsigned int rowCount{1}; // parto dalla riga 1 del file a leggere
                               /*
                               //peek mi torna utile perchè se all'inizio ho già EOF allora il file è vuoto e lo capisco subito.la prima idea era usare get con file.eof()
@@ -67,12 +69,13 @@ void Tokenizer::tokenizeFileInput(std::ifstream &programmadafile, std::vector<To
         {
             inputTokens.emplace_back(Token::RP, Token::idleggibile[Token::RP]);
         }
-        else if (ch == '-')
-        { // se c'è un meno , allora per forza dopo ci deve essere un numero . se ce qualcos altro allora c'è un errore
+        else if (ch == '-') // NUMERI NEGATIVI
+        {                   // se c'è un meno , allora per forza dopo ci deve essere un numero . se ce qualcos altro allora c'è un errore
             // il + invece non ci puo proprio essere come definizione di numero positivo (:= dalla grammatica) e quindi non mi interessa capire la situazione col + , perchè so a priori che sarà una keyword se lo incontrerò
 
             char ch2 = programmadafile.get(); // mi prendo il carattere dopo al primo già preso
-            if (ch2 == '0')
+
+            if (ch2 == '0') // se il valore letto è zero potremmo avere dei casi indesiderati (si capisce da cfg)
             {
 
                 char ch3 = programmadafile.get(); // devo verificare subito una cosa :
@@ -86,7 +89,7 @@ void Tokenizer::tokenizeFileInput(std::ifstream &programmadafile, std::vector<To
                 }
                 else
                 {
-                    programmadafile.unget(); // se non era un numero cio che c'era dopo lo 0 , allora rimetto tutto nello stream
+                    programmadafile.unget(); // se non era un numero ciò che c'era dopo lo 0 , allora rimetto tutto nello stream e salvo ciò che ho letto fino ad ora
                     std::stringstream temp;
                     temp << ch << ch2;
                     inputTokens.emplace_back(Token::CONST, temp.str()); // e salvo come -0 quella costante
@@ -107,8 +110,8 @@ void Tokenizer::tokenizeFileInput(std::ifstream &programmadafile, std::vector<To
                 throw LexicalError{temp.str()};
             }
         }
-        else if (std::isdigit(ch))
-        { // se è un numero devo andare a vedere che tipo di numero è (grazie a tokenizzacostanti) e poi lo salvo come costante
+        else if (std::isdigit(ch)) // NUMERI POSITIVI
+        {                          // se è un numero devo andare a vedere che tipo di numero è (grazie a tokenizzacostanti) e poi lo salvo come costante
 
             std::stringstream temp; // metto dentro ad uno stream di stringa il carattere che ho appena letto
             temp << ch;
@@ -121,7 +124,7 @@ void Tokenizer::tokenizeFileInput(std::ifstream &programmadafile, std::vector<To
                 {                 // qui entra se il numero è 0n0
                     std::stringstream tempDigitTknzTile;
                     tempDigitTknzTile << "Zero value followed by another value is not allowed " << ch
-                         << "in input at line " << rowCount;
+                                      << "in input at line " << rowCount;
                     throw LexicalError{tempDigitTknzTile.str()};
                 }
                 else
@@ -138,7 +141,7 @@ void Tokenizer::tokenizeFileInput(std::ifstream &programmadafile, std::vector<To
                 inputTokens.emplace_back(Token::CONST, temp.str());
             }
         }
-        else if (std::isalpha(ch))
+        else if (std::isalpha(ch))  // CARATTERI ALFABETICI
         {                           // qua devo capire se ho davanti una parola chiave (KWRD) o una variabile (ID) ("if" , "while", "set" oppure "var" , "variabile" , "temp")
             std::stringstream temp; // metto dentro ad uno stream di stringa il carattere che ho appena letto
             temp << ch;
@@ -162,7 +165,7 @@ void Tokenizer::tokenizeFileInput(std::ifstream &programmadafile, std::vector<To
                  alpha → a | b | c | . . . | z | A | B | C | . . . | Z
 
                 */
-               
+
                     std::stringstream tempNotAlphaTknzFile;
                     tempNotAlphaTknzFile << "Expected a variable , got " << ch;
                     throw LexicalError{tempNotAlphaTknzFile.str()};
@@ -172,7 +175,7 @@ void Tokenizer::tokenizeFileInput(std::ifstream &programmadafile, std::vector<To
 
             std::string word{temp.str()};
 
-            int tag = Token::ID; // di base quello che ho appena letto potrebbe essere una variabile e intanto preparo l'id associato
+            int tag = Token::ID; // di base quello che ho appena letto potrebbe essere una variabile e quindi intanto preparo l'id associato
 
             // poi , se per caso quello che ho appena letto è proprio una parola chiave trovata dentro all'array che le definisce , allora cambio tag definendolo come parola chiave
             if (Token::parole_chiave.find(word) != Token::parole_chiave.end())

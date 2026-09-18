@@ -11,118 +11,131 @@ class PrintVisitor : public Visitor
 {
 public:
     PrintVisitor(std::ostream &con, int spazio) : console_(con), spazio_(spazio) {}
-    virtual ~PrintVisitor() = default ; 
+    virtual ~PrintVisitor() = default; // il distruttore è virtual in quanto abbiamo una classe definita virtual
+
     // ora sviluppo per ogni elemento dell'AST il metodo che stampa a schermo quella parte di albero .
 
     void visit(Program const &p) override
     {
         console_ << spazioTree() << "[PROGRAM] \n";
-        spazio_ += 2; //questi contatori mi servono per creare una forma grafica di gerarchia
+        spazio_ += 2;           // questi contatori mi servono per creare una forma grafica di gerarchia
         p.root_->accept(*this); // iniziamo a visitare l'albero dalla radice
-        spazio_ -= 2; //vado avanti con +2 e poi dopo aver visitato torno indietro
+        spazio_ -= 2;           // vado avanti con +2 e poi dopo aver visitato torno indietro
     }
 
-    void visit(Block const& block)override{
-        console_<<spazioTree()<< "[BLOCK] \n";
-        spazio_ += 2; 
-        for(auto* stmt : block.statements_){ //usiamo quanto visto nei range e iteratori per minimizzare la scrittura dei tipi , tutto questo grazie ad "auto" che lo fa automaticamente
+    void visit(Block const &block) override
+    {
+        console_ << spazioTree() << "[BLOCK] \n";
+        spazio_ += 2;
+        for (auto *stmt : block.statements_)
+        { // usiamo quanto visto nei range e iteratori per minimizzare la scrittura dei tipi , tutto questo grazie ad "auto" che lo fa automaticamente
             stmt->accept(*this);
         }
         spazio_ -= 2;
     }
-
-    void visit(PrintStmt const& print)override{
-        console_<<spazioTree()<<"[PRINT] \n";
-        spazio_ += 2; 
+    // da qui in giù il funzionamento è analogo , semplicemente lo riapplico per ogni statement da stampare
+    void visit(PrintStmt const &print) override
+    {
+        console_ << spazioTree() << "[PRINT] \n";
+        spazio_ += 2;
         print.num_expr_->accept(*this);
         spazio_ -= 2;
     }
 
-    void visit(InputStmt const& in)override{
-        console_<<spazioTree()<<"[INPUT] \n";
-        spazio_ += 2; 
+    void visit(InputStmt const &in) override
+    {
+        console_ << spazioTree() << "[INPUT] \n";
+        spazio_ += 2;
         in.variable_id_->accept(*this);
         spazio_ -= 2;
     }
 
-    void visit(WhileStmt const& whil)override{
-        console_<<spazioTree()<<"[WHILE] \n";
-        spazio_ += 2; 
-        console_<<spazioTree()<<"[while condition] \n";
+    void visit(WhileStmt const &whil) override
+    {
+        console_ << spazioTree() << "[WHILE] \n";
+        spazio_ += 2;
+        console_ << spazioTree() << "[while condition] \n";
         whil.bool_expr_->accept(*this);
 
-        console_<<spazioTree()<<"[while body] \n";
+        console_ << spazioTree() << "[while body] \n";
         whil.stmt_block_->accept(*this);
         spazio_ -= 2;
     }
 
-    void visit(IfStmt const& iff)override{
-        console_<<spazioTree()<<"[IF] \n";
-        spazio_ += 2; 
-        console_<<spazioTree()<<"[if condition] : \n";
+    void visit(IfStmt const &iff) override
+    {
+        console_ << spazioTree() << "[IF] \n";
+        spazio_ += 2;
+        console_ << spazioTree() << "[if condition] : \n";
         iff.bool_expr->accept(*this);
 
-        console_<<spazioTree()<<"[if statement] : \n";
+        console_ << spazioTree() << "[if statement] : \n";
         iff.stmt_block1->accept(*this);
 
-        console_<<spazioTree()<<"[else statement] : \n";
+        console_ << spazioTree() << "[else statement] : \n";
         iff.stmt_block2->accept(*this);
 
         spazio_ -= 2;
- 
     }
-    
-    void visit(SetStmt const& set)override{
-        console_<<spazioTree()<<"[SET] \n";
+
+    void visit(SetStmt const &set) override
+    {
+        console_ << spazioTree() << "[SET] \n";
         spazio_ += 2;
         set.variable_id_->accept(*this);
         set.num_expr_->accept(*this);
         spazio_ -= 2;
     }
 
-    void visit(Operator const& op)override{
-        console_<<spazioTree()<<"[OPERATOR] \n";
-        spazio_ +=2 ; 
+    void visit(Operator const &op) override
+    {
+        console_ << spazioTree() << "[OPERATOR] \n";
+        spazio_ += 2;
         op.left_->accept(*this);
         op.right_->accept(*this);
-        spazio_ -= 2 ; 
+        spazio_ -= 2;
     }
 
-    void visit(Number const& num)override{
-        console_<<spazioTree()<<"[CONST] ";
-        console_<<"value: "<<num.n_<<"\n";
+    void visit(Number const &num) override
+    {
+        console_ << spazioTree() << "[CONST] ";
+        console_ << "value: " << num.n_ << "\n";
     }
 
-    void visit(Variable const& var)override{
-        console_<<spazioTree()<<"[VARIABLE] ";
+    void visit(Variable const &var) override
+    {
+        console_ << spazioTree() << "[VARIABLE] ";
 
-        console_<<"name: "<<var.id_<<"\n";
+        console_ << "name: " << var.id_ << "\n";
     }
 
-    void visit(BoolOp const& boolop)override{
-        console_<<spazioTree()<<"[BOOLOP] \n";
-        spazio_+=2; 
+    void visit(BoolOp const &boolop) override
+    {
+        console_ << spazioTree() << "[BOOLOP] \n";
+        spazio_ += 2;
         boolop.op1->accept(*this);
-        if(boolop.op2 != nullptr){ //se l'operatore non era NOT allora il secondo operatore esiste, lo visito e lo stampo
+        if (boolop.op2 != nullptr)
+        { // se l'operatore non era NOT allora il secondo operatore esiste, lo visito e lo stampo
 
             boolop.op2->accept(*this);
         }
-        spazio_-=2 ; 
+        spazio_ -= 2;
     }
 
-    void visit(BoolConst const& boolconst)override{
-        console_<<spazioTree()<<"[BOOLCONST]";
+    void visit(BoolConst const &boolconst) override
+    {
+        console_ << spazioTree() << "[BOOLCONST]";
 
-        console_<<" value: "<<boolconst.boolean<<"\n";
-
+        console_ << " value: " << boolconst.boolean << "\n";
     }
 
-    void visit(RelOp const& relop)override{
-        console_<<spazioTree()<<"[RELOP]\n";
-        spazio_+=2;
+    void visit(RelOp const &relop) override
+    {
+        console_ << spazioTree() << "[RELOP]\n";
+        spazio_ += 2;
         relop.num1_l->accept(*this);
         relop.num2_r->accept(*this);
-        spazio_-=2;
+        spazio_ -= 2;
     }
 
 private:

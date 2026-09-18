@@ -1,8 +1,8 @@
 /*
 i costruttori di copia e gli operatori di assegnamento non li ho messi perchè non so
 quando potrebbe presentarsi effettivamente la situazione in cui servono
-
 */
+
 #if !defined(SYNTAX_H)
 #define SYNTAX_H
 
@@ -11,32 +11,35 @@ quando potrebbe presentarsi effettivamente la situazione in cui servono
 
 class Visitor;
 
-/*usiamo un patter visitor : separiamo la struttura della sintassi ( le classi dell' AST ) dal comportamento di ognuna . 
+/*usiamo un patter visitor : separiamo la struttura della sintassi ( le classi dell' AST ) dal comportamento di ognuna .
 il comportamento di ogni classe della sintassi lo colleghiamo attraverso un metodo che hanno tutte le classi : accept
 accept è virtuale e a runtime sceglie quale "accept" scegliere , in base al tipo del nodo
-dentro ogni accept verra chiamato il giusto metodo overloadato visit per quel nodo 
+dentro ogni accept verra chiamato il giusto metodo overloadato visit per quel nodo
 */
 
+/*
+la struttura delle classi è ridondante, per questo non spiegherò riga per riga
+le struct possono sostituire la definizione di classi che hanno unicamente metodi e attributi pubblici
+*/
 
 struct Statement
 {
     virtual void accept(Visitor &visitor) const = 0; // ogni classe dell'albero ha un metodo accept che serve per chiamare il metodo visit passando se stessa (*this)
-    virtual ~Statement() = default;
+    virtual ~Statement() = default;                  // associato ad ogni classe creo pure il distruttore virtuale in quanto la classe implementa metodi virtuali
 };
 
 struct Block : public Statement
 {
     Block(std::vector<Statement *> stmts) : statements_{std::move(stmts)} {};
-    
+
     void accept(Visitor &visitor) const override;
-    std::vector<Statement *> statements_;
+    std::vector<Statement *> statements_; // il block è costruito con un vettore di block . alla peggio all'intero ce ne sarà solo uno
 };
-struct Program //da UML , program contiene la root di tutto l'AST : che siano più BLOCK , uno solo o uno statement solo , sarà comunque tutto derivato da program
+struct Program // da UML , program contiene la root di tutto l'AST : che siano più BLOCK , uno solo o uno statement solo , sarà comunque tutto derivato da program
 {
     void accept(Visitor &visitor) const;
     Block *root_;
 };
-
 
 struct NumExpr
 {
@@ -48,12 +51,12 @@ struct Operator : public NumExpr
 {
 
     static int stringaAcodiceOperatoriAritmetici(const std::string &word);
-    
+
     Operator(int opCode, NumExpr *l, NumExpr *r) : opCode_(opCode), left_(l), right_(r) {}
     ~Operator() = default;
     void accept(Visitor &visitor) const override;
-    
-    enum OpCodeTab
+
+    enum OpCodeTab // usiamo questo metodo per enumerare i vari casi possibili . stessa cosa con gli altri operatori
     {
         ADD,
         SUB,
@@ -72,7 +75,7 @@ struct Number : public NumExpr
 
     void accept(Visitor &visitor) const override;
 
-    int64_t n_; ////i valori interi sono , da specifica, a 64 bit quindi devo usare il tipo "int64_t"
+    int64_t n_; // i valori interi sono , da specifica, a 64 bit quindi devo usare il tipo "int64_t"
 };
 
 struct Variable : public NumExpr
@@ -93,20 +96,20 @@ struct BoolExpr
 
 struct BoolOp : public BoolExpr
 {
-    
+
     static int stringaAcodiceANDOR(const std::string &word); // ho aggiunto questo metodo per ritornare esattamente l'enum corretto da associare ad opcode per poi passare il valore giusto al visitor
-    static int stringaAcodiceNOT(const std::string &word);   // ho aggiunto questo metodo per ritornare esattamente l'enum corretto da associare ad opcode per poi passare il valore giusto al visitor
-    /*
-    il problema era che usando gli inline di parser.cpp a righe ~247 non avevo il valore enum corretto da associare ad opcode .
-    questo perche gli operatori booleani e aritmetici sono tutti dei KEYWORD non distinguibili e il valore di tag sarebbe ritornato sballato
-    */
-   
-   enum boolOpCodeTab
-   {
-       AND,
-       OR,
-       NOT
-   };
+    static int stringaAcodiceNOT(const std::string &word);   // separatamente l'ho fatto anche per il NOT
+                                                             /*
+                                                             il problema era che usando gli inline di parser.cpp non avevo il valore enum corretto da associare ad opcode .
+                                                             questo perche gli operatori booleani e aritmetici sono tutti dei KEYWORD non distinguibili e il valore di tag sarebbe ritornato incorretto
+                                                             */
+
+    enum boolOpCodeTab
+    {
+        AND,
+        OR,
+        NOT
+    };
     BoolOp(int boolOpCode, BoolExpr *op_1, BoolExpr *op_2) : boolOpCode_(boolOpCode), op1(op_1), op2(op_2) {} // serve per AND e OR
     BoolOp(int boolOpCode, BoolExpr *op_1) : boolOpCode_(boolOpCode), op1(op_1), op2(nullptr) {}              // serve per il NOT
     ~BoolOp() = default;
@@ -131,14 +134,14 @@ struct BoolConst : public BoolExpr
 
 struct RelOp : public BoolExpr
 {
-    
+
     static int stringaAcodiceLTGTEQ(const std::string &word); // ho aggiunto questo metodo per ritornare esattamente l'enum corretto da associare ad opcode per poi passare il valore giusto al visitor
-    
+
     RelOp(int relCode, NumExpr *num_1, NumExpr *num_2) : relCode_(relCode), num1_l(num_1), num2_r(num_2) {}
     ~RelOp() = default;
-    
+
     void accept(Visitor &visitor) const override;
-    
+
     enum relCodeTab
     {
         LT,
@@ -149,8 +152,6 @@ struct RelOp : public BoolExpr
     NumExpr *num1_l;
     NumExpr *num2_r;
 };
-
-
 
 struct PrintStmt : public Statement
 {

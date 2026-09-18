@@ -5,124 +5,160 @@
 #include "Visitor.h"
 #include "Eccezioni.h"
 
-void Program::accept(Visitor& visitor) const {
+// implementiamo i metodi di syntax.h
 
-        visitor.visit(*this);
-
-};
-
-void Block::accept(Visitor& visitor) const {
+void Program::accept(Visitor &visitor) const
+{
     visitor.visit(*this);
 };
 
-void PrintStmt::accept(Visitor& visitor) const {
+void Block::accept(Visitor &visitor) const
+{
     visitor.visit(*this);
 };
 
-void InputStmt::accept(Visitor& visitor) const {
+void PrintStmt::accept(Visitor &visitor) const
+{
     visitor.visit(*this);
 };
 
-void WhileStmt::accept(Visitor& visitor) const {
+void InputStmt::accept(Visitor &visitor) const
+{
     visitor.visit(*this);
 };
 
-void IfStmt::accept(Visitor& visitor) const {
+void WhileStmt::accept(Visitor &visitor) const
+{
     visitor.visit(*this);
 };
 
-void SetStmt::accept(Visitor& visitor) const {
+void IfStmt::accept(Visitor &visitor) const
+{
+    visitor.visit(*this);
+};
+
+void SetStmt::accept(Visitor &visitor) const
+{
     visitor.visit(*this);
 }
 
+void Operator::accept(Visitor &visitor) const
+{
 
-void Operator::accept(Visitor& visitor) const {
-    
     visitor.visit(*this);
 };
-int Operator::stringaAcodiceOperatoriAritmetici(const std::string& word){
-    
-    if(word=="ADD"){
-        return ADD ; 
-    }else if(word=="SUB"){
-        return SUB; 
-    }else if(word=="MUL"){
+int Operator::stringaAcodiceOperatoriAritmetici(const std::string &word)
+{ // aggiungiamo il metodo per capire gli operatori . stessa cosa anche con gli altri tipi di operatori
+
+    if (word == "ADD")
+    {
+        return ADD;
+    }
+    else if (word == "SUB")
+    {
+        return SUB;
+    }
+    else if (word == "MUL")
+    {
         return MUL;
-    }else if(word=="DIV"){
+    }
+    else if (word == "DIV")
+    {
         return DIV;
-    }else{
-            std::stringstream temp;
-            temp << "Stray operator " << word << std::endl;
-            throw SyntaxError{temp.str()};
+    }
+    else
+    {
+        std::stringstream temp;
+        temp << "Stray operator " << word << std::endl;
+        throw SyntaxError{temp.str()};
     }
 }
 
-void Number::accept(Visitor& visitor) const {
+void Number::accept(Visitor &visitor) const
+{
     visitor.visit(*this);
 };
 
-void Variable::accept(Visitor& visitor) const {
+void Variable::accept(Visitor &visitor) const
+{
     visitor.visit(*this);
 };
 
-
-
-void BoolOp::accept(Visitor& visitor) const {
+void BoolOp::accept(Visitor &visitor) const
+{
     visitor.visit(*this);
 };
 
-int BoolOp::stringaAcodiceNOT(const std::string& word){
-    if(word=="NOT"){
-        return NOT; 
-    }else{ /*ce da comunicare un errore qui : il token non è nessuno dei 3 aspettati, 
-anche se è inutile perche ho già verificato con isRelOperators (inline in parser.cpp) che abbiamo un <,>,=
+int BoolOp::stringaAcodiceNOT(const std::string &word)
+{
+    if (word == "NOT")
+    {
+        return NOT;
+    }
+    else
+    { /*ce da comunicare un errore qui : il token non è nessuno dei 3 aspettati,
+anche se è inutile perche ho già verificato con isRelOperators (con l'inline check in parser.cpp) che abbiamo un <,>,=
 pero comunque lascio un throw perche potrebbe essere comodo come "difesa" a possibili modifiche future
 */
-            std::stringstream temp;
-            temp << "Stray operator " << word << std::endl;
-            throw SyntaxError{temp.str()};
+        std::stringstream temp;
+        temp << "Stray operator " << word << std::endl;
+        throw SyntaxError{temp.str()};
     }
 }
 
-int BoolOp::stringaAcodiceANDOR(const std::string& word){
-if(word=="AND"){
-    return AND;
-}else if(word=="OR") {
-    return OR; 
-}else{   /*ce da comunicare un errore qui : il token non è nessuno dei 3 aspettati, 
-anche se è inutile perche ho già verificato con isRelOperators (inline in parser.cpp) che abbiamo un <,>,=
+int BoolOp::stringaAcodiceANDOR(const std::string &word)
+{
+    if (word == "AND")
+    {
+        return AND;
+    }
+    else if (word == "OR")
+    {
+        return OR;
+    }
+    else
+    { /*ce da comunicare un errore qui : il token non è nessuno dei 3 aspettati,
+anche se è inutile perche ho già verificato con isRelOperators (con l'inline check in parser.cpp) che abbiamo un <,>,=
 pero comunque lascio un throw perche potrebbe essere comodo come "difesa" a possibili modifiche future
 */
-            std::stringstream temp;
-            temp << "Stray operator " << word << std::endl;
-            throw SyntaxError{temp.str()};
+        std::stringstream temp;
+        temp << "Stray operator " << word << std::endl;
+        throw SyntaxError{temp.str()};
     }
-
 }
 
-void BoolConst::accept(Visitor& visitor) const {
+void BoolConst::accept(Visitor &visitor) const
+{
     visitor.visit(*this);
 };
 
-
-void RelOp::accept(Visitor& visitor) const {
+void RelOp::accept(Visitor &visitor) const
+{
     visitor.visit(*this);
 };
 
-int RelOp::stringaAcodiceLTGTEQ(const std::string& word){
-    if(word=="LT"){
+int RelOp::stringaAcodiceLTGTEQ(const std::string &word)
+{
+    if (word == "LT")
+    {
         return LT;
-    }else if(word=="GT"){
+    }
+    else if (word == "GT")
+    {
         return GT;
-    }else if(word=="EQ"){
+    }
+    else if (word == "EQ")
+    {
         return EQ;
-    }else{    /*ce da comunicare un errore qui : il token non è nessuno dei 3 aspettati, 
-anche se è inutile perche ho già verificato con isRelOperators (inline in parser.cpp) che abbiamo un <,>,=
+    }
+    else
+    { /*ce da comunicare un errore qui : il token non è nessuno dei 3 aspettati,
+anche se è inutile perche ho già verificato con isRelOperators (con l'inline check in parser.cpp) che abbiamo un <,>,=
 pero comunque lascio un throw perche potrebbe essere comodo come "difesa" a possibili modifiche future
 */
 
-            std::stringstream temp;
-            temp << "Stray operator " << word << std::endl;
-            throw SyntaxError{temp.str()};
+        std::stringstream temp;
+        temp << "Stray operator " << word << std::endl;
+        throw SyntaxError{temp.str()};
     }
 }

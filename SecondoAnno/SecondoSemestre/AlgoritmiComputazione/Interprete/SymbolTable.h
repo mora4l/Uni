@@ -10,17 +10,19 @@
 class SymbolTable
 {
 public:
+    // creo tutti i costruttori ,distruttori e metodi necessari
     SymbolTable() = default;
     ~SymbolTable() = default;
 
     SymbolTable(const SymbolTable &other) = delete;
     SymbolTable &operator=(const SymbolTable &other) = delete;
 
+    // la symboltable ha due metodi cardine : ritornare un valore o inserirlo . vediamo il primo
     int64_t getValue(std::string const &key) const
     {
-        auto itr = map.find(key); //in questo modo sto andando a trovare con find la casella della mappa in cui ho quel valore associato a quella variabile. find mi restituisce un iteratore , non un valore
+        auto itr = map.find(key); // in questo modo sto andando a trovare con find la casella della mappa in cui ho quel valore associato a quella variabile. find mi restituisce un iteratore , non un valore
 
-        if (itr == map.end()) //map.end è lo stesso concetto del nullptr
+        if (itr == map.end()) // map.end è lo stesso concetto del nullptr
         {
             std::stringstream temp;
             temp << "Undefined variable " << key;
@@ -35,8 +37,7 @@ public:
     }
 
 private:
-    std::unordered_map<std::string, int64_t> map; //i valori interi sono , da specifica, a 64 bit quindi devo usare il tipo "int64_t"
+    std::unordered_map<std::string, int64_t> map; // i valori interi sono , da specifica, a 64 bit quindi devo usare il tipo "int64_t"
 };
 
-//arrivato qui con uml : controllare symboltable, tutti gli altri collegamenti esistenti (se ci sono altre dipendenze) e fare printvisitor
 #endif
