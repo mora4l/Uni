@@ -51,7 +51,7 @@ public:
         std::getline(std::cin, stringaDaConsole);
 
         size_t start = 0; // partiamo dall'indice zero della stringa in cui ho messo il valore
-
+        int64_t value;
         if (!stringaDaConsole.empty()) // se la stringa non è vuota continuo a ispezionarla per capire se è un intero positivo o negativo, altrimenti posso anche fermarmi qui
         {
 
@@ -61,13 +61,35 @@ public:
             }
 
             /*ora qui uso una funzione senzanome con una funzione di <algorithm> : ritorna vero se scorrendo la stringa attraverso std::all_of
-            (la funzione di <algorithm>) (dall'inizio della stringa con begin +indice fino a end) legge solo numeri (usando un char c generico dichiarato dentro) :
+            (la funzione di <algorithm>) (dall'inizio della stringa con begin +indice fino a end) legge solo numeri e quindi non è frazionario (usando un char c generico dichiarato dentro) :
             in pratica parte dall inizio della stringa (stringaDaConsole.begin()) e va avanti fino alla fine (stringaDaConsole.end()) attraverso un char c generico
             */
             if ((start < stringaDaConsole.size()) && std::all_of(stringaDaConsole.begin() + start, stringaDaConsole.end(), [](unsigned char c)
                                                                  { return std::isdigit(c); }))
+
             {
-                int64_t value = std::stoll(stringaDaConsole);       // la stoll invece mi serve per convertire la stringa in un int long long (stoi invece mi andrebbe bene per un int normale ma qui non ci serve)
+                char ch2 = stringaDaConsole[start]; // prima di proseguire devo assicurarmi che dopo un presunto 0 non ci siano altri valori
+
+                if (ch2 == '0')
+                {
+                    char ch3 = stringaDaConsole[start + 1];
+                    if (std::isdigit(ch3))
+                    {
+                        std::stringstream temp;
+                        temp << "Multiple numbers after zero in input";
+                        throw EvaluationError{temp.str()};
+                    }
+                }
+
+                try
+                {                                         // uso un try catch nel caso il valore inserito superi la grandezza consentita e la stoll dia problemi
+                    value = std::stoll(stringaDaConsole); // la stoll invece mi serve per convertire la stringa in un int long long (stoi invece mi andrebbe bene per un int normale ma qui non ci serve)
+                }
+                catch (...)
+                { // metto i "..." e non EvaluationError perchè altrimenti non mi funziona
+
+                    throw EvaluationError{"Too many values in input "};
+                }
                 symbolTable_.setValue(in.variable_id_->id_, value); // input funziona che : se non ha mai letto la variabile la crea , mentre se esiste già la sovrascrive. quindi in ogni caso usiamo setValue della symbolTable
             }
             else
