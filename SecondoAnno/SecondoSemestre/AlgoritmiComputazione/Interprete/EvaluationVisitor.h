@@ -76,7 +76,7 @@ public:
                     if (std::isdigit(ch3))
                     {
                         std::stringstream temp;
-                        temp << "Multiple numbers after zero in input";
+                        temp << "Not allowed values after zero value in input";
                         throw EvaluationError{temp.str()};
                     }
                 }
